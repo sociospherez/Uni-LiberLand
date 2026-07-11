@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Liberland University Digital Campus experience preview" />
   <title>Liberland University | Digital Campus</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="components.css" />
+  <script>try{const t=localStorage.getItem("ldcTheme");document.documentElement.dataset.theme=t||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");}catch(e){document.documentElement.dataset.theme="light"}</script>
+  <link rel="stylesheet" href="styles.css?v=2.0" />
+  <link rel="stylesheet" href="components.css?v=2.0" />
+  <link rel="stylesheet" href="theme-v2.css?v=2.0" />
 </head>
 <body>
   <header class="topbar">
@@ -23,6 +25,7 @@
       <button data-route="about">About</button>
     </nav>
     <div class="header-actions">
+      <button class="theme-toggle" data-theme-toggle aria-pressed="false"><span class="theme-toggle__icon">☾</span><span class="theme-toggle__label">Night</span></button>
       <button class="text-button" data-route="dashboard">Student login</button>
       <button class="primary small" data-route="apply">Apply now</button>
       <button class="menu-button" id="menuButton" aria-label="Open menu">☰</button>
@@ -32,7 +35,7 @@
   <div class="mobile-menu" id="mobileMenu">
     <button data-route="home">Home</button><button data-route="courses">Courses</button>
     <button data-route="research">Research</button><button data-route="community">Community</button>
-    <button data-route="about">About</button><button data-route="apply">Apply now</button>
+    <button data-route="about">About</button><button data-route="apply">Apply now</button><button class="theme-toggle" data-theme-toggle aria-pressed="false"><span class="theme-toggle__icon">☾</span><span class="theme-toggle__label">Night</span></button>
   </div>
 
   <div class="journey-strip" id="journeyStrip" aria-label="Application journey progress"></div>
@@ -46,6 +49,7 @@
 
   <button class="motion-toggle" id="motionToggle" aria-pressed="false" title="Reduce or enable motion">Motion: On</button>
   <div class="toast" id="toast" role="status"></div>
+  <script src="theme.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

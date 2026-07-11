@@ -4,8 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Liberland Digital Design System</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="components.css" />
+  <script>try{const t=localStorage.getItem("ldcTheme");document.documentElement.dataset.theme=t||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");}catch(e){document.documentElement.dataset.theme="light"}</script>
+  <link rel="stylesheet" href="styles.css?v=2.0" />
+  <link rel="stylesheet" href="components.css?v=2.0" />
+  <link rel="stylesheet" href="theme-v2.css?v=2.0" />
 </head>
 <body>
   <header class="topbar">
@@ -13,7 +15,7 @@
       <img src="images/cropped-liberland-512x512-1.png" alt="Liberland University Logo">
       <span class="brand-copy"><strong>LIBERLAND UNIVERSITY</strong><small>Digital Design System</small></span>
     </a>
-    <a class="btn btn-secondary btn-sm" href="index.html">Return to demo</a>
+    <div class="cluster"><button class="theme-toggle" data-theme-toggle aria-pressed="false"><span class="theme-toggle__icon">☾</span><span class="theme-toggle__label">Night</span></button><a class="btn btn-secondary btn-sm" href="index.html">Return to demo</a></div>
   </header>
 
   <main class="page">
@@ -86,5 +88,6 @@
   </main>
 
   <footer><div><strong>Liberland University</strong><span>Digital Design System v1.0</span></div><small>Internal component reference</small></footer>
+  <script src="theme.js"></script>
 </body>
 </html>

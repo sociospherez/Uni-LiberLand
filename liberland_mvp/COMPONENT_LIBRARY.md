@@ -54,3 +54,8 @@ This folder contains the reusable front-end component layer for the Liberland Di
 3. Prefer white space and progressive disclosure over dense dashboards.
 4. Motion should explain hierarchy or state; it should not compete with the task.
 5. Components must remain usable with reduced-motion settings and keyboard navigation.
+
+
+## LDDS 2.0 theme tokens
+
+Load `theme-v2.css` after `components.css`. New components must use semantic tokens such as `--surface`, `--text`, `--border`, `--accent`, and `--surface-blue` instead of fixed neutral colours.
