@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Liberland Digital Campus MVP</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+    <img src="images/cropped-liberland-512x512-1.png" alt="Liberland University Logo">
+    <div class="brand-text">
+        <h1>Liberland University</h1>
+        <span>Digital Campus</span>
+    </div>
+</div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#programmes">Programmes</a>
+      <a href="#admissions">Admissions</a>
+      <a href="#dashboard">Student Hub</a>
+    </nav>
+    <button class="primary" onclick="scrollToSection('admissions')">Apply Now</button>
+  </header>
+
+  <main>
+    <section id="home" class="hero grid two">
+      <div>
+        <p class="eyebrow">Project Atlas MVP</p>
+        <h1>One Platform. One Identity. Infinite Journeys.</h1>
+        <p class="lead">A Microsoft-style demonstrator for Liberland University — showing how a visitor can discover, personalise, apply, and enter the Digital Campus.</p>
+        <div class="actions">
+          <button class="primary" onclick="scrollToSection('experience')">Choose Experience</button>
+          <button class="secondary" onclick="scrollToSection('programmes')">Explore Programmes</button>
+        </div>
+      </div>
+      <div class="panel spotlight">
+        <h3>Liberland Experience Platform</h3>
+        <p>The interface adapts by role, intent and journey stage.</p>
+        <div class="metric-row"><span>Learning Momentum</span><strong>82%</strong></div>
+        <div class="metric-row"><span>Community Activity</span><strong>Live</strong></div>
+        <div class="metric-row"><span>AI Guidance</span><strong>Enabled</strong></div>
+      </div>
+    </section>
+
+    <section id="experience" class="section">
+      <div class="section-title">
+        <p class="eyebrow">Adaptive Experience Engine</p>
+        <h2>Choose your experience</h2>
+        <p>The same platform presents a different journey depending on who you are.</p>
+      </div>
+      <div class="role-grid">
+        <button class="role active" onclick="setRole('student', this)">🎓 Future Student</button>
+        <button class="role" onclick="setRole('tutor', this)">👨‍🏫 Tutor</button>
+        <button class="role" onclick="setRole('researcher', this)">🔬 Researcher</button>
+        <button class="role" onclick="setRole('partner', this)">🏢 Industry Partner</button>
+      </div>
+      <div id="experiencePanel" class="panel adaptive"></div>
+    </section>
+
+    <section id="programmes" class="section">
+      <div class="section-title">
+        <p class="eyebrow">Discover</p>
+        <h2>Learning journeys, not just courses</h2>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <span class="tag">AI Native</span>
+          <h3>AI & Digital Governance</h3>
+          <p>Build capability in AI, ethics, governance and digital leadership.</p>
+          <button onclick="selectCourse('AI & Digital Governance')">View Journey</button>
+        </article>
+        <article class="card">
+          <span class="tag green">Innovation</span>
+          <h3>Startup & Digital Economy</h3>
+          <p>For entrepreneurs building ventures in borderless digital markets.</p>
+          <button onclick="selectCourse('Startup & Digital Economy')">View Journey</button>
+        </article>
+        <article class="card">
+          <span class="tag purple">Leadership</span>
+          <h3>Future Public Leadership</h3>
+          <p>Governance, policy, systems thinking and civic innovation.</p>
+          <button onclick="selectCourse('Future Public Leadership')">View Journey</button>
+        </article>
+      </div>
+      <div id="coursePanel" class="panel course-panel hidden"></div>
+    </section>
+
+    <section id="admissions" class="section grid two">
+      <div>
+        <p class="eyebrow">Admissions</p>
+        <h2>Guided application wizard</h2>
+        <p>This MVP simulates the full admissions route with progress, payment and confirmation.</p>
+        <ol class="steps">
+          <li class="done">Personal details</li>
+          <li class="done">Programme selection</li>
+          <li class="active">Documents</li>
+          <li>Review</li>
+          <li>Payment</li>
+        </ol>
+      </div>
+      <form class="panel form" onsubmit="submitApplication(event)">
+        <label>Full name<input required placeholder="Enter applicant name"></label>
+        <label>Email<input required type="email" placeholder="student@example.com"></label>
+        <label>Programme<select><option>AI & Digital Governance</option><option>Startup & Digital Economy</option><option>Future Public Leadership</option></select></label>
+        <button class="primary" type="submit">Submit Application</button>
+      </form>
+    </section>
+
+    <section id="dashboard" class="section hidden">
+      <div class="section-title">
+        <p class="eyebrow">Student Hub</p>
+        <h2>Welcome to your Digital Campus</h2>
+      </div>
+      <div class="dashboard">
+        <div class="panel"><h3>Next Milestone</h3><p>Complete digital orientation and meet your AI advisor.</p></div>
+        <div class="panel"><h3>Learning Momentum</h3><div class="progress"><span style="width:72%"></span></div><strong>72%</strong></div>
+        <div class="panel"><h3>Community</h3><p>AI Club, Startup Hub and Governance Society are active today.</p></div>
+        <div class="panel"><h3>Digital Passport</h3><p>Student ID created. Skills profile ready.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>AI-Native · Global & Borderless · Secure & Trusted · Scalable by Design</footer>
+  <script src="script.js"></script>
+</body>
+</html>

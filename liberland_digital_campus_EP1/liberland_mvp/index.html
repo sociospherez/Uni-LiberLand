@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Liberland University Digital Campus experience preview" />
+  <title>Liberland University | Digital Campus</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <button class="brand" data-route="home" aria-label="Liberland University home">
+      <img src="images/cropped-liberland-512x512-1.png" alt="Liberland University Logo">
+      <!-- <span class="crest">L</span> -->
+      <span class="brand-copy"><strong>LIBERLAND UNIVERSITY</strong><small>Digital Campus</small></span>
+    </button>
+    <nav class="desktop-nav" aria-label="Main navigation">
+      <button data-route="home">Home</button>
+      <button data-route="courses">Courses</button>
+      <button data-route="research">Research</button>
+      <button data-route="community">Community</button>
+      <button data-route="about">About</button>
+    </nav>
+    <div class="header-actions">
+      <button class="text-button" data-route="dashboard">Student login</button>
+      <button class="primary small" data-route="apply">Apply now</button>
+      <button class="menu-button" id="menuButton" aria-label="Open menu">☰</button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <button data-route="home">Home</button><button data-route="courses">Courses</button>
+    <button data-route="research">Research</button><button data-route="community">Community</button>
+    <button data-route="about">About</button><button data-route="apply">Apply now</button>
+  </div>
+
+  <div class="journey-strip" id="journeyStrip" aria-label="Application journey progress"></div>
+  <main id="app" tabindex="-1"></main>
+
+  <footer>
+    <div><strong>Liberland University</strong><span>Education without borders.</span></div>
+    <div class="footer-links"><button data-route="courses">Courses</button><button data-route="research">Research</button><button data-route="apply">Admissions</button></div>
+    <small>Experience Preview EP1 · Demonstration environment</small>
+  </footer>
+
+  <button class="motion-toggle" id="motionToggle" aria-pressed="false" title="Reduce or enable motion">Motion: On</button>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
