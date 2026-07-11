@@ -20,7 +20,7 @@
       btn.setAttribute('title',dark?'Switch to day theme':'Switch to night theme');
       const icon=btn.querySelector('.theme-toggle__icon');
       const label=btn.querySelector('.theme-toggle__label');
-      if(icon) icon.textContent=dark?'☀':'☾';
+      if(icon) icon.textContent=dark?'🔆':'🌙';
       if(label) label.textContent=dark?'Day':'Night';
     });
   }
