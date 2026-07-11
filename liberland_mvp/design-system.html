@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Liberland Digital Design System</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="components.css" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html" style="text-decoration:none">
+      <img src="images/cropped-liberland-512x512-1.png" alt="Liberland University Logo">
+      <span class="brand-copy"><strong>LIBERLAND UNIVERSITY</strong><small>Digital Design System</small></span>
+    </a>
+    <a class="btn btn-secondary btn-sm" href="index.html">Return to demo</a>
+  </header>
+
+  <main class="page">
+    <section class="hero-shell">
+      <div class="hero-shell__grid">
+        <div>
+          <p class="eyebrow">LDDS · Version 1.0</p>
+          <h1>One design language. Infinite journeys.</h1>
+          <p class="lead">Reusable experience components for the Liberland Digital Campus, designed for clarity, accessibility and confident progression.</p>
+          <div class="cluster"><span class="badge badge-blue">Microsoft-inspired</span><span class="badge badge-green">Accessible</span><span class="badge badge-gold">Composable</span></div>
+        </div>
+        <div class="ai-panel">
+          <h3>Design rule</h3>
+          <p>Every component should make the user’s next best step clear without exposing the complexity behind the platform.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="component-section">
+      <header><p class="eyebrow">Foundation</p><h2>Colour tokens</h2></header>
+      <div class="token-grid">
+        <div class="token-swatch"><div class="token-swatch__colour" style="background:#0f6cbd"></div><div class="token-swatch__label">Primary Blue<br>#0F6CBD</div></div>
+        <div class="token-swatch"><div class="token-swatch__colour" style="background:#17324d"></div><div class="token-swatch__label">Deep Navy<br>#17324D</div></div>
+        <div class="token-swatch"><div class="token-swatch__colour" style="background:#107c10"></div><div class="token-swatch__label">Success Green<br>#107C10</div></div>
+        <div class="token-swatch"><div class="token-swatch__colour" style="background:#c58a00"></div><div class="token-swatch__label">Accent Gold<br>#C58A00</div></div>
+        <div class="token-swatch"><div class="token-swatch__colour" style="background:#f5f7fa"></div><div class="token-swatch__label">Soft Grey<br>#F5F7FA</div></div>
+        <div class="token-swatch"><div class="token-swatch__colour" style="background:#ffffff"></div><div class="token-swatch__label">White<br>#FFFFFF</div></div>
+      </div>
+    </section>
+
+    <section class="component-section">
+      <header><p class="eyebrow">Actions</p><h2>Buttons and badges</h2></header>
+      <div class="component-canvas stack">
+        <div class="cluster"><button class="btn btn-primary">Primary action</button><button class="btn btn-secondary">Secondary</button><button class="btn btn-ghost">Ghost</button><button class="btn btn-primary btn-sm">Small button</button><button class="btn btn-secondary btn-icon" aria-label="Add">＋</button></div>
+        <div class="cluster"><span class="badge badge-blue">In progress</span><span class="badge badge-green">Complete</span><span class="badge badge-gold">Featured</span><span class="badge badge-neutral">Draft</span></div>
+      </div>
+    </section>
+
+    <section class="component-section">
+      <header><p class="eyebrow">Content</p><h2>Card variants</h2></header>
+      <div class="grid three">
+        <article class="ui-card ui-card--accent"><div class="ui-card__icon">🎓</div><span class="badge badge-blue">Programme</span><h3>Artificial Intelligence</h3><p>A career-focused digital learning pathway.</p><div class="ui-card__footer"><span class="ui-card__meta">24 months · Online</span><button class="btn btn-secondary btn-sm">View</button></div></article>
+        <article class="ui-card ui-card--research"><div class="ui-card__icon">🔬</div><span class="badge badge-neutral">Research</span><h3>Responsible AI Lab</h3><p>Collaborative research with practical impact.</p><div class="ui-card__footer"><span class="ui-card__meta">12 active projects</span><button class="btn btn-secondary btn-sm">Explore</button></div></article>
+        <article class="ui-card ui-card--success"><div class="ui-card__icon">🤝</div><span class="badge badge-green">Community</span><h3>Innovation Network</h3><p>Meet peers, mentors and future collaborators.</p><div class="ui-card__footer"><span class="ui-card__meta">128 members</span><button class="btn btn-secondary btn-sm">Join</button></div></article>
+      </div>
+    </section>
+
+    <section class="component-section">
+      <header><p class="eyebrow">Signature experience</p><h2>Journey timeline</h2></header>
+      <div class="component-canvas">
+        <div class="journey-timeline">
+          <div class="journey-node"><span class="journey-node__dot">1</span><div><strong>Discover</strong><small>Explore options</small></div></div>
+          <div class="journey-node"><span class="journey-node__dot">2</span><div><strong>Choose</strong><small>Find your path</small></div></div>
+          <div class="journey-node"><span class="journey-node__dot">3</span><div><strong>Apply</strong><small>Submit details</small></div></div>
+          <div class="journey-node"><span class="journey-node__dot">4</span><div><strong>Learn</strong><small>Build momentum</small></div></div>
+          <div class="journey-node"><span class="journey-node__dot">5</span><div><strong>Graduate</strong><small>Earn credentials</small></div></div>
+          <div class="journey-node"><span class="journey-node__dot">6</span><div><strong>Lead</strong><small>Contribute back</small></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="component-section">
+      <header><p class="eyebrow">Feedback and progress</p><h2>Operational components</h2></header>
+      <div class="grid three">
+        <div class="stat-card"><span class="stat-card__value">62%</span><span class="stat-card__label">Learning journey complete</span><div class="ui-progress" style="margin-top:16px"><span style="width:62%"></span></div></div>
+        <div class="alert"><span>ℹ</span><div><strong>Application saved</strong><br><small>You can return at any time.</small></div></div>
+        <div class="ai-panel"><h3>Ask Atlas</h3><p>“Which programme best matches my goal?”</p><button class="btn btn-primary btn-sm">Start conversation</button></div>
+      </div>
+    </section>
+  </main>
+
+  <footer><div><strong>Liberland University</strong><span>Digital Design System v1.0</span></div><small>Internal component reference</small></footer>
+</body>
+</html>

@@ -66,7 +66,7 @@ button {
   color: var(--ink)
 }
 .brand img {
-  width: 60x;
+  width: 60px;
   height: 60px;
   object-fit: contain;
 }
