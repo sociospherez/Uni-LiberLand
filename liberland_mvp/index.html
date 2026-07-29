@@ -8,7 +8,11 @@
   <script>try{const t=localStorage.getItem("ldcTheme");document.documentElement.dataset.theme=t||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");}catch(e){document.documentElement.dataset.theme="light"}</script>
   <link rel="stylesheet" href="styles.css?v=2.0" />
   <link rel="stylesheet" href="components.css?v=2.0" />
-  <link rel="stylesheet" href="theme-v2.css?v=2.0" />
+  <link rel="stylesheet" href="theme-v2.css?v=2.1.5" />
+  <link rel="stylesheet" href="premium-experience.css?v=2.1.5" />
+  <link rel="stylesheet" href="premium-v3.css?v=3.0.1" />
+  <link rel="stylesheet" href="premium-v3-journey.css?v=3.0.2" />
+  <link rel="stylesheet" href="premium-v3-enrolment.css?v=3.0.3" />
 </head>
 <body>
   <header class="topbar">
@@ -19,14 +23,14 @@
     </button>
     <nav class="desktop-nav" aria-label="Main navigation">
       <button data-route="home">Home</button>
-      <button data-route="courses">Courses</button>
+      <button data-route="courses">Study</button>
       <button data-route="research">Research</button>
       <button data-route="community">Community</button>
       <button data-route="about">About</button>
     </nav>
     <div class="header-actions">
       <button class="theme-toggle" data-theme-toggle aria-pressed="false"><span class="theme-toggle__icon">☾</span><span class="theme-toggle__label">Night</span></button>
-      <button class="text-button" data-route="dashboard">Student login</button>
+      <button class="text-button" data-route="dashboard">Student workspace</button>
       <button class="primary small" data-route="apply">Apply now</button>
       <button class="menu-button" id="menuButton" aria-label="Open menu">☰</button>
     </div>

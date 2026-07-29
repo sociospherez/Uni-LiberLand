@@ -1,0 +1,64 @@
+[18840:21248:0720/061439.051:VERBOSE1:chrome\updater\event_history.cc:167] Failed to write security descriptor for C:\Program Files (x86)\Google\GoogleUpdater\updater_history.jsonl: Access is denied. (0x5)
+[18840:21248:0720/061439.052:VERBOSE1:chrome\updater\updater.cc:374] Version: 152.0.7933.0, opt, x86_64, command line: "C:\Program Files (x86)\Google\GoogleUpdater\152.0.7933.0\updater.exe" --wake-all --system
+[18840:21248:0720/061439.052:VERBOSE1:chrome\updater\updater.cc:377] OS version: 10.0.26200.8894, arch: x86_64, System uptime (seconds): 43261, parent pid: 11376
+[18840:21248:0720/061439.052:VERBOSE1:chrome\updater\updater.cc:382] Available disk space in install directory (C:\Program Files (x86)\Google\GoogleUpdater): 59092258816B (55.034GiB) / 291141251072B (271.146GiB)
+[18840:21248:0720/061439.054:VERBOSE1:chrome\updater\updater.cc:386] Available disk space in temporary directory (C:\Users\zabba\AppData\Local\Temp): 59092258816B (55.034GiB) / 291141251072B (271.146GiB)
+[18840:21248:0720/061439.055:VERBOSE1:chrome\updater\updater.cc:393] Parent process command line: "C:\Program Files\Google\Chrome\Application\chrome.exe" 
+[18840:21248:0720/061439.056:VERBOSE1:chrome\updater\util\win_util.cc:583] available: 7184M, total: 19368M, phys: 16G
+[18840:21248:0720/061439.056:VERBOSE1:chrome\updater\event_history.cc:238] Failed to write history event: logging not initialized
+[6456:20768:0720/061439.093:VERBOSE1:chrome\updater\event_history.cc:167] Failed to write security descriptor for C:\Program Files (x86)\Google\GoogleUpdater\updater_history.jsonl: Access is denied. (0x5)
+[6456:20768:0720/061439.094:VERBOSE1:chrome\updater\updater.cc:374] Version: 152.0.7933.0, opt, x86_64, command line: "C:\Program Files (x86)\Google\GoogleUpdater\152.0.7933.0\updater.exe" --crash-handler --system "--database=C:\Program Files (x86)\Google\GoogleUpdater\152.0.7933.0\Crashpad" --url=https://clients2.google.com/cr/report --annotation=prod=Update4 --annotation=ver=152.0.7933.0 "--attachment=C:\Program Files (x86)\Google\GoogleUpdater\updater.log" "--attachment=C:\Program Files (x86)\Google\GoogleUpdater\updater_history.jsonl" --initial-client-data=0x278,0x27c,0x280,0x274,0x284,0x7ff67a8bcd68,0x7ff67a8bcd78,0x7ff67a8bcd88
+[6456:20768:0720/061439.094:VERBOSE1:chrome\updater\updater.cc:377] OS version: 10.0.26200.8894, arch: x86_64, System uptime (seconds): 43262, parent pid: 18840
+[6456:20768:0720/061439.094:VERBOSE1:chrome\updater\updater.cc:382] Available disk space in install directory (C:\Program Files (x86)\Google\GoogleUpdater): 59092254720B (55.034GiB) / 291141251072B (271.146GiB)
+[6456:20768:0720/061439.094:VERBOSE1:chrome\updater\updater.cc:386] Available disk space in temporary directory (C:\Users\zabba\AppData\Local\Temp): 59092254720B (55.034GiB) / 291141251072B (271.146GiB)
+[6456:20768:0720/061439.094:VERBOSE1:chrome\updater\updater.cc:393] Parent process command line: "C:\Program Files (x86)\Google\GoogleUpdater\152.0.7933.0\updater.exe" --wake-all --system
+[6456:20768:0720/061439.094:VERBOSE1:chrome\updater\util\win_util.cc:583] available: 7183M, total: 19368M, phys: 16G
+[6456:20768:0720/061439.094:VERBOSE1:chrome\updater\event_history.cc:238] Failed to write history event: logging not initialized
+[18840:21248:0720/061439.096:VERBOSE1:chrome\updater\crash_reporter.cc:124] Crash handler launched and ready.
+[18840:21248:0720/061439.097:ERROR:chrome\updater\crash_client.cc:124] Failed to fetch completed crash reports: 3
+[18840:21248:0720/061439.098:ERROR:chrome\updater\crash_client.cc:140] Failed to fetch pending crash reports: 3
+[18840:21248:0720/061439.098:VERBOSE2:chrome\updater\usage_stats_permissions_win.cc:77] usage stats enabled by app {8a69d345-d564-463c-aff1-a69d9e530f96}
+[18840:21248:0720/061439.099:ERROR:third_party\crashpad\crashpad\util\file\file_io_win.cc:181] CreateFile C:\Program Files (x86)\Google\GoogleUpdater\152.0.7933.0\Crashpad\settings.dat: Access is denied. (0x5)
+[18840:21248:0720/061439.099:ERROR:third_party\crashpad\crashpad\util\file\file_io_win.cc:181] CreateFile C:\Program Files (x86)\Google\GoogleUpdater\152.0.7933.0\Crashpad\settings.dat: Access is denied. (0x5)
+[18840:21248:0720/061439.099:VERBOSE1:chrome\updater\updater.cc:105] Crash reporting initialized.
+[18840:21248:0720/061439.101:VERBOSE1:chrome\updater\updater.cc:155] IsUserAdmin: 0, IsUserNonElevatedAdmin: 1, IsUACOn: 1, IsElevatedWithUACOn: 0, LUA: 1
+[18840:21556:0720/061439.102:VERBOSE1:chrome\updater\app\app_wakeall.cc:58] Launching `"C:\Program Files (x86)\Google\GoogleUpdater\152.0.7933.0\updater.exe" --wake --system`
+[2756:5300:0720/061439.134:VERBOSE1:chrome\updater\event_history.cc:167] Failed to write security descriptor for C:\Program Files (x86)\Google\GoogleUpdater\updater_history.jsonl: Access is denied. (0x5)
+[2756:5300:0720/061439.135:VERBOSE1:chrome\updater\updater.cc:374] Version: 152.0.7933.0, opt, x86_64, command line: "C:\Program Files (x86)\Google\GoogleUpdater\152.0.7933.0\updater.exe" --wake --system
+[2756:5300:0720/061439.135:VERBOSE1:chrome\updater\updater.cc:377] OS version: 10.0.26200.8894, arch: x86_64, System uptime (seconds): 43262, parent pid: 18840
+[2756:5300:0720/061439.135:VERBOSE1:chrome\updater\updater.cc:382] Available disk space in install directory (C:\Program Files (x86)\Google\GoogleUpdater): 59092250624B (55.034GiB) / 291141251072B (271.146GiB)
+[2756:5300:0720/061439.135:VERBOSE1:chrome\updater\updater.cc:386] Available disk space in temporary directory (C:\Users\zabba\AppData\Local\Temp): 59092250624B (55.034GiB) / 291141251072B (271.146GiB)
+[2756:5300:0720/061439.135:VERBOSE1:chrome\updater\updater.cc:393] Parent process command line: "C:\Program Files (x86)\Google\GoogleUpdater\152.0.7933.0\updater.exe" --wake-all --system
+[2756:5300:0720/061439.135:VERBOSE1:chrome\updater\util\win_util.cc:583] available: 7179M, total: 19368M, phys: 16G
+[2756:5300:0720/061439.135:VERBOSE1:chrome\updater\event_history.cc:238] Failed to write history event: logging not initialized
+[17952:2840:0720/061439.176:VERBOSE1:chrome\updater\event_history.cc:167] Failed to write security descriptor for C:\Program Files (x86)\Google\GoogleUpdater\updater_history.jsonl: Access is denied. (0x5)
+[17952:2840:0720/061439.176:VERBOSE1:chrome\updater\updater.cc:374] Version: 152.0.7933.0, opt, x86_64, command line: "C:\Program Files (x86)\Google\GoogleUpdater\152.0.7933.0\updater.exe" --crash-handler --system "--database=C:\Program Files (x86)\Google\GoogleUpdater\152.0.7933.0\Crashpad" --url=https://clients2.google.com/cr/report --annotation=prod=Update4 --annotation=ver=152.0.7933.0 "--attachment=C:\Program Files (x86)\Google\GoogleUpdater\updater.log" "--attachment=C:\Program Files (x86)\Google\GoogleUpdater\updater_history.jsonl" --initial-client-data=0x29c,0x2a0,0x2a4,0x298,0x2a8,0x7ff67a8bcd68,0x7ff67a8bcd78,0x7ff67a8bcd88
+[17952:2840:0720/061439.177:VERBOSE1:chrome\updater\updater.cc:377] OS version: 10.0.26200.8894, arch: x86_64, System uptime (seconds): 43262, parent pid: 2756
+[17952:2840:0720/061439.177:VERBOSE1:chrome\updater\updater.cc:382] Available disk space in install directory (C:\Program Files (x86)\Google\GoogleUpdater): 59092250624B (55.034GiB) / 291141251072B (271.146GiB)
+[17952:2840:0720/061439.177:VERBOSE1:chrome\updater\updater.cc:386] Available disk space in temporary directory (C:\Users\zabba\AppData\Local\Temp): 59092250624B (55.034GiB) / 291141251072B (271.146GiB)
+[17952:2840:0720/061439.177:VERBOSE1:chrome\updater\updater.cc:393] Parent process command line: "C:\Program Files (x86)\Google\GoogleUpdater\152.0.7933.0\updater.exe" --wake --system
+[17952:2840:0720/061439.177:VERBOSE1:chrome\updater\util\win_util.cc:583] available: 7178M, total: 19368M, phys: 16G
+[17952:2840:0720/061439.177:VERBOSE1:chrome\updater\event_history.cc:238] Failed to write history event: logging not initialized
+[2756:5300:0720/061439.179:VERBOSE1:chrome\updater\crash_reporter.cc:124] Crash handler launched and ready.
+[2756:5300:0720/061439.180:ERROR:chrome\updater\crash_client.cc:124] Failed to fetch completed crash reports: 3
+[2756:5300:0720/061439.180:ERROR:chrome\updater\crash_client.cc:140] Failed to fetch pending crash reports: 3
+[2756:5300:0720/061439.180:VERBOSE2:chrome\updater\usage_stats_permissions_win.cc:77] usage stats enabled by app {8a69d345-d564-463c-aff1-a69d9e530f96}
+[2756:5300:0720/061439.181:ERROR:third_party\crashpad\crashpad\util\file\file_io_win.cc:181] CreateFile C:\Program Files (x86)\Google\GoogleUpdater\152.0.7933.0\Crashpad\settings.dat: Access is denied. (0x5)
+[2756:5300:0720/061439.181:ERROR:third_party\crashpad\crashpad\util\file\file_io_win.cc:181] CreateFile C:\Program Files (x86)\Google\GoogleUpdater\152.0.7933.0\Crashpad\settings.dat: Access is denied. (0x5)
+[2756:5300:0720/061439.182:VERBOSE1:chrome\updater\updater.cc:105] Crash reporting initialized.
+[2756:5300:0720/061439.184:VERBOSE1:chrome\updater\updater.cc:155] IsUserAdmin: 0, IsUserNonElevatedAdmin: 1, IsUACOn: 1, IsElevatedWithUACOn: 0, LUA: 1
+[2756:5300:0720/061439.184:VERBOSE1:chrome\updater\ipc\update_service_internal_proxy_win.cc:158] Run
+[2756:21192:0720/061442.886:VERBOSE2:chrome\updater\ipc\update_service_internal_proxy_win.cc:67] Run result 0.
+[2756:5300:0720/061442.887:VERBOSE1:chrome\updater\app\app.cc:52] Shutdown: 0
+[2756:5300:0720/061442.887:VERBOSE1:chrome\updater\ipc\update_service_internal_proxy_win.cc:150] ~UpdateServiceInternalProxyWinImpl
+[2756:13236:0720/061442.887:VERBOSE2:chrome\updater\ipc\proxy_impl_base_win.h:58] ~ProxyImplBase
+[2756:5300:0720/061442.891:VERBOSE1:chrome\updater\event_history.cc:238] Failed to write history event: logging not initialized
+[2756:5300:0720/061442.891:VERBOSE1:chrome\updater\updater.cc:419] UpdaterMain (--wake) returned 0.
+[18840:21556:0720/061442.904:VERBOSE1:chrome\updater\app\app_wakeall.cc:68] `"C:\Program Files (x86)\Google\GoogleUpdater\152.0.7933.0\updater.exe" --wake --system` exited 0
+[18840:21248:0720/061442.905:VERBOSE1:chrome\updater\app\app.cc:52] Shutdown: 0
+[18840:21248:0720/061442.908:VERBOSE1:chrome\updater\event_history.cc:238] Failed to write history event: logging not initialized
+[18840:21248:0720/061442.908:VERBOSE1:chrome\updater\updater.cc:419] UpdaterMain (--wake-all) returned 0.
+[17952:2840:0720/061442.908:VERBOSE1:chrome\updater\event_history.cc:238] Failed to write history event: logging not initialized
+[17952:2840:0720/061442.908:VERBOSE1:chrome\updater\updater.cc:419] UpdaterMain (--crash-handler) returned 0.
+[6456:20768:0720/061442.916:VERBOSE1:chrome\updater\event_history.cc:238] Failed to write history event: logging not initialized
+[6456:20768:0720/061442.916:VERBOSE1:chrome\updater\updater.cc:419] UpdaterMain (--crash-handler) returned 0.
