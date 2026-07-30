@@ -1,0 +1,21 @@
+/* LDCP v3.0.4a — Premium visual asset mapping */
+.arch-hero__visual{
+  background-image:linear-gradient(90deg,rgba(255,255,255,.03),rgba(255,255,255,0)),url('images/premium/hero-campus-architectural.webp');
+  background-size:cover;background-position:center;isolation:isolate;
+}
+.arch-hero__visual::before,.arch-hero__visual::after{display:none!important}
+html[data-theme="dark"] .arch-hero__visual{
+  background-image:linear-gradient(0deg,rgba(8,10,12,.38),rgba(8,10,12,.08)),url('images/premium/hero-campus-architectural.webp');
+  background-size:cover;background-position:center;
+}
+.arch-programme__image{background-size:cover;background-position:center;background-repeat:no-repeat}
+.arch-programme__image::before,.arch-programme__image::after{display:none!important}
+.arch-programme:nth-child(1) .arch-programme__image{background-image:url('images/premium/programme-architecture.webp')}
+.arch-programme:nth-child(2) .arch-programme__image{background-image:url('images/premium/programme-computer-science.webp')}
+.arch-programme:nth-child(3) .arch-programme__image{background-image:url('images/premium/research-digital-systems.webp')}
+.arch-programme:nth-child(4) .arch-programme__image{background-image:url('images/premium/student-community.webp')}
+.arch-atlas__form{background-image:linear-gradient(90deg,rgba(250,248,243,.94),rgba(250,248,243,.74)),url('images/premium/atlas-road.webp');background-size:cover;background-position:center}
+html[data-theme="dark"] .arch-atlas__form{background-image:linear-gradient(90deg,rgba(18,20,21,.96),rgba(18,20,21,.72)),url('images/premium/atlas-road.webp')}
+.rh-feature{position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(250,248,243,.96),rgba(250,248,243,.82)),url('images/premium/research-network.webp') center/cover no-repeat;padding-top:34px;padding-bottom:34px}
+html[data-theme="dark"] .rh-feature{background:linear-gradient(135deg,rgba(19,21,22,.97),rgba(19,21,22,.82)),url('images/premium/research-network.webp') center/cover no-repeat}
+@media(max-width:680px){.arch-hero__visual{background-position:58% center}.rh-feature{padding-left:20px;padding-right:20px}}
