@@ -1,0 +1,7 @@
+month,demand,partition
+2025-01,80,train
+2025-02,90,train
+2025-03,100,train
+2025-04,110,test
+2025-05,90,test
+2025-06,120,test

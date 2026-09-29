@@ -1,0 +1,18 @@
+VERIFICATION — 29 September 2026
+
+Spreadsheet Modelling Using Excel: 16h across 6 modules; links, all answer feedback, retry, progression, restart and overflow checks passed.
+Time Series Forecasting: 24h across 6 modules; links, all answer feedback, retry, progression, restart and overflow checks passed.
+Social Media Analytics: 24h across 6 modules; links, all answer feedback, retry, progression, restart and overflow checks passed.
+Programming for Data Analytics Using Python: 24h across 6 modules; links, all answer feedback, retry, progression, restart and overflow checks passed.
+Dashboarding & Storytelling Using Power BI: 24h across 6 modules; links, all answer feedback, retry, progression, restart and overflow checks passed.
+Database Management Using SQL & MongoDB: 24h across 6 modules; links, all answer feedback, retry, progression, restart and overflow checks passed.
+Artificial Intelligence & Deep Learning Using Python: 40h across 8 modules; links, all answer feedback, retry, progression, restart and overflow checks passed.
+Business Analytics Professional: 50h across 10 modules; links, all answer feedback, retry, progression, restart and overflow checks passed.
+Applied Data Engineering: 60h across 10 modules; links, all answer feedback, retry, progression, restart and overflow checks passed.
+Catalogue: search, duration filters, combined filters and no-results state passed.
+All course pages checked at 390, 768 and 1440 pixels with no horizontal overflow.
+No browser JavaScript errors observed. Runtime: headless Microsoft Edge, file:// URLs.
+
+Limits: Not a full assistive-technology audit. Exact visual comparison with the unavailable approved Excel HTML could not be performed. Full programme teaching and assessment are not implemented.
+
+Visual review: catalogue desktop and Excel mobile full-page renders inspected; no overlapping sections or clipped content observed.

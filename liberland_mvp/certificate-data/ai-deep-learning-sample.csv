@@ -1,0 +1,3 @@
+actual,predicted,count
+negative,negative,95
+positive,negative,5
