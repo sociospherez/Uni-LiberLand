@@ -1,0 +1,8 @@
+/* Separate full-resolution originals; lossless WebP encodes exactly the same pixels. */
+.arch-hero__visual,html[data-theme="dark"] .arch-hero__visual{background-image:url('images/homepage-v2/hero-campus.webp')!important;background-position:64% center!important;filter:none!important}
+.arch-programme__image{aspect-ratio:3/2;height:auto!important;min-height:0!important;background-position:center!important;filter:none!important}
+.arch-programme:nth-child(1) .arch-programme__image{background-image:url('images/homepage-v2/card-degrees.webp')!important}
+.arch-programme:nth-child(2) .arch-programme__image{background-image:url('images/homepage-v2/card-certificates.webp')!important}
+.arch-programme:nth-child(3) .arch-programme__image{background-image:url('images/homepage-v2/card-research.webp')!important}
+.arch-programme:nth-child(4) .arch-programme__image{background-image:url('images/homepage-v2/card-community.webp')!important}
+.arch-hero__visual .arch-building{display:none!important}
