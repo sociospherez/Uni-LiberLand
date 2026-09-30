@@ -1,0 +1,110 @@
+// Compact, self-paced Social Media Analytics course. No timers or attendance checks.
+const socialCourse={
+ version:1,
+ caseTitle:'Northbank Open Day: turn campaign data into a useful decision',
+ caseIntro:'Northbank is a fictional education provider promoting an online open day. The campaign objective is completed registrations. You are reviewing seven days of synthetic post-level data, with registrations attributed to a tagged link within the same window. The report cannot prove which posts caused registrations.',
+ lessons:[],
+ activities:[
+  {title:'Write a measurement brief',prompt:'For the Northbank open day, write the business objective, one primary metric and one guardrail. Explain why likes alone would not answer the business question.',example:'Objective: completed registrations. Primary metric: registrations attributed to campaign links in the agreed seven-day window. Guardrail: cost per attributed registration. Engagement is supporting context.'},
+  {title:'Check the source data',prompt:'Download the campaign CSV. Record two checks you would make before comparing posts, including the duplicate A02 row and missing clicks for C02. Say what you would keep, remove or flag and why.',example:'Keep one A02 record after checking that the duplicate is identical. Flag C02 clicks as unknown; do not replace them with zero. Compare the same reporting window for every post.'},
+  {title:'Compare volume and rate',prompt:'A01 has 120 engagements / 4,000 impressions; B01 has 80 / 1,000. Calculate both engagement rates, identify the volume winner and the rate winner, and explain one limitation of comparing them.',example:'A01: 3%, with more total engagements. B01: 8%, with a higher rate. Different audiences, budgets or posting times could explain the difference; this comparison is not causal.'},
+  {title:'Follow the conversion funnel',prompt:'A01 has 40 clicks and 4 attributed registrations. B01 has 15 clicks and 3 registrations. Calculate click-to-registration rates, then explain why the higher rate alone is not enough to choose a campaign.',example:'A01: 10%; B01: 20%. A01 produced more registrations, and both sample sizes are small. Review total outcomes, cost and consistency before choosing.'},
+  {title:'Design a fair follow-up',prompt:'Propose a test comparing two calls to action. State what stays the same, what changes, the primary outcome and one reason that an uncontrolled before/after comparison could mislead.',example:'Randomly assign comparable audience members to two call-to-action variants, holding creative and delivery conditions consistent. Measure attributed registrations; seasonality can confound a simple before/after comparison.'},
+  {title:'Write a decision note',prompt:'Give Northbank one recommendation, cite one calculated result, and state a limitation. Include a follow-up measurement rather than claiming that one post proves a format is best.',example:'Test the B-style call to action again: B01 achieved 3/15 = 20% click-to-registration, but only three registrations. Compare more observations with consistent attribution and monitor cost per registration.'}
+ ],
+ quiz:[
+  {question:'The goal is open-day registrations. Which primary result best matches it?',choices:['The largest number of likes','Completed registrations attributed within a defined reporting window','The number of posts published'],correct:1,why:'The primary measure should match the desired action. Attribution must have a stated source and window.'},
+  {question:'A post has 60 engagements and 2,000 impressions. Its engagement rate per impression is:',choices:['3%','30%','0.3%'],correct:0,why:'60 / 2,000 × 100 = 3%. Name the denominator when reporting the result.'},
+  {question:'A campaign export has a blank clicks cell. What is the sound first step?',choices:['Replace it with zero immediately','Exclude the entire campaign without checking','Treat it as unknown and investigate the source'],correct:2,why:'Missing and zero are different. Flag the value and establish its meaning before calculating click-based rates.'},
+  {question:'A campaign has 8 attributed registrations from 80 clicks. Its click-to-registration rate is:',choices:['1%','10%','80%'],correct:1,why:'8 / 80 × 100 = 10%. This rate describes the observed funnel, not causal impact.'},
+  {question:'Video posts have a higher engagement rate than image posts in an uncontrolled report. What can you conclude?',choices:['Video caused the improvement','Video should receive all the budget','Video had a higher observed rate; other differences may explain it'],correct:2,why:'Audience, timing, spend and other factors may differ. Observation supports a follow-up question, not a causal conclusion.'},
+  {question:'You share a campaign report with a broad team. Which choice is most appropriate?',choices:['Use aggregate results and leave out unnecessary personal identifiers','Include every identifiable comment and profile','Publish the raw export so everyone can inspect it'],correct:0,why:'Share the information needed for the decision and minimise unnecessary exposure of individual people.'}
+ ],
+ projectFields:[['objective','Objective & measurement','State the campaign objective, primary metric and reporting window.'],['evidence','Evidence & interpretation','Include at least two correctly defined metrics, with numbers and denominators.'],['recommendation','Recommendation & next test','Recommend an action and explain how you would test whether it helps.'],['limitations','Limits & responsible handling','Name at least one analytical limitation and how you would minimise personal data in the report.']],
+ projectChecks:['I checked my calculations and named the denominators.','I distinguished observed results from causal claims.','I stated a reporting window and a limitation, and excluded unnecessary personal details.']
+};
+function socialLesson(id,moduleIndex,title,learn,example,prompt,choices,correct,feedback,transfer){socialCourse.lessons.push({id,moduleIndex,module:String(moduleIndex+1).padStart(2,'0')+' · '+['Goals & measurement','Data collection & quality','Audience & content analysis','Campaign performance','Experiments & interpretation','Campaign insight project'][moduleIndex],title,minutes:8,learn,example,prompt,choices,correct,feedback,transfer,next:'Return to the learning path for your module activity and next lesson.'});}
+socialLesson('social-1-1',0,'1.1 — Start with the decision',
+'An analytics question begins with a decision, not a dashboard. Ask who will use the answer, what they can change and which outcome matters. Awareness, engagement and registration are different objectives. Write one primary objective and a supporting measure before collecting data.',
+'Northbank wants more completed open-day registrations. Its primary measure is attributed registrations in a seven-day reporting window. Impressions indicate visibility, but a post can be widely viewed without producing registrations.',
+'Which question best matches Northbank’s stated objective?',
+['Which campaign links brought attributed registrations?','Which post used the brightest colours?','Which post had the most impressions, regardless of registrations?'],0,
+['Correct. It links the analysis to the desired action, with an attribution limit to explain.','Colour could be a test variable, but it is not the outcome.','Impressions are useful context but do not answer the registration question.'],
+'Write one sentence beginning “We need to decide…” and another beginning “We will measure…”. Keep the decision and the measure connected.');
+socialLesson('social-1-2',0,'1.2 — Define a metric before comparing it',
+'A metric definition needs a numerator, a denominator when relevant, a time window and a source. Reach describes unique accounts under a platform’s definition; impressions count displays and may include repeats. Rates calculated using different denominators cannot be compared as if they were identical.',
+'A post has 1,000 impressions and reaches 700 accounts. Forty engagements divided by impressions gives 4%; divided by reach gives about 5.71%. Both are calculations, but they answer different questions.',
+'Which label is clear enough to compare across posts?',
+['Engagement: 4%','Engagements / impressions, seven-day window: 4%','Success score: 4%'],1,
+['The denominator and window are missing.','Correct. The label tells a reader what was divided and which period was measured.','A success score without a definition cannot be interpreted.'],
+'Create a tiny metric dictionary: metric name, formula, reporting window and source. Use it throughout the course.');
+socialLesson('social-2-1',1,'2.1 — Clean without changing the story',
+'Keep a copy of the source export before cleaning. Check record IDs, reporting dates, types and missing values. An identical repeated record can inflate totals if counted twice. A blank is unknown until you understand the source; it is not automatically zero.',
+'The course CSV contains A02 twice with identical values. Check that both rows represent the same post and reporting window, then count one. C02 has blank clicks, so its click-through and click-to-registration rates should be flagged as unavailable.',
+'What should happen to a blank clicks value?',
+['Always change it to zero','Treat it as unknown and investigate','Copy the clicks from the previous post'],1,
+['Zero asserts that no clicks occurred. A blank does not establish that.','Correct. Preserve the distinction and document any later correction.','Copying another record invents evidence.'],
+'Keep a cleaning log with the original issue, your action and the reason. This lets another learner reproduce your totals.');
+socialLesson('social-2-2',1,'2.2 — Collect only what the question needs',
+'A campaign performance question often needs counts by post rather than personal profiles. Minimise unnecessary personal information, use authorised exports, and keep access appropriate to the task. Before quoting a comment, consider whether the wording identifies a person and whether an aggregate theme would answer the question.',
+'To compare registrations by content format, Northbank needs post ID, format, impressions, clicks and attributed registration counts. Names, email addresses and private messages are not needed for this exercise. All supplied records are fictional.',
+'Which dataset best fits the comparison?',
+['A list of every viewer’s name and private messages','Only the most flattering comments','Aggregate post metrics with consistent definitions'],2,
+['Those details are unnecessary for this question.','Selecting flattering comments biases the evidence.','Correct. Aggregate records can support the comparison without unnecessary personal details.'],
+'Before adding a field, ask: “Which decision needs this?” Leave it out if it adds exposure without analytical value.');
+socialLesson('social-3-1',2,'3.1 — Compare rates and totals together',
+'A total measures volume; a rate relates the result to exposure. A small post may lead on rate while a larger post leads on total outcomes. Show both when the decision involves reach and effectiveness. An engagement rate per impression is not the percentage of unique people who engaged.',
+'A01: 120 engagements / 4,000 impressions = 3%. B01: 80 / 1,000 = 8%. A01 produced more engagements; B01 produced more engagements per impression.',
+'Which statement is supported?',
+['B01 has both the highest rate and the highest total','A01 has more engagements; B01 has the higher rate','A01 is better on every measure'],1,
+['B01 has fewer total engagements: 80 rather than 120.','Correct. The rate and volume results point in different directions.','A01 does not have the higher engagement rate.'],
+'Write both results before choosing a recommendation. Explain which one matters for the stated objective.');
+socialLesson('social-3-2',2,'3.2 — Segment before telling the story',
+'Grouping by format, audience or campaign can uncover useful differences. Keep groups comparable and report their size. When combining rates, divide summed numerators by summed denominators. A simple average of percentages can give a tiny group as much influence as a large one.',
+'Group X has 10 engagements from 100 impressions (10%). Group Y has 90 from 900 (10%). Their overall rate is 100 / 1,000 = 10%. If X had 20 instead, the combined rate would be 110 / 1,000 = 11%, not the unweighted average of 20% and 10%.',
+'Which formula produces the combined rate?',
+['Add the percentages','Average the group percentages regardless of size','Total engagements divided by total impressions'],2,
+['Rates do not add to a combined rate.','An unweighted average can misrepresent groups of different sizes.','Correct. The totals preserve each group’s exposure in the combined calculation.'],
+'Compare formats only after checking the reporting window and group sizes. Flag segments with very few observations.');
+socialLesson('social-4-1',3,'4.1 — Follow the click-to-registration funnel',
+'A funnel separates exposure, clicks and completed actions. Click-through rate is clicks divided by impressions. Click-to-registration rate is attributed registrations divided by clicks. A strong rate at one stage does not guarantee a large number of completed actions.',
+'A01: 4,000 impressions, 40 clicks and 4 attributed registrations. Click-through rate = 40 / 4,000 = 1%. Click-to-registration rate = 4 / 40 = 10%. The final volume is four registrations.',
+'A new post has 50 clicks and 5 registrations. Its click-to-registration rate is:',
+['10%','1%','50%'],0,
+['Correct. 5 / 50 × 100 = 10%.','That would require a different denominator.','The 50 is a count, not the result of the division.'],
+'Label every funnel stage and show its count. A rate without its sample size can hide very limited evidence.');
+socialLesson('social-4-2',3,'4.2 — Cost and attribution need context',
+'Cost per attributed registration equals campaign spend divided by attributed registrations. Attribution assigns credit according to a defined rule and window; it does not prove a post caused the outcome. If registrations are zero, do not report a zero cost per registration: the ratio is undefined.',
+'A01 spends 40 units and records 4 attributed registrations: cost per registration = 10. B01 spends 30 and records 3: also 10. B01’s higher click-to-registration rate does not make its observed cost per registration lower.',
+'What does an equal cost per attributed registration establish?',
+['The campaigns caused exactly the same impact','Their observed spend-to-attributed-registration ratios match','Their audiences and all other conditions were identical'],1,
+['A ratio alone cannot establish causal impact.','Correct. It describes the observed data under the attribution rule.','Equal ratios do not imply identical conditions.'],
+'Report the attribution method, period and denominator. Identify what the data cannot tell you.');
+socialLesson('social-5-1',4,'5.1 — Design a test that can teach you something',
+'A useful test states a hypothesis, changes a defined factor and measures a preselected outcome. Random assignment to comparable groups helps separate the change from other influences. Hold the audience rules, measurement window and delivery conditions consistent where possible. Decide how long to observe before looking for a winner.',
+'Northbank compares “Reserve a place” with “See the programme”. Both variants use the same image and landing page, with comparable randomly assigned audiences. The primary outcome is attributed registrations. The team records spend as a guardrail.',
+'Why is a simple comparison with last month weaker evidence?',
+['Audience, season and other conditions may have changed','Older data is always invalid','It always produces a smaller percentage'],0,
+['Correct. Other changes can explain a before/after difference.','Older data can be useful if its context and limitations are understood.','There is no rule that older results have a smaller rate.'],
+'Write down the one thing you will change and at least two things you will try to keep consistent.');
+socialLesson('social-5-2',4,'5.2 — Read comments without inventing certainty',
+'Comment analysis can reveal themes, but a small set of comments may not represent everyone. Define categories before coding, allow an uncertain category and check ambiguous cases with another reader where possible. Sarcasm, language and context make automatic sentiment labels fallible.',
+'Ten fictional comments contain six questions about timing, two positive remarks and two unclear remarks. “Timing questions were the most common theme in this small sample” is supported. “Most of the audience dislikes the event” is not.',
+'Which statement is justified by the sample?',
+['The whole audience has a negative opinion','Timing questions are the most common theme among these ten comments','The two unclear comments should be counted as negative'],1,
+['The sample does not support that broad claim.','Correct. It states the result and the limited scope of the evidence.','Unclear comments should not be forced into a category without a reason.'],
+'Use theme counts to propose a content improvement, while stating how the comments were selected.');
+socialLesson('social-6-1',5,'6.1 — Turn a result into a recommendation',
+'A decision note connects objective, evidence, action and limitation. Use one relevant result rather than a list of impressive numbers. Explain why the action follows and how you will check whether it helps. Avoid presenting a small observed difference as a guaranteed future outcome.',
+'“Test the B-style call to action again: B01 produced 3 registrations from 15 clicks (20%). This is a small sample, so repeat under comparable conditions and monitor cost per registration.” The note gives evidence, a next action and a limitation.',
+'Which recommendation is strongest?',
+['Always use video because one post had a high rate','Publish more posts without measuring the result','Run a comparable follow-up test and monitor registrations and cost'],2,
+['One observed post is not enough for a universal rule.','Activity alone is not evidence of useful outcomes.','Correct. The recommendation creates a way to learn whether the action helps.'],
+'Prepare a four-part note: objective, evidence, proposed action and limitation. This becomes your final campaign plan.');
+socialLesson('social-6-2',5,'6.2 — Check your work before you share it',
+'Before sharing, reconcile totals after cleaning, recalculate rates, check every denominator and label the reporting period. Remove unnecessary personal details. Make clear which figures are observed, which are attributed and which are assumptions. Ask whether the recommendation answers the original question.',
+'A report says “B01 generated 20 registrations” because it copied the percentage into a count field. The source contains 3 registrations and 15 clicks. The corrected statement is “3 attributed registrations; 20% click-to-registration rate.”',
+'What should be corrected?',
+['Replace the mistaken count with 3 and label 20% as a rate','Keep 20 because it sounds stronger','Remove all numbers from the report'],0,
+['Correct. Counts and rates should remain distinct and traceable to the source.','That would misrepresent the evidence.','Numbers are useful when accurate and clearly labelled.'],
+'Complete your module activity, write the campaign plan and take the final quiz. You can revise and retry; there is no deadline or minimum time requirement.');
