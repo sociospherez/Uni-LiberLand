@@ -7,7 +7,10 @@
         <clear />
         <rule name="Canonical HTTPS" stopProcessing="true">
           <match url="(.*)" />
-          <conditions><add input="{HTTPS}" pattern="^OFF$" /></conditions>
+          <conditions logicalGrouping="MatchAny">
+            <add input="{HTTPS}" pattern="^OFF$" />
+            <add input="{HTTP_HOST}" pattern="^__HOST_REGEX__$" negate="true" />
+          </conditions>
           <action type="Redirect" url="__ORIGIN__/{R:1}" appendQueryString="true" redirectType="Permanent" />
         </rule>
         <rule name="Liberland Node backend" stopProcessing="true">

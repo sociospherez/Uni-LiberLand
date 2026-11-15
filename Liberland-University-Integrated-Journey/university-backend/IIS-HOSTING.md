@@ -8,6 +8,14 @@ earlier snapshot. These hosting changes apply only to the integrated journey.
 
 The intended public origin is `https://universityofliberland.land`.
 
+Confirmed from the IIS screenshots: the site name and application pool are
+**`UOLedu`** (U-O-L), site ID **7**, and the current physical path is
+`C:\repo\inetpub\Uni-LiberLand\liberland_mvp`. The visible `www` binding uses
+HTTPS port 443, SNI and a Cloudflare Origin Certificate. A second HTTPS binding is
+listed; the preflight verifies that the canonical non-www hostname is present.
+Use a **separate checkout** for deployment. Changing branches or pulling updates
+inside the currently served repository can immediately change the existing site.
+
 | Address | Behaviour |
 | --- | --- |
 | `/` | Campus, prospectuses and learning |
@@ -30,6 +38,8 @@ this script on your laptop expecting it to reach the server remotely.
 1. Confirm the exact **IIS site name** in IIS Manager. It may differ from the domain.
    The site must already have a working HTTPS binding/certificate for
    `universityofliberland.land`. Keep the current bindings and DNS.
+   For this installation, use `UOLedu` exactly. To list both hostnames without
+   editing anything, run `Get-WebBinding -Name UOLedu | Format-Table protocol,bindingInformation`.
 2. Install a machine-wide Node.js **24 or newer** runtime and Git for Windows.
    The app uses the built-in `node:sqlite` API. No separate SQLite installer is needed.
 3. Check whether **IIS URL Rewrite** and **Application Request Routing (ARR)** are
@@ -65,8 +75,7 @@ Set-Location C:\Deploy\Uni-LiberLand
 git switch codex/iis-node-hosting
 Set-Location .\Liberland-University-Integrated-Journey\university-backend
 
-# Replace this example with the existing site's exact IIS name.
-$atlasSite = 'YOUR EXISTING IIS SITE NAME'
+$atlasSite = 'UOLedu'
 .\deploy\Publish-Iis.ps1 -SiteName $atlasSite -WhatIf
 .\deploy\Publish-Iis.ps1 -SiteName $atlasSite
 ```
@@ -138,8 +147,19 @@ This preserves files/settings, but is not a promise of zero downtime or database
 schema rollback. The script refuses sites with child IIS applications or virtual
 directories until their routing is reviewed.
 
-If Cloudflare proxies this hostname, retain HTTPS to IIS (Full/strict as appropriate
-to the existing certificate). Do not use Flexible SSL with the HTTPS redirect.
+The proxy template redirects `www` and HTTP requests to the canonical non-www
+HTTPS origin before forwarding them to Node. Both existing HTTPS bindings are
+retained; the certificate needs to cover both hostnames. Sign-in sessions and
+Stripe return URLs consistently use the canonical origin.
+
+With the selected Cloudflare Origin Certificate, use Cloudflare-proxied DNS for
+the public hostnames and Full (strict), subject to the certificate's validity and
+hostname coverage. Origin CA certificates protect Cloudflare-to-IIS traffic and
+are not normally trusted for direct browser-to-origin connections. Public health
+checks must use the domain through Cloudflare, not the server IP or a hosts-file
+override. The script does not bypass certificate validation. Cloudflare reference:
+https://developers.cloudflare.com/ssl/origin-configuration/origin-ca/
+Do not use Flexible SSL with the HTTPS redirect.
 Exclude `/api/*`, account/checkout pages and `atlas-release.json` from any explicit
 cache-everything rule. The Node responses set `Cache-Control: no-store`.
 

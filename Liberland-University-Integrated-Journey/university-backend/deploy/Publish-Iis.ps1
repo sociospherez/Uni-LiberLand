@@ -143,7 +143,8 @@ if ($Mode -eq 'Stage') {
     $gateway = Join-Path $ReleasePath 'iis'
     New-Item -ItemType Directory -Path $gateway | Out-Null
     $template = Get-Content -LiteralPath (Join-Path $PSScriptRoot 'web.config.template') -Raw
-    [IO.File]::WriteAllText((Join-Path $gateway 'web.config'), $template.Replace('__PORT__', [string] $Port).Replace('__ORIGIN__', $PublicOrigin), (New-Object Text.UTF8Encoding($false)))
+    $hostPattern = [Security.SecurityElement]::Escape([regex]::Escape($uri.Authority))
+    [IO.File]::WriteAllText((Join-Path $gateway 'web.config'), $template.Replace('__PORT__', [string] $Port).Replace('__ORIGIN__', $PublicOrigin).Replace('__HOST_REGEX__', $hostPattern), (New-Object Text.UTF8Encoding($false)))
     Save-Json @{release=$releaseId;siteName=$SiteName;publicOrigin=$PublicOrigin;port=$Port;dataDirectory=$dataDirectory;backupDirectory=$backupDirectory} (Join-Path $ReleasePath 'deployment.json')
     if (-not (Test-Path -LiteralPath $envFile)) {
         $lines = @("PUBLIC_ORIGIN=$PublicOrigin", "PORT=$Port", ('DATA_DIR="' + $dataDirectory.Replace('\','/') + '"'), ('BACKUP_DIR="' + $backupDirectory.Replace('\','/') + '"'), 'STRIPE_PUBLISHABLE_KEY=', 'STRIPE_SECRET_KEY=', 'STRIPE_WEBHOOK_SECRET=')
