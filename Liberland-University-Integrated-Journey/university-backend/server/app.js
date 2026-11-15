@@ -23,7 +23,15 @@ function safeUser(u){return {id:u.id,name:u.name,email:u.email,role:u.role,statu
 function score(a){return Array.isArray(a)?curriculum.social.quiz.reduce((n,q,i)=>n+(a[i]===q.correct?1:0),0):0;}
 function completed(data,slug){return (data.lessons?Object.values(data.lessons):[]).filter(p=>p.completedAt).length;}
 function eligible(data,slug){if(slug!=='social-media')return false;const s=data.social||{};return completed(data,slug)===12&&(s.activities||[]).length===6&&s.activities.every(x=>x.trim().length>=40)&&s.projectSubmitted&&curriculum.social.projectFields.every(([key])=>(s.project?.[key]||'').trim().length>=40)&&s.checks?.length===3&&s.checks.every(Boolean)&&score(s.bestAnswers)>=5;}
-export function createApp({dataDir=process.env.DATA_DIR||path.join(root,'data'),port=Number(process.env.PORT||3000),stripeOptions={}}={}){
+function configuredOrigin(value){
+ if(!value)return '';
+ let url;try{url=new URL(value);}catch{throw Error('PUBLIC_ORIGIN must be a complete HTTPS origin.');}
+ if(url.protocol!=='https:'||url.username||url.password||url.pathname!=='/'||url.search||url.hash)throw Error('PUBLIC_ORIGIN must be an HTTPS origin without credentials, a path, query or fragment.');
+ return url.origin;
+}
+export function createApp({dataDir=process.env.DATA_DIR||path.join(root,'data'),port=Number(process.env.PORT||3000),publicOrigin=process.env.PUBLIC_ORIGIN||'',stripeOptions={}}={}){
+ const externalOrigin=configuredOrigin(publicOrigin);
+ if(!Number.isInteger(port)||port<0||port>65535)throw Error('PORT must be an integer between 0 and 65535.');
  fs.mkdirSync(dataDir,{recursive:true,mode:0o700});const db=openDatabase(path.join(dataDir,'campus.sqlite'));
  const keyFile=path.join(dataDir,'encryption.key');if(!fs.existsSync(keyFile))fs.writeFileSync(keyFile,randomBytes(32),{mode:0o600});const encryptionKey=fs.readFileSync(keyFile);
  const get=(sql,...args)=>db.prepare(sql).get(...args),all=(sql,...args)=>db.prepare(sql).all(...args),run=(sql,...args)=>db.prepare(sql).run(...args);
@@ -31,7 +39,7 @@ export function createApp({dataDir=process.env.DATA_DIR||path.join(root,'data'),
  const payments=createPayments(db,stripeOptions);
  const setupFile=path.join(dataDir,'setup-token.txt');let setupToken=null;
  if(!get("SELECT id FROM users WHERE role='staff'")){setupToken=fs.existsSync(setupFile)?fs.readFileSync(setupFile,'utf8').trim():token();fs.writeFileSync(setupFile,setupToken,{mode:0o600});}else if(fs.existsSync(setupFile))fs.unlinkSync(setupFile);
- const challenges=new Map(),limits=new Map();let origin;
+ const challenges=new Map(),limits=new Map();let origin,localOrigin;
  const audit=(u,action,target)=>run('INSERT INTO audit(actor,action,target,created_at) VALUES(?,?,?,?)',u?.id||null,action,target,now());
  const queue=(recipient,subject,message)=>run('INSERT INTO outbox VALUES(?,?,?,?,?,?)',randomUUID(),recipient,subject,message,'preview-only',now());
  function rate(req,key,max=30){const id=req.socket.remoteAddress+':'+key,t=Date.now();let r=limits.get(id);if(!r||r.until<t){r={n:0,until:t+600000};limits.set(id,r);}if(++r.n>max)fail(429,'Too many attempts. Please try again in 10 minutes.');if(limits.size>10000)for(const [k,v]of limits)if(v.until<t)limits.delete(k);}
@@ -52,11 +60,16 @@ export function createApp({dataDir=process.env.DATA_DIR||path.join(root,'data'),
   res.setHeader('Content-Security-Policy',"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");
   if(req.url?.startsWith('/checkout.html'))res.setHeader('Content-Security-Policy',"default-src 'self'; script-src 'self' https://js.stripe.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.stripe.com; connect-src 'self' https://*.stripe.com https://*.stripe.network; frame-src https://*.stripe.com https://*.stripe.network; font-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");
   try{
-   if(req.headers.host!==new URL(origin).host)fail(403,'Unexpected host.');
+   // ARR can preserve the public Host or replace it with the loopback destination.
+   // Never infer the public origin from client-supplied forwarding headers.
+   if(![new URL(origin).host,new URL(localOrigin).host].includes(req.headers.host))fail(403,'Unexpected host.');
    const url=new URL(req.url,origin),p=url.pathname,method=req.method;
    // Stripe has no browser Origin or student session. Its raw-body signature is mandatory instead.
    if(p==='/api/stripe/webhook'&&method==='POST')return json(res,200,await payments.webhook(await rawBody(req),req.headers['stripe-signature']));
    if(!['GET','HEAD'].includes(method)&&req.headers.origin!==origin)fail(403,'Request origin rejected.');
+   if(['GET','HEAD'].includes(method)&&['/student','/student/','/admin','/admin/'].includes(p)){
+    res.writeHead(302,{Location:'/portal.html'+url.search});return res.end();
+   }
    if(!p.startsWith('/api/')){
     if(!['GET','HEAD'].includes(method))fail(405,'Method not allowed.');
     const name=decodeURIComponent(p==='/'?'/index.html':p);const file=path.resolve(root,'public','.'+name);const publicRoot=path.join(root,'public')+path.sep;
@@ -65,7 +78,7 @@ export function createApp({dataDir=process.env.DATA_DIR||path.join(root,'data'),
     if(!types[ext]||!fs.existsSync(file)||!fs.statSync(file).isFile())fail(404,'Not found.');res.setHeader('Content-Type',types[ext]);res.statusCode=200;if(method==='HEAD')return res.end();fs.createReadStream(file).pipe(res);return;
    }
    const u=auth(req);
-   if(method==='GET'&&p==='/api/config')return json(res,200,{mode:'local-review',email:'preview-only',setupRequired:!!setupToken,payments:payments.config()});
+   if(method==='GET'&&p==='/api/config')return json(res,200,{mode:externalOrigin?'hosted-sandbox':'local-review',email:'preview-only',setupRequired:!!setupToken,payments:payments.config()});
    if(method==='GET'&&p==='/api/courses')return json(res,200,all('SELECT * FROM courses').map(c=>({...c,available_lessons:courseMap.get(c.slug).lessons.length,full_course:c.slug==='social-media'})));
    if(method==='POST'&&p==='/api/setup/start'){
     rate(req,'setup',10);const b=await body(req);if(!setupToken||typeof b.token!=='string'||hash(b.token)!==hash(setupToken))fail(403,'Invalid setup token.');
@@ -88,7 +101,7 @@ export function createApp({dataDir=process.env.DATA_DIR||path.join(root,'data'),
     if(user.role==='staff'){const step=totpStep(unseal(user.totp,encryptionKey),b.code,user.totp_step);if(step===null)fail(401,'A fresh authenticator code is required for staff.');run('UPDATE users SET totp_step=? WHERE id=?',step,user.id);}
     login(res,user);audit(user,'account.login',user.id);return json(res,200,safeUser(user));
    }
-   if(method==='POST'&&p==='/api/logout'){const sid=req.headers.cookie?.match(/campus_session=([a-f0-9]{64})/)?.[1];if(sid)run('DELETE FROM sessions WHERE id=?',hash(sid));res.setHeader('Set-Cookie','campus_session=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0');return json(res,200,{ok:true});}
+   if(method==='POST'&&p==='/api/logout'){const sid=req.headers.cookie?.match(/campus_session=([a-f0-9]{64})/)?.[1];if(sid)run('DELETE FROM sessions WHERE id=?',hash(sid));res.setHeader('Set-Cookie',`campus_session=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0${origin.startsWith('https:')?'; Secure':''}`);return json(res,200,{ok:true});}
    if(method==='POST'&&p==='/api/enquiries'){
     rate(req,'enquiry',10);const b=await body(req);if(b.website)fail(400,'Unable to submit.');const n=u?.name||text(b.name,2,100),e=u?.email||email(b.email),subject=text(b.subject,3,160),message=text(b.message,5,5000),slug=b.course||null;if(slug)course(slug);const id=randomUUID(),at=now();
     db.exec('BEGIN');try{run('INSERT INTO enquiries(id,user_id,name,email,subject,course,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)',id,u?.id||null,n,e,subject,slug,at,at);run('INSERT INTO messages VALUES(?,?,?,?,?,?,?)',randomUUID(),id,u?.id||null,n,'message',message,at);queue(e,'Enquiry received: '+subject,'Your reference is '+id+'. Email delivery is not enabled in this local review.');audit(u,'enquiry.create',id);db.exec('COMMIT');}catch(err){db.exec('ROLLBACK');throw err;}return json(res,201,{id});
@@ -155,9 +168,9 @@ export function createApp({dataDir=process.env.DATA_DIR||path.join(root,'data'),
    fail(404,'Not found.');
   }catch(err){if(!res.headersSent)json(res,err.status||500,{error:err.status?err.message:'The request could not be completed.'});else res.end();if(!err.status)console.error('Request error:',err.message);}
  });
- return {server,db,setupToken,dataDir,start:()=>new Promise(resolve=>{server.listen(port,'127.0.0.1',()=>{origin='http://127.0.0.1:'+server.address().port;resolve(origin);});}),close:()=>new Promise(resolve=>server.close(()=>{db.close();resolve();}))};
+ return {server,db,setupToken,dataDir,start:()=>new Promise((resolve,reject)=>{server.once('error',reject);server.listen(port,'127.0.0.1',()=>{server.removeListener('error',reject);localOrigin='http://127.0.0.1:'+server.address().port;origin=externalOrigin||localOrigin;resolve(localOrigin);});}),close:()=>new Promise(resolve=>server.close(()=>{db.close();resolve();}))};
 }
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
  if(fs.existsSync(path.join(root,'.env')))loadEnvFile(path.join(root,'.env'));
- const app=createApp({stripeOptions:{secretKey:process.env.STRIPE_SECRET_KEY,publishableKey:process.env.STRIPE_PUBLISHABLE_KEY,webhookSecret:process.env.STRIPE_WEBHOOK_SECRET}});const url=await app.start();console.log(`Liberland local review: ${url}/portal.html\nLocal-only server; email previews are not sent. Stripe is sandbox-only.\nData: ${app.dataDir}`);if(app.setupToken)console.log(`First staff setup token is in ${path.join(app.dataDir,'setup-token.txt')}. Open the portal and choose First staff setup.`);
+ const app=createApp({stripeOptions:{secretKey:process.env.STRIPE_SECRET_KEY,publishableKey:process.env.STRIPE_PUBLISHABLE_KEY,webhookSecret:process.env.STRIPE_WEBHOOK_SECRET}});const url=await app.start();console.log(`Liberland sandbox: ${process.env.PUBLIC_ORIGIN||url}/portal.html\nBackend listens on ${url}; email previews are not sent. Stripe is sandbox-only.\nData: ${app.dataDir}`);if(app.setupToken)console.log(`First staff setup token is in ${path.join(app.dataDir,'setup-token.txt')}. Open the portal and choose First staff setup.`);
 }

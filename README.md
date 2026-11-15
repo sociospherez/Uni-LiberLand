@@ -1,3 +1,13 @@
+# University of Liberland
+
+The complete student/staff account application and Stripe **sandbox** integration
+are in [Liberland-University-Integrated-Journey/university-backend](Liberland-University-Integrated-Journey/university-backend).
+For the existing Windows/IIS website, see its [IIS hosting guide](Liberland-University-Integrated-Journey/university-backend/IIS-HOSTING.md).
+The `liberland_mvp` folder and the older archives remain demonstration snapshots;
+use the integrated journey source folder for the hosting changes on this branch.
+
+## Earlier static demonstrator
+
 [README.txt](https://github.com/user-attachments/files/29932473/README.txt)
 LIBERLAND DIGITAL CAMPUS — EXPERIENCE PREVIEW EP1
 
