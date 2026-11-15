@@ -1,0 +1,293 @@
+/* Liberland Design Language v1.0 — Premium Education Experience
+   Visual refinement layer for LDDS v2.1.5. No framework dependency. */
+
+:root {
+  --font-display: "Aptos Display", "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Aptos", "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+  --font-editorial: Georgia, "Times New Roman", serif;
+  --reading-width: 72ch;
+  --radius-card: 22px;
+  --radius-feature: 30px;
+  --premium-shadow: 0 16px 50px rgba(15, 38, 62, .10);
+  --premium-shadow-hover: 0 24px 68px rgba(15, 38, 62, .16);
+  --warm-accent: #e6b83f;
+  --warm-soft: #fff7dd;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  font-size: 16.5px;
+  line-height: 1.68;
+  letter-spacing: -.006em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-family: var(--font-display);
+  letter-spacing: -.035em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+h1 { font-size: clamp(3.25rem, 6.4vw, 6.25rem); font-weight: 560; }
+h2 { font-size: clamp(2.15rem, 4vw, 4rem); font-weight: 570; }
+h3 { font-size: clamp(1.25rem, 2vw, 1.65rem); font-weight: 620; }
+p,.lead { max-width: var(--reading-width); }
+.lead { font-size: clamp(1.08rem, 1.35vw, 1.3rem); line-height: 1.72; }
+.eyebrow {
+  font-size: .76rem;
+  font-weight: 760;
+  letter-spacing: .135em;
+  text-transform: uppercase;
+}
+
+/* Calmer navigation */
+.topbar {
+  min-height: 82px;
+  padding-inline: clamp(22px, 4vw, 68px);
+  backdrop-filter: blur(20px) saturate(125%);
+}
+.brand-copy strong { font-size: .98rem; letter-spacing: .035em; }
+.brand-copy small { font-size: .75rem; letter-spacing: .16em; text-transform: uppercase; }
+.desktop-nav { gap: 7px; }
+.desktop-nav button {
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: .94rem;
+  font-weight: 590;
+  transition: background .2s ease, color .2s ease, transform .2s ease;
+}
+.desktop-nav button:hover { background: var(--hover-bg); transform: translateY(-1px); }
+.header-actions .primary.small { border-radius: 14px; padding: 12px 20px; }
+
+.page { padding-top: clamp(34px, 5vw, 76px); }
+.section { margin-block: clamp(72px, 9vw, 130px); }
+.section-head { margin-bottom: clamp(28px, 4vw, 54px); }
+.section-head h1,.section-head h2 { max-width: 15ch; }
+
+/* Hero becomes editorial and human rather than dashboard-heavy */
+.hero-shell {
+  border-radius: var(--radius-feature);
+  overflow: hidden;
+  box-shadow: var(--premium-shadow);
+  position: relative;
+  isolation: isolate;
+}
+.hero-shell::before {
+  content:"";
+  position:absolute;
+  width: min(48vw, 680px);
+  aspect-ratio:1;
+  right:-13%;
+  top:-28%;
+  border-radius:50%;
+  background: radial-gradient(circle at 35% 35%, color-mix(in srgb,var(--accent) 22%, transparent), transparent 66%);
+  pointer-events:none;
+  z-index:-1;
+}
+.hero-shell__grid { gap: clamp(36px, 5vw, 82px); align-items: center; }
+.ldc-home-hero { padding: clamp(44px, 7vw, 100px); }
+.ldc-home-hero__copy h1 { max-width: 9.3ch; margin-block: 22px 24px; }
+.ldc-home-hero__copy .lead { max-width: 610px; }
+.ldc-home-hero__copy .actions { margin-top: 32px; }
+
+/* Route panel: less enterprise, more guided concierge */
+.ldc-home-command {
+  border-radius: 26px;
+  padding: clamp(24px, 3vw, 38px);
+  box-shadow: 0 18px 55px rgba(13, 42, 68, .12);
+}
+.ldc-home-command__head { padding-bottom: 22px; }
+.route-choice {
+  border-radius: 16px;
+  padding: 18px 8px;
+  transition: transform .2s ease, background .2s ease, border-color .2s ease;
+}
+.route-choice:hover { transform: translateX(5px); background: var(--hover-bg); }
+.route-choice__number { border-radius: 12px; }
+.route-choice strong { font-size: 1.03rem; }
+.route-choice small { font-size: .88rem; }
+
+/* Primary actions are confident without shouting */
+.btn,.primary,.secondary,.outline {
+  border-radius: 14px;
+  min-height: 48px;
+  padding-inline: 22px;
+  font-weight: 680;
+  letter-spacing: -.012em;
+  box-shadow: none;
+}
+.btn-primary,.primary { box-shadow: 0 9px 24px color-mix(in srgb,var(--accent) 25%, transparent); }
+.btn-primary:hover,.primary:hover { transform: translateY(-2px); box-shadow: 0 14px 34px color-mix(in srgb,var(--accent) 32%, transparent); }
+.btn-secondary:hover,.secondary:hover,.outline:hover { transform: translateY(-2px); }
+.subtle-link { font-weight: 620; }
+
+/* Reusable premium paper cards */
+.card,.panel,.ui-card,.stat-card,.form-card,.result-card,.ldc-course-card,
+.catalogue-help,.programme-tab-content,.atlas-context-panel,.planner-journey {
+  border-radius: var(--radius-card);
+  box-shadow: 0 8px 34px rgba(15,38,62,.07);
+}
+.card,.ui-card,.ldc-course-card {
+  transition: transform .24s cubic-bezier(.2,.8,.2,1), box-shadow .24s ease, border-color .24s ease;
+}
+.card:hover,.ui-card:hover,.ldc-course-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--premium-shadow-hover);
+}
+
+/* Stats become quiet trust signals */
+.ldc-proof-strip { gap: 16px; }
+.stat-card { padding: clamp(22px, 3vw, 34px); border-radius: 19px; box-shadow: none; }
+.stat-card__value { font-size: clamp(2rem, 3.6vw, 3.3rem); font-weight: 580; letter-spacing: -.045em; }
+.stat-card__label { margin-top: 5px; font-size: .92rem; }
+
+/* Course catalogue / marketplace reading rhythm */
+.catalogue-hero { border-radius: var(--radius-feature); padding: clamp(42px, 6vw, 82px); }
+.catalogue-hero h1 { max-width: 8.4ch; }
+.catalogue-search { border-radius: 16px; box-shadow: none; }
+.catalogue-search input { font-size: 1rem; }
+.catalogue-filter,.filter-button { border-radius: 999px; padding: 11px 19px; font-weight: 620; }
+.ldc-course-grid { gap: clamp(20px, 2.7vw, 34px); }
+.ldc-course-card { overflow:hidden; padding:0; }
+.ldc-course-card .course-visual { min-height: 190px; border-radius: 0; }
+.ldc-course-card__body { padding: 25px 25px 27px; }
+.ldc-course-card h3 { font-size: 1.42rem; line-height: 1.22; margin-block: 12px 10px; }
+.ldc-course-card p { line-height: 1.62; }
+.course-visual__mark { font-family: var(--font-display); font-weight: 520; }
+.course-meta { row-gap: 8px; }
+.course-meta span { font-size: .88rem; }
+
+/* Signature journey reads as an elegant editorial timeline */
+.signature-journey { border-radius: var(--radius-feature); padding: clamp(38px, 6vw, 76px); }
+.signature-journey h2 { max-width: 13ch; }
+.journey-node__dot { width: 48px; height: 48px; box-shadow: 0 7px 24px rgba(15,38,62,.10); }
+.journey-node strong { font-size: 1rem; }
+.journey-node small { font-size: .82rem; line-height: 1.45; }
+
+/* Atlas becomes a calm guided companion */
+.atlas-entry,.catalogue-help {
+  border-radius: 22px;
+  box-shadow: 0 12px 38px rgba(24,92,142,.10);
+}
+.atlas-entry { padding: 17px 19px; }
+.atlas-entry__spark { color: var(--warm-accent); font-size: 1.35rem; }
+.planner-layout { gap: clamp(26px, 4vw, 50px); }
+.planner-progress,.planner-journey { padding: clamp(22px, 3vw, 34px); }
+.atlas-choice { border-radius: 17px; padding: 17px; }
+.atlas-choice:hover { transform: translateY(-2px); }
+.atlas-choice.selected { box-shadow: 0 10px 28px color-mix(in srgb,var(--accent) 15%, transparent); }
+.atlas-fit-score { border-radius: 24px; }
+.atlas-roadmap-step { border-radius: 18px; }
+
+/* Programme detail: editorial hierarchy */
+.programme-hero--ldds { border-radius: var(--radius-feature); padding: clamp(44px, 6vw, 86px); }
+.programme-hero--ldds h1 { max-width: 12ch; }
+.programme-summary-card { border-radius: 24px; }
+.programme-tabs { border-radius: 16px; padding: 6px; }
+.programme-tabs button { border-radius: 12px; min-height: 44px; }
+.programme-tab-content { padding: clamp(28px, 4vw, 52px); }
+.programme-tab-content > p { max-width: 68ch; font-size: 1.03rem; }
+.skill-cloud span { border-radius: 999px; padding: 10px 15px; }
+.programme-faqs details { border-radius: 16px; }
+
+/* Forms: spacious and reassuring */
+.application-layout { gap: clamp(24px, 4vw, 50px); }
+.application-form-card { padding: clamp(26px, 4vw, 48px); }
+.application-form-card h2 { max-width: 17ch; }
+.application-nav>button { border-radius: 16px; padding: 16px; }
+.application-nav>button.active { box-shadow: 0 8px 25px color-mix(in srgb,var(--accent) 11%, transparent); }
+.field { margin-bottom: 21px; }
+.field label { margin-bottom: 8px; font-size: .91rem; font-weight: 670; }
+input,select,textarea { border-radius: 13px; min-height: 48px; padding: 13px 15px; font-size: .98rem; }
+textarea { min-height: 140px; }
+.upload-zone { border-radius: 19px; padding: 25px; }
+.review-groups section { border-radius: 18px; }
+.declaration { border-radius: 17px; }
+
+/* Student hub */
+.dashboard-grid { gap: 22px; }
+.dashboard-primary { border-radius: 26px; }
+.student-status-strip { border-radius: 20px; }
+
+/* Research receives its own scholarly character */
+.research-hero {
+  border-radius: var(--radius-feature);
+  padding: clamp(48px, 7vw, 96px);
+  position: relative;
+  overflow:hidden;
+}
+.research-hero h1 { max-width: 12ch; }
+.research-hero .lead { max-width: 64ch; }
+.research-hero::after {
+  content:"RESEARCH";
+  position:absolute;
+  right:-.03em;
+  bottom:-.22em;
+  font-family:var(--font-editorial);
+  font-size:clamp(5rem,14vw,13rem);
+  font-weight:700;
+  letter-spacing:-.07em;
+  opacity:.035;
+  pointer-events:none;
+}
+.research-grid .card h3,.research-grid .ui-card h3 { font-family:var(--font-editorial); letter-spacing:-.025em; line-height:1.18; }
+.research-grid .card,.research-grid .ui-card { padding: clamp(22px,3vw,32px); }
+
+/* Footer: quiet, publication-like finish */
+footer { padding-block: 42px; }
+footer strong { font-family:var(--font-display); font-weight:620; }
+
+/* Night theme remains genuinely dark, not inverted white cards */
+html[data-theme="dark"] {
+  --warm-soft: #302a17;
+  --premium-shadow: 0 18px 54px rgba(0,0,0,.30);
+  --premium-shadow-hover: 0 26px 72px rgba(0,0,0,.42);
+}
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .ui-card,
+html[data-theme="dark"] .ldc-course-card,
+html[data-theme="dark"] .form-card {
+  box-shadow: 0 9px 34px rgba(0,0,0,.22);
+}
+html[data-theme="dark"] .hero-shell,
+html[data-theme="dark"] .catalogue-hero,
+html[data-theme="dark"] .programme-hero--ldds {
+  box-shadow: 0 22px 70px rgba(0,0,0,.32);
+}
+
+/* Motion is purposeful and restrained */
+@keyframes premiumRise { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
+.page > * { animation: premiumRise .5s cubic-bezier(.2,.8,.2,1) both; }
+.page > *:nth-child(2) { animation-delay:.045s; }
+.page > *:nth-child(3) { animation-delay:.09s; }
+
+@media (max-width: 1050px) {
+  h1 { font-size: clamp(3rem, 8vw, 5rem); }
+  .ldc-home-hero { padding: 44px; }
+}
+@media (max-width: 760px) {
+  body { font-size: 16px; }
+  .topbar { min-height: 72px; padding-inline: 16px; }
+  .page { padding-top: 24px; }
+  .section { margin-block: 66px; }
+  .hero-shell,.catalogue-hero,.programme-hero--ldds,.signature-journey,.research-hero { border-radius: 22px; }
+  .ldc-home-hero,.catalogue-hero,.programme-hero--ldds,.research-hero { padding: 32px 24px; }
+  .ldc-home-hero__copy h1 { font-size: clamp(3rem, 15vw, 4.5rem); }
+  .ldc-home-command { padding: 22px; }
+  .stat-card { padding: 21px; }
+  .ldc-course-card .course-visual { min-height: 150px; }
+  .application-form-card { padding: 24px 19px; }
+}
+@media (max-width: 520px) {
+  h1 { font-size: clamp(2.75rem, 14vw, 4rem); }
+  h2 { font-size: clamp(2rem, 10vw, 2.85rem); }
+  .lead { font-size: 1.03rem; }
+  .actions { gap: 10px; }
+  .actions .btn { width:100%; justify-content:center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page > * { animation:none!important; }
+  .card,.ui-card,.ldc-course-card,.btn,.primary,.secondary,.outline,.route-choice,.atlas-choice { transition:none!important; }
+}

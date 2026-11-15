@@ -1,0 +1,42 @@
+[
+  {
+    "name": "hero-campus",
+    "role": "Homepage hero",
+    "width": 1536,
+    "height": 1024,
+    "png_bytes": 2954657,
+    "webp_bytes": 2062982
+  },
+  {
+    "name": "card-degrees",
+    "role": "Degree programmes",
+    "width": 1536,
+    "height": 1024,
+    "png_bytes": 2651221,
+    "webp_bytes": 1832878
+  },
+  {
+    "name": "card-certificates",
+    "role": "Hourly certificates",
+    "width": 1536,
+    "height": 1024,
+    "png_bytes": 2173982,
+    "webp_bytes": 1447090
+  },
+  {
+    "name": "card-research",
+    "role": "Research and innovation",
+    "width": 1536,
+    "height": 1024,
+    "png_bytes": 2026632,
+    "webp_bytes": 1342678
+  },
+  {
+    "name": "card-community",
+    "role": "Global community",
+    "width": 1536,
+    "height": 1024,
+    "png_bytes": 2590736,
+    "webp_bytes": 1749602
+  }
+]

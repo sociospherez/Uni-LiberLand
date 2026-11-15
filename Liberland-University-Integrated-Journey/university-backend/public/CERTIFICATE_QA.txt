@@ -1,0 +1,11 @@
+Spreadsheet Modelling Using Excel: curriculum, hour totals, all quiz responses, retry, Continue, workspace and responsive layouts passed.
+Time Series Forecasting: curriculum, hour totals, all quiz responses, retry, Continue, workspace and responsive layouts passed.
+Social Media Analytics: curriculum, hour totals, all quiz responses, retry, Continue, workspace and responsive layouts passed.
+Programming for Data Analytics Using Python: curriculum, hour totals, all quiz responses, retry, Continue, workspace and responsive layouts passed.
+Dashboarding & Storytelling Using Power BI: curriculum, hour totals, all quiz responses, retry, Continue, workspace and responsive layouts passed.
+Database Management Using SQL & MongoDB: curriculum, hour totals, all quiz responses, retry, Continue, workspace and responsive layouts passed.
+Artificial Intelligence & Deep Learning Using Python: curriculum, hour totals, all quiz responses, retry, Continue, workspace and responsive layouts passed.
+Business Analytics Professional: curriculum, hour totals, all quiz responses, retry, Continue, workspace and responsive layouts passed.
+Applied Data Engineering: curriculum, hour totals, all quiz responses, retry, Continue, workspace and responsive layouts passed.
+All 15 programmes remain in Study; the nine hourly certificates filter and search correctly. Existing degree, research, community, home, application and workspace routes rendered without JavaScript errors.
+Both themes and widths of 390, 768 and 1440 pixels checked for certificate prospectuses and lessons; no horizontal overflow.

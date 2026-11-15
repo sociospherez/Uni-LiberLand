@@ -1,0 +1,8 @@
+post_id,format,window,impressions,engagements,clicks,registrations,spend_units
+A01,Image,7 days,4000,120,40,4,40
+A02,Image,7 days,2500,100,25,2,25
+A02,Image,7 days,2500,100,25,2,25
+B01,Video,7 days,1000,80,15,3,30
+B02,Video,7 days,2000,140,30,3,45
+C01,Carousel,7 days,3000,150,60,6,60
+C02,Carousel,7 days,1500,60,,1,15

@@ -1,0 +1,954 @@
+{
+  "courses": [
+    {
+      "slug": "excel",
+      "title": "Spreadsheet Modelling Using Excel",
+      "hours": 16,
+      "lessons": [
+        {
+          "id": "excel-foundations",
+          "moduleIndex": 0,
+          "module": "01 · Spreadsheet foundations & model design",
+          "title": "1.1 — Give every number a home",
+          "minutes": 10,
+          "learn": "A dependable model separates inputs, calculations and outputs. Inputs are values someone can change, such as unit price. Calculations turn those values into results using formulas. Outputs summarise what the model tells you. Give assumptions clear names and units so another person can follow your work.",
+          "example": "A retailer plans to sell 40 notebooks at 8 each. Put Units = 40 and Unit price = 8 in a labelled input area. Calculate Revenue = Units × Unit price, which gives 320. Display 320 in the summary. If units change to 50, the linked revenue becomes 400 without editing the formula.",
+          "prompt": "Your manager wants to compare a price of 9 with the current price of 8. Where should the value 9 go?",
+          "choices": [
+            "Replace every revenue formula with a typed result",
+            "Change the labelled Unit price input",
+            "Change only the title on the summary chart"
+          ],
+          "correct": 1,
+          "feedback": [
+            "Typing results over formulas breaks the model’s calculation links. Keep the calculation and change its input.",
+            "Correct. Change the price input once; linked calculations and outputs then update together. At 40 units, revenue becomes 360.",
+            "A chart title labels the result but does not change the underlying calculation."
+          ],
+          "transfer": "Sketch three areas: Inputs, Calculations and Summary. Add units and unit price, calculate revenue, then test one changed input. Keep the formula-driven result distinct from the assumptions.",
+          "next": "The next available lesson explores how to keep a shared assumption fixed when copying a formula."
+        },
+        {
+          "module": "02 · Formulas & functions",
+          "title": "2.2 — When should a reference stay fixed?",
+          "minutes": 12,
+          "learn": "A relative reference moves when you copy a formula. An absolute reference stays fixed. Put a shared assumption in one labelled cell and lock its row and column with dollar signs. This makes the assumption easy to change without editing every formula.",
+          "example": "B2 contains a net amount of 100. E1 contains a service rate of 0.20. In C2, =B2*$E$1 returns 20. Copy it to C3 and it becomes =B3*$E$1: the amount changes row, but the rate stays in E1.",
+          "prompt": "B3 contains 150 and E1 contains 0.20. Which formula correctly calculates the service amount in C3 and can safely be copied down?",
+          "choices": [
+            "=B3*E1",
+            "=B3*$E$1",
+            "=$B$3*E1"
+          ],
+          "correct": 1,
+          "feedback": [
+            "E1 is relative, so it will move to E2 when you copy down. Lock the shared rate.",
+            "Correct. B3 follows each sales row while $E$1 stays fixed. The result here is 30.",
+            "This locks the sales amount instead of the shared rate. Each row needs its own amount."
+          ],
+          "transfer": "Change the rate in E1 to 0.25. Every correctly linked row updates; the amount for B3 becomes 37.50. In Excel, test both the rate change and a copied formula.",
+          "next": "Next in the full programme: use IF to flag a margin below target.",
+          "id": "sample-excel",
+          "moduleIndex": 1
+        }
+      ]
+    },
+    {
+      "slug": "forecasting",
+      "title": "Time Series Forecasting",
+      "hours": 24,
+      "lessons": [
+        {
+          "module": "03 · Baselines & backtesting",
+          "title": "3.2 — Can your forecast beat yesterday?",
+          "minutes": 15,
+          "learn": "A baseline is a deliberately simple forecast that gives your model something to beat. A naive forecast repeats the last observed value. Evaluate predictions on later observations, keeping those values hidden during model fitting. Mean absolute error (MAE) averages the size of the errors.",
+          "example": "The last training observation is 100. A fixed-origin naive forecast for the next three months is [100, 100, 100]. The actual values are [110, 90, 120]. Absolute errors are [10, 10, 20], so MAE is 40 / 3 = 13.33 units.",
+          "prompt": "A candidate model has MAE 16 on exactly the same holdout. Which conclusion is supported?",
+          "choices": [
+            "The candidate is better because it is more complex",
+            "The naive baseline has lower average error on this holdout",
+            "Shuffle the dates until the candidate wins"
+          ],
+          "correct": 1,
+          "feedback": [
+            "Complexity does not establish usefulness. Compare errors on the same unseen periods.",
+            "Correct. 13.33 is lower than 16. Keep the baseline as the reference and investigate other time windows.",
+            "Shuffling breaks the forecasting setting and can leak future information."
+          ],
+          "transfer": "A single holdout is limited evidence. Repeat the comparison at several chronological forecast origins before choosing a model.",
+          "next": "Next in the full programme: compare a seasonal-naive forecast against the same horizon.",
+          "id": "sample-forecasting",
+          "moduleIndex": 2
+        }
+      ]
+    },
+    {
+      "slug": "social-media",
+      "title": "Social Media Analytics",
+      "hours": 24,
+      "lessons": [
+        {
+          "id": "social-1-1",
+          "moduleIndex": 0,
+          "module": "01 · Goals & measurement",
+          "title": "1.1 — Start with the decision",
+          "minutes": 8,
+          "learn": "An analytics question begins with a decision, not a dashboard. Ask who will use the answer, what they can change and which outcome matters. Awareness, engagement and registration are different objectives. Write one primary objective and a supporting measure before collecting data.",
+          "example": "Northbank wants more completed open-day registrations. Its primary measure is attributed registrations in a seven-day reporting window. Impressions indicate visibility, but a post can be widely viewed without producing registrations.",
+          "prompt": "Which question best matches Northbank’s stated objective?",
+          "choices": [
+            "Which campaign links brought attributed registrations?",
+            "Which post used the brightest colours?",
+            "Which post had the most impressions, regardless of registrations?"
+          ],
+          "correct": 0,
+          "feedback": [
+            "Correct. It links the analysis to the desired action, with an attribution limit to explain.",
+            "Colour could be a test variable, but it is not the outcome.",
+            "Impressions are useful context but do not answer the registration question."
+          ],
+          "transfer": "Write one sentence beginning “We need to decide…” and another beginning “We will measure…”. Keep the decision and the measure connected.",
+          "next": "Return to the learning path for your module activity and next lesson."
+        },
+        {
+          "id": "social-1-2",
+          "moduleIndex": 0,
+          "module": "01 · Goals & measurement",
+          "title": "1.2 — Define a metric before comparing it",
+          "minutes": 8,
+          "learn": "A metric definition needs a numerator, a denominator when relevant, a time window and a source. Reach describes unique accounts under a platform’s definition; impressions count displays and may include repeats. Rates calculated using different denominators cannot be compared as if they were identical.",
+          "example": "A post has 1,000 impressions and reaches 700 accounts. Forty engagements divided by impressions gives 4%; divided by reach gives about 5.71%. Both are calculations, but they answer different questions.",
+          "prompt": "Which label is clear enough to compare across posts?",
+          "choices": [
+            "Engagement: 4%",
+            "Engagements / impressions, seven-day window: 4%",
+            "Success score: 4%"
+          ],
+          "correct": 1,
+          "feedback": [
+            "The denominator and window are missing.",
+            "Correct. The label tells a reader what was divided and which period was measured.",
+            "A success score without a definition cannot be interpreted."
+          ],
+          "transfer": "Create a tiny metric dictionary: metric name, formula, reporting window and source. Use it throughout the course.",
+          "next": "Return to the learning path for your module activity and next lesson."
+        },
+        {
+          "id": "social-2-1",
+          "moduleIndex": 1,
+          "module": "02 · Data collection & quality",
+          "title": "2.1 — Clean without changing the story",
+          "minutes": 8,
+          "learn": "Keep a copy of the source export before cleaning. Check record IDs, reporting dates, types and missing values. An identical repeated record can inflate totals if counted twice. A blank is unknown until you understand the source; it is not automatically zero.",
+          "example": "The course CSV contains A02 twice with identical values. Check that both rows represent the same post and reporting window, then count one. C02 has blank clicks, so its click-through and click-to-registration rates should be flagged as unavailable.",
+          "prompt": "What should happen to a blank clicks value?",
+          "choices": [
+            "Always change it to zero",
+            "Treat it as unknown and investigate",
+            "Copy the clicks from the previous post"
+          ],
+          "correct": 1,
+          "feedback": [
+            "Zero asserts that no clicks occurred. A blank does not establish that.",
+            "Correct. Preserve the distinction and document any later correction.",
+            "Copying another record invents evidence."
+          ],
+          "transfer": "Keep a cleaning log with the original issue, your action and the reason. This lets another learner reproduce your totals.",
+          "next": "Return to the learning path for your module activity and next lesson."
+        },
+        {
+          "id": "social-2-2",
+          "moduleIndex": 1,
+          "module": "02 · Data collection & quality",
+          "title": "2.2 — Collect only what the question needs",
+          "minutes": 8,
+          "learn": "A campaign performance question often needs counts by post rather than personal profiles. Minimise unnecessary personal information, use authorised exports, and keep access appropriate to the task. Before quoting a comment, consider whether the wording identifies a person and whether an aggregate theme would answer the question.",
+          "example": "To compare registrations by content format, Northbank needs post ID, format, impressions, clicks and attributed registration counts. Names, email addresses and private messages are not needed for this exercise. All supplied records are fictional.",
+          "prompt": "Which dataset best fits the comparison?",
+          "choices": [
+            "A list of every viewer’s name and private messages",
+            "Only the most flattering comments",
+            "Aggregate post metrics with consistent definitions"
+          ],
+          "correct": 2,
+          "feedback": [
+            "Those details are unnecessary for this question.",
+            "Selecting flattering comments biases the evidence.",
+            "Correct. Aggregate records can support the comparison without unnecessary personal details."
+          ],
+          "transfer": "Before adding a field, ask: “Which decision needs this?” Leave it out if it adds exposure without analytical value.",
+          "next": "Return to the learning path for your module activity and next lesson."
+        },
+        {
+          "id": "social-3-1",
+          "moduleIndex": 2,
+          "module": "03 · Audience & content analysis",
+          "title": "3.1 — Compare rates and totals together",
+          "minutes": 8,
+          "learn": "A total measures volume; a rate relates the result to exposure. A small post may lead on rate while a larger post leads on total outcomes. Show both when the decision involves reach and effectiveness. An engagement rate per impression is not the percentage of unique people who engaged.",
+          "example": "A01: 120 engagements / 4,000 impressions = 3%. B01: 80 / 1,000 = 8%. A01 produced more engagements; B01 produced more engagements per impression.",
+          "prompt": "Which statement is supported?",
+          "choices": [
+            "B01 has both the highest rate and the highest total",
+            "A01 has more engagements; B01 has the higher rate",
+            "A01 is better on every measure"
+          ],
+          "correct": 1,
+          "feedback": [
+            "B01 has fewer total engagements: 80 rather than 120.",
+            "Correct. The rate and volume results point in different directions.",
+            "A01 does not have the higher engagement rate."
+          ],
+          "transfer": "Write both results before choosing a recommendation. Explain which one matters for the stated objective.",
+          "next": "Return to the learning path for your module activity and next lesson."
+        },
+        {
+          "id": "social-3-2",
+          "moduleIndex": 2,
+          "module": "03 · Audience & content analysis",
+          "title": "3.2 — Segment before telling the story",
+          "minutes": 8,
+          "learn": "Grouping by format, audience or campaign can uncover useful differences. Keep groups comparable and report their size. When combining rates, divide summed numerators by summed denominators. A simple average of percentages can give a tiny group as much influence as a large one.",
+          "example": "Group X has 10 engagements from 100 impressions (10%). Group Y has 90 from 900 (10%). Their overall rate is 100 / 1,000 = 10%. If X had 20 instead, the combined rate would be 110 / 1,000 = 11%, not the unweighted average of 20% and 10%.",
+          "prompt": "Which formula produces the combined rate?",
+          "choices": [
+            "Add the percentages",
+            "Average the group percentages regardless of size",
+            "Total engagements divided by total impressions"
+          ],
+          "correct": 2,
+          "feedback": [
+            "Rates do not add to a combined rate.",
+            "An unweighted average can misrepresent groups of different sizes.",
+            "Correct. The totals preserve each group’s exposure in the combined calculation."
+          ],
+          "transfer": "Compare formats only after checking the reporting window and group sizes. Flag segments with very few observations.",
+          "next": "Return to the learning path for your module activity and next lesson."
+        },
+        {
+          "id": "social-4-1",
+          "moduleIndex": 3,
+          "module": "04 · Campaign performance",
+          "title": "4.1 — Follow the click-to-registration funnel",
+          "minutes": 8,
+          "learn": "A funnel separates exposure, clicks and completed actions. Click-through rate is clicks divided by impressions. Click-to-registration rate is attributed registrations divided by clicks. A strong rate at one stage does not guarantee a large number of completed actions.",
+          "example": "A01: 4,000 impressions, 40 clicks and 4 attributed registrations. Click-through rate = 40 / 4,000 = 1%. Click-to-registration rate = 4 / 40 = 10%. The final volume is four registrations.",
+          "prompt": "A new post has 50 clicks and 5 registrations. Its click-to-registration rate is:",
+          "choices": [
+            "10%",
+            "1%",
+            "50%"
+          ],
+          "correct": 0,
+          "feedback": [
+            "Correct. 5 / 50 × 100 = 10%.",
+            "That would require a different denominator.",
+            "The 50 is a count, not the result of the division."
+          ],
+          "transfer": "Label every funnel stage and show its count. A rate without its sample size can hide very limited evidence.",
+          "next": "Return to the learning path for your module activity and next lesson."
+        },
+        {
+          "id": "social-4-2",
+          "moduleIndex": 3,
+          "module": "04 · Campaign performance",
+          "title": "4.2 — Cost and attribution need context",
+          "minutes": 8,
+          "learn": "Cost per attributed registration equals campaign spend divided by attributed registrations. Attribution assigns credit according to a defined rule and window; it does not prove a post caused the outcome. If registrations are zero, do not report a zero cost per registration: the ratio is undefined.",
+          "example": "A01 spends 40 units and records 4 attributed registrations: cost per registration = 10. B01 spends 30 and records 3: also 10. B01’s higher click-to-registration rate does not make its observed cost per registration lower.",
+          "prompt": "What does an equal cost per attributed registration establish?",
+          "choices": [
+            "The campaigns caused exactly the same impact",
+            "Their observed spend-to-attributed-registration ratios match",
+            "Their audiences and all other conditions were identical"
+          ],
+          "correct": 1,
+          "feedback": [
+            "A ratio alone cannot establish causal impact.",
+            "Correct. It describes the observed data under the attribution rule.",
+            "Equal ratios do not imply identical conditions."
+          ],
+          "transfer": "Report the attribution method, period and denominator. Identify what the data cannot tell you.",
+          "next": "Return to the learning path for your module activity and next lesson."
+        },
+        {
+          "id": "social-5-1",
+          "moduleIndex": 4,
+          "module": "05 · Experiments & interpretation",
+          "title": "5.1 — Design a test that can teach you something",
+          "minutes": 8,
+          "learn": "A useful test states a hypothesis, changes a defined factor and measures a preselected outcome. Random assignment to comparable groups helps separate the change from other influences. Hold the audience rules, measurement window and delivery conditions consistent where possible. Decide how long to observe before looking for a winner.",
+          "example": "Northbank compares “Reserve a place” with “See the programme”. Both variants use the same image and landing page, with comparable randomly assigned audiences. The primary outcome is attributed registrations. The team records spend as a guardrail.",
+          "prompt": "Why is a simple comparison with last month weaker evidence?",
+          "choices": [
+            "Audience, season and other conditions may have changed",
+            "Older data is always invalid",
+            "It always produces a smaller percentage"
+          ],
+          "correct": 0,
+          "feedback": [
+            "Correct. Other changes can explain a before/after difference.",
+            "Older data can be useful if its context and limitations are understood.",
+            "There is no rule that older results have a smaller rate."
+          ],
+          "transfer": "Write down the one thing you will change and at least two things you will try to keep consistent.",
+          "next": "Return to the learning path for your module activity and next lesson."
+        },
+        {
+          "id": "social-5-2",
+          "moduleIndex": 4,
+          "module": "05 · Experiments & interpretation",
+          "title": "5.2 — Read comments without inventing certainty",
+          "minutes": 8,
+          "learn": "Comment analysis can reveal themes, but a small set of comments may not represent everyone. Define categories before coding, allow an uncertain category and check ambiguous cases with another reader where possible. Sarcasm, language and context make automatic sentiment labels fallible.",
+          "example": "Ten fictional comments contain six questions about timing, two positive remarks and two unclear remarks. “Timing questions were the most common theme in this small sample” is supported. “Most of the audience dislikes the event” is not.",
+          "prompt": "Which statement is justified by the sample?",
+          "choices": [
+            "The whole audience has a negative opinion",
+            "Timing questions are the most common theme among these ten comments",
+            "The two unclear comments should be counted as negative"
+          ],
+          "correct": 1,
+          "feedback": [
+            "The sample does not support that broad claim.",
+            "Correct. It states the result and the limited scope of the evidence.",
+            "Unclear comments should not be forced into a category without a reason."
+          ],
+          "transfer": "Use theme counts to propose a content improvement, while stating how the comments were selected.",
+          "next": "Return to the learning path for your module activity and next lesson."
+        },
+        {
+          "id": "social-6-1",
+          "moduleIndex": 5,
+          "module": "06 · Campaign insight project",
+          "title": "6.1 — Turn a result into a recommendation",
+          "minutes": 8,
+          "learn": "A decision note connects objective, evidence, action and limitation. Use one relevant result rather than a list of impressive numbers. Explain why the action follows and how you will check whether it helps. Avoid presenting a small observed difference as a guaranteed future outcome.",
+          "example": "“Test the B-style call to action again: B01 produced 3 registrations from 15 clicks (20%). This is a small sample, so repeat under comparable conditions and monitor cost per registration.” The note gives evidence, a next action and a limitation.",
+          "prompt": "Which recommendation is strongest?",
+          "choices": [
+            "Always use video because one post had a high rate",
+            "Publish more posts without measuring the result",
+            "Run a comparable follow-up test and monitor registrations and cost"
+          ],
+          "correct": 2,
+          "feedback": [
+            "One observed post is not enough for a universal rule.",
+            "Activity alone is not evidence of useful outcomes.",
+            "Correct. The recommendation creates a way to learn whether the action helps."
+          ],
+          "transfer": "Prepare a four-part note: objective, evidence, proposed action and limitation. This becomes your final campaign plan.",
+          "next": "Return to the learning path for your module activity and next lesson."
+        },
+        {
+          "id": "social-6-2",
+          "moduleIndex": 5,
+          "module": "06 · Campaign insight project",
+          "title": "6.2 — Check your work before you share it",
+          "minutes": 8,
+          "learn": "Before sharing, reconcile totals after cleaning, recalculate rates, check every denominator and label the reporting period. Remove unnecessary personal details. Make clear which figures are observed, which are attributed and which are assumptions. Ask whether the recommendation answers the original question.",
+          "example": "A report says “B01 generated 20 registrations” because it copied the percentage into a count field. The source contains 3 registrations and 15 clicks. The corrected statement is “3 attributed registrations; 20% click-to-registration rate.”",
+          "prompt": "What should be corrected?",
+          "choices": [
+            "Replace the mistaken count with 3 and label 20% as a rate",
+            "Keep 20 because it sounds stronger",
+            "Remove all numbers from the report"
+          ],
+          "correct": 0,
+          "feedback": [
+            "Correct. Counts and rates should remain distinct and traceable to the source.",
+            "That would misrepresent the evidence.",
+            "Numbers are useful when accurate and clearly labelled."
+          ],
+          "transfer": "Complete your module activity, write the campaign plan and take the final quiz. You can revise and retry; there is no deadline or minimum time requirement.",
+          "next": "Return to the learning path for your module activity and next lesson."
+        }
+      ]
+    },
+    {
+      "slug": "python",
+      "title": "Programming for Data Analytics Using Python",
+      "hours": 24,
+      "lessons": [
+        {
+          "module": "04 · Cleaning & debugging",
+          "title": "4.1 — Missing is not the same as zero",
+          "minutes": 12,
+          "learn": "A missing value means that a value is unknown or absent. Zero is a known quantity. Replacing missing values with zero can distort an average. Inspect the meaning of a column and record how many values were missing before deciding what to do.",
+          "example": "Order values are [20, missing, 40]. For this example, report the average of known values: (20 + 40) / 2 = 30. In pandas: sales[\"amount\"].mean(). Also report sales[\"amount\"].isna().sum(), which is 1. This is not proof that the missing order was typical.",
+          "prompt": "If you replace the missing amount with zero, what average do you get?",
+          "choices": [
+            "20",
+            "30",
+            "60"
+          ],
+          "correct": 0,
+          "feedback": [
+            "Correct. (20 + 0 + 40) / 3 = 20. The replacement changes the result, so it requires a defensible reason.",
+            "30 is the mean of the two known values, excluding the missing observation.",
+            "60 is the sum of known values, not their mean."
+          ],
+          "transfer": "The CSV leaves the missing amount blank. Compare the mean before and after fillna(0), then write one sentence explaining which interpretation fits the business question.",
+          "next": "Next in the full programme: validate numeric types before grouping sales by region.",
+          "id": "sample-python",
+          "moduleIndex": 3
+        }
+      ]
+    },
+    {
+      "slug": "power-bi",
+      "title": "Dashboarding & Storytelling Using Power BI",
+      "hours": 24,
+      "lessons": [
+        {
+          "module": "04 · Measures & filter context",
+          "title": "4.2 — Why averaging percentages can mislead",
+          "minutes": 14,
+          "learn": "To show overall margin rate, divide total margin by total revenue. Averaging row percentages gives each row equal influence, even when the revenues differ. Define a measure that responds to the selected data while keeping the business meaning intact.",
+          "example": "North: revenue 100, margin 20 (20%). South: revenue 900, margin 90 (10%). Total margin rate = 110 / 1,000 = 11%. A simple average of the regional percentages is 15%, which is not the overall margin rate. Example measure: Margin Rate = DIVIDE(SUM(Sales[Margin]), SUM(Sales[Revenue])).",
+          "prompt": "What should the overall margin-rate card show when both regions are selected?",
+          "choices": [
+            "15%",
+            "30%",
+            "11%"
+          ],
+          "correct": 2,
+          "feedback": [
+            "15% averages the two rates without considering their different revenues.",
+            "Adding percentages does not produce the combined rate.",
+            "Correct. Divide total margin 110 by total revenue 1,000. Format the measure as a percentage."
+          ],
+          "transfer": "Filter to North only: the same ratio-of-totals measure becomes 20%. This is an example of filter context changing the rows included in the calculation.",
+          "next": "Next in the full programme: test a measure under region and date filters.",
+          "id": "sample-power-bi",
+          "moduleIndex": 3
+        }
+      ]
+    },
+    {
+      "slug": "databases",
+      "title": "Database Management Using SQL & MongoDB",
+      "hours": 24,
+      "lessons": [
+        {
+          "module": "03 · Joins & safe changes",
+          "title": "3.1 — Why did the total double?",
+          "minutes": 15,
+          "learn": "A join returns matching combinations of rows. If an order has two lines, joining the order header to those lines produces two rows. Summing a header-level total after that join counts the same order twice. Identify the grain: what does one row represent?",
+          "example": "Order 101 has an order_total of 100 and two lines worth 40 and 60. SELECT SUM(o.order_total) FROM orders o JOIN lines l ON o.order_id = l.order_id returns 200 for this example. Summing the line values returns 100, as does summing the unjoined order table.",
+          "prompt": "You need revenue across all orders. Which approach is sound for this model?",
+          "choices": [
+            "Sum order_total in the orders table before joining lines",
+            "Use SUM(DISTINCT order_total) for every business dataset",
+            "Add more joins until the duplicate rows disappear"
+          ],
+          "correct": 0,
+          "feedback": [
+            "Correct. Preserve the order grain. If you need line-level analysis, aggregate the appropriate line amounts instead.",
+            "Different orders can have the same total. DISTINCT can incorrectly collapse their values.",
+            "More joins can introduce further duplication. Check the grain and relationships first."
+          ],
+          "transfer": "Before and after any join, compare row counts, distinct order IDs and reconciled totals. Repetition may be valid at the line grain but invalid for summing order headers.",
+          "next": "Next in the full programme: preserve customers with no orders using a LEFT JOIN.",
+          "id": "sample-databases",
+          "moduleIndex": 2
+        }
+      ]
+    },
+    {
+      "slug": "ai-deep-learning",
+      "title": "Artificial Intelligence & Deep Learning Using Python",
+      "hours": 40,
+      "lessons": [
+        {
+          "module": "06 · Generalisation & diagnosis",
+          "title": "6.2 — When 95% accuracy tells the wrong story",
+          "minutes": 15,
+          "learn": "Accuracy is the proportion of all predictions that are correct. It can conceal complete failure on a rare class. Recall for the positive class is true positives divided by all actual positives. Choose metrics based on what the errors mean.",
+          "example": "A test set has 95 negative cases and 5 positive cases. A model predicts negative for everyone. It is correct on 95 of 100 cases, so accuracy is 95%. It finds zero of the five positives, so positive-class recall is 0%.",
+          "prompt": "What is the model’s positive-class recall?",
+          "choices": [
+            "95%",
+            "5%",
+            "0%"
+          ],
+          "correct": 2,
+          "feedback": [
+            "That is the overall accuracy, dominated by the negative class.",
+            "5% is the prevalence of positive cases, not recall.",
+            "Correct. Recall = 0 / 5 = 0%. The model misses every actual positive."
+          ],
+          "transfer": "Positive precision has a zero denominator here because no positives were predicted. Report that explicitly rather than presenting it as evidence of strong performance. Inspect the confusion matrix alongside accuracy.",
+          "next": "Next in the full programme: compare decision thresholds and their precision–recall trade-off.",
+          "id": "sample-ai-deep-learning",
+          "moduleIndex": 5
+        }
+      ]
+    },
+    {
+      "slug": "business-analytics",
+      "title": "Business Analytics Professional",
+      "hours": 50,
+      "lessons": [
+        {
+          "module": "08 · Decision & scenario modelling",
+          "title": "8.1 — Revenue is not contribution",
+          "minutes": 15,
+          "learn": "Contribution equals revenue minus variable costs. A larger sales figure can hide a weaker economic result. Compare options against the decision’s stated objective, then examine capacity, uncertainty and any fixed-cost differences before making a recommendation.",
+          "example": "Option A sells 100 units at 50, with variable cost 30 per unit. Contribution = 100 × (50 − 30) = 2,000. Option B sells 140 units at 45, with variable cost 32. Contribution = 140 × 13 = 1,820. Fixed costs are equal in this example.",
+          "prompt": "With contribution as the criterion and all other factors held equal, which option leads?",
+          "choices": [
+            "A, by 180",
+            "B, because it generates more revenue",
+            "They are equal because fixed costs are equal"
+          ],
+          "correct": 0,
+          "feedback": [
+            "Correct. A contributes 2,000 versus 1,820. This is a conditional comparison, not a complete investment decision.",
+            "B has revenue 6,300 versus 5,000, but its lower unit contribution produces a lower total contribution.",
+            "Equal fixed costs do not make different contribution totals equal."
+          ],
+          "transfer": "At a unit contribution of 13, B needs more than 2,000 / 13 = 153.85 units to exceed A. For whole units, that means at least 154. Test whether this volume is plausible.",
+          "next": "Next in the full programme: add a capacity constraint and document what changes the recommendation.",
+          "id": "sample-business-analytics",
+          "moduleIndex": 7
+        }
+      ]
+    },
+    {
+      "slug": "data-engineering",
+      "title": "Applied Data Engineering",
+      "hours": 60,
+      "lessons": [
+        {
+          "module": "06 · Incremental loads & idempotency",
+          "title": "6.1 — A retry should not double your data",
+          "minutes": 15,
+          "learn": "An idempotent load gives the same final result when the same input is processed again. Retrying a failed task is normal, so blind append is often unsafe for current-state order tables. Use a stable business key and a defined update rule.",
+          "example": "The target contains order 101 at amount 100. A batch contains an updated order 101 at 120 and new order 102 at 80. With a keyed upsert and a newer-version rule, the target ends with two orders totalling 200. Replaying the same batch leaves that result unchanged.",
+          "prompt": "After replaying the same batch, what should a correct current-state target contain?",
+          "choices": [
+            "Four rows totalling 400",
+            "Two orders totalling 200",
+            "One order totalling 120"
+          ],
+          "correct": 1,
+          "feedback": [
+            "That indicates duplicate accumulation. A retry must not append the same logical orders again.",
+            "Correct. Stable order keys and deterministic update rules preserve the same two-order state.",
+            "The new order 102 must be retained alongside the updated order 101."
+          ],
+          "transfer": "An upsert alone is not enough if old events can overwrite new ones. Compare source versions or event timestamps, define tie-breaking, and test out-of-order updates as well as exact replays.",
+          "next": "Next in the full programme: handle a late event without moving the watermark past unprocessed work.",
+          "id": "sample-data-engineering",
+          "moduleIndex": 5
+        }
+      ]
+    }
+  ],
+  "social": {
+    "version": 1,
+    "caseTitle": "Northbank Open Day: turn campaign data into a useful decision",
+    "caseIntro": "Northbank is a fictional education provider promoting an online open day. The campaign objective is completed registrations. You are reviewing seven days of synthetic post-level data, with registrations attributed to a tagged link within the same window. The report cannot prove which posts caused registrations.",
+    "lessons": [
+      {
+        "id": "social-1-1",
+        "moduleIndex": 0,
+        "module": "01 · Goals & measurement",
+        "title": "1.1 — Start with the decision",
+        "minutes": 8,
+        "learn": "An analytics question begins with a decision, not a dashboard. Ask who will use the answer, what they can change and which outcome matters. Awareness, engagement and registration are different objectives. Write one primary objective and a supporting measure before collecting data.",
+        "example": "Northbank wants more completed open-day registrations. Its primary measure is attributed registrations in a seven-day reporting window. Impressions indicate visibility, but a post can be widely viewed without producing registrations.",
+        "prompt": "Which question best matches Northbank’s stated objective?",
+        "choices": [
+          "Which campaign links brought attributed registrations?",
+          "Which post used the brightest colours?",
+          "Which post had the most impressions, regardless of registrations?"
+        ],
+        "correct": 0,
+        "feedback": [
+          "Correct. It links the analysis to the desired action, with an attribution limit to explain.",
+          "Colour could be a test variable, but it is not the outcome.",
+          "Impressions are useful context but do not answer the registration question."
+        ],
+        "transfer": "Write one sentence beginning “We need to decide…” and another beginning “We will measure…”. Keep the decision and the measure connected.",
+        "next": "Return to the learning path for your module activity and next lesson."
+      },
+      {
+        "id": "social-1-2",
+        "moduleIndex": 0,
+        "module": "01 · Goals & measurement",
+        "title": "1.2 — Define a metric before comparing it",
+        "minutes": 8,
+        "learn": "A metric definition needs a numerator, a denominator when relevant, a time window and a source. Reach describes unique accounts under a platform’s definition; impressions count displays and may include repeats. Rates calculated using different denominators cannot be compared as if they were identical.",
+        "example": "A post has 1,000 impressions and reaches 700 accounts. Forty engagements divided by impressions gives 4%; divided by reach gives about 5.71%. Both are calculations, but they answer different questions.",
+        "prompt": "Which label is clear enough to compare across posts?",
+        "choices": [
+          "Engagement: 4%",
+          "Engagements / impressions, seven-day window: 4%",
+          "Success score: 4%"
+        ],
+        "correct": 1,
+        "feedback": [
+          "The denominator and window are missing.",
+          "Correct. The label tells a reader what was divided and which period was measured.",
+          "A success score without a definition cannot be interpreted."
+        ],
+        "transfer": "Create a tiny metric dictionary: metric name, formula, reporting window and source. Use it throughout the course.",
+        "next": "Return to the learning path for your module activity and next lesson."
+      },
+      {
+        "id": "social-2-1",
+        "moduleIndex": 1,
+        "module": "02 · Data collection & quality",
+        "title": "2.1 — Clean without changing the story",
+        "minutes": 8,
+        "learn": "Keep a copy of the source export before cleaning. Check record IDs, reporting dates, types and missing values. An identical repeated record can inflate totals if counted twice. A blank is unknown until you understand the source; it is not automatically zero.",
+        "example": "The course CSV contains A02 twice with identical values. Check that both rows represent the same post and reporting window, then count one. C02 has blank clicks, so its click-through and click-to-registration rates should be flagged as unavailable.",
+        "prompt": "What should happen to a blank clicks value?",
+        "choices": [
+          "Always change it to zero",
+          "Treat it as unknown and investigate",
+          "Copy the clicks from the previous post"
+        ],
+        "correct": 1,
+        "feedback": [
+          "Zero asserts that no clicks occurred. A blank does not establish that.",
+          "Correct. Preserve the distinction and document any later correction.",
+          "Copying another record invents evidence."
+        ],
+        "transfer": "Keep a cleaning log with the original issue, your action and the reason. This lets another learner reproduce your totals.",
+        "next": "Return to the learning path for your module activity and next lesson."
+      },
+      {
+        "id": "social-2-2",
+        "moduleIndex": 1,
+        "module": "02 · Data collection & quality",
+        "title": "2.2 — Collect only what the question needs",
+        "minutes": 8,
+        "learn": "A campaign performance question often needs counts by post rather than personal profiles. Minimise unnecessary personal information, use authorised exports, and keep access appropriate to the task. Before quoting a comment, consider whether the wording identifies a person and whether an aggregate theme would answer the question.",
+        "example": "To compare registrations by content format, Northbank needs post ID, format, impressions, clicks and attributed registration counts. Names, email addresses and private messages are not needed for this exercise. All supplied records are fictional.",
+        "prompt": "Which dataset best fits the comparison?",
+        "choices": [
+          "A list of every viewer’s name and private messages",
+          "Only the most flattering comments",
+          "Aggregate post metrics with consistent definitions"
+        ],
+        "correct": 2,
+        "feedback": [
+          "Those details are unnecessary for this question.",
+          "Selecting flattering comments biases the evidence.",
+          "Correct. Aggregate records can support the comparison without unnecessary personal details."
+        ],
+        "transfer": "Before adding a field, ask: “Which decision needs this?” Leave it out if it adds exposure without analytical value.",
+        "next": "Return to the learning path for your module activity and next lesson."
+      },
+      {
+        "id": "social-3-1",
+        "moduleIndex": 2,
+        "module": "03 · Audience & content analysis",
+        "title": "3.1 — Compare rates and totals together",
+        "minutes": 8,
+        "learn": "A total measures volume; a rate relates the result to exposure. A small post may lead on rate while a larger post leads on total outcomes. Show both when the decision involves reach and effectiveness. An engagement rate per impression is not the percentage of unique people who engaged.",
+        "example": "A01: 120 engagements / 4,000 impressions = 3%. B01: 80 / 1,000 = 8%. A01 produced more engagements; B01 produced more engagements per impression.",
+        "prompt": "Which statement is supported?",
+        "choices": [
+          "B01 has both the highest rate and the highest total",
+          "A01 has more engagements; B01 has the higher rate",
+          "A01 is better on every measure"
+        ],
+        "correct": 1,
+        "feedback": [
+          "B01 has fewer total engagements: 80 rather than 120.",
+          "Correct. The rate and volume results point in different directions.",
+          "A01 does not have the higher engagement rate."
+        ],
+        "transfer": "Write both results before choosing a recommendation. Explain which one matters for the stated objective.",
+        "next": "Return to the learning path for your module activity and next lesson."
+      },
+      {
+        "id": "social-3-2",
+        "moduleIndex": 2,
+        "module": "03 · Audience & content analysis",
+        "title": "3.2 — Segment before telling the story",
+        "minutes": 8,
+        "learn": "Grouping by format, audience or campaign can uncover useful differences. Keep groups comparable and report their size. When combining rates, divide summed numerators by summed denominators. A simple average of percentages can give a tiny group as much influence as a large one.",
+        "example": "Group X has 10 engagements from 100 impressions (10%). Group Y has 90 from 900 (10%). Their overall rate is 100 / 1,000 = 10%. If X had 20 instead, the combined rate would be 110 / 1,000 = 11%, not the unweighted average of 20% and 10%.",
+        "prompt": "Which formula produces the combined rate?",
+        "choices": [
+          "Add the percentages",
+          "Average the group percentages regardless of size",
+          "Total engagements divided by total impressions"
+        ],
+        "correct": 2,
+        "feedback": [
+          "Rates do not add to a combined rate.",
+          "An unweighted average can misrepresent groups of different sizes.",
+          "Correct. The totals preserve each group’s exposure in the combined calculation."
+        ],
+        "transfer": "Compare formats only after checking the reporting window and group sizes. Flag segments with very few observations.",
+        "next": "Return to the learning path for your module activity and next lesson."
+      },
+      {
+        "id": "social-4-1",
+        "moduleIndex": 3,
+        "module": "04 · Campaign performance",
+        "title": "4.1 — Follow the click-to-registration funnel",
+        "minutes": 8,
+        "learn": "A funnel separates exposure, clicks and completed actions. Click-through rate is clicks divided by impressions. Click-to-registration rate is attributed registrations divided by clicks. A strong rate at one stage does not guarantee a large number of completed actions.",
+        "example": "A01: 4,000 impressions, 40 clicks and 4 attributed registrations. Click-through rate = 40 / 4,000 = 1%. Click-to-registration rate = 4 / 40 = 10%. The final volume is four registrations.",
+        "prompt": "A new post has 50 clicks and 5 registrations. Its click-to-registration rate is:",
+        "choices": [
+          "10%",
+          "1%",
+          "50%"
+        ],
+        "correct": 0,
+        "feedback": [
+          "Correct. 5 / 50 × 100 = 10%.",
+          "That would require a different denominator.",
+          "The 50 is a count, not the result of the division."
+        ],
+        "transfer": "Label every funnel stage and show its count. A rate without its sample size can hide very limited evidence.",
+        "next": "Return to the learning path for your module activity and next lesson."
+      },
+      {
+        "id": "social-4-2",
+        "moduleIndex": 3,
+        "module": "04 · Campaign performance",
+        "title": "4.2 — Cost and attribution need context",
+        "minutes": 8,
+        "learn": "Cost per attributed registration equals campaign spend divided by attributed registrations. Attribution assigns credit according to a defined rule and window; it does not prove a post caused the outcome. If registrations are zero, do not report a zero cost per registration: the ratio is undefined.",
+        "example": "A01 spends 40 units and records 4 attributed registrations: cost per registration = 10. B01 spends 30 and records 3: also 10. B01’s higher click-to-registration rate does not make its observed cost per registration lower.",
+        "prompt": "What does an equal cost per attributed registration establish?",
+        "choices": [
+          "The campaigns caused exactly the same impact",
+          "Their observed spend-to-attributed-registration ratios match",
+          "Their audiences and all other conditions were identical"
+        ],
+        "correct": 1,
+        "feedback": [
+          "A ratio alone cannot establish causal impact.",
+          "Correct. It describes the observed data under the attribution rule.",
+          "Equal ratios do not imply identical conditions."
+        ],
+        "transfer": "Report the attribution method, period and denominator. Identify what the data cannot tell you.",
+        "next": "Return to the learning path for your module activity and next lesson."
+      },
+      {
+        "id": "social-5-1",
+        "moduleIndex": 4,
+        "module": "05 · Experiments & interpretation",
+        "title": "5.1 — Design a test that can teach you something",
+        "minutes": 8,
+        "learn": "A useful test states a hypothesis, changes a defined factor and measures a preselected outcome. Random assignment to comparable groups helps separate the change from other influences. Hold the audience rules, measurement window and delivery conditions consistent where possible. Decide how long to observe before looking for a winner.",
+        "example": "Northbank compares “Reserve a place” with “See the programme”. Both variants use the same image and landing page, with comparable randomly assigned audiences. The primary outcome is attributed registrations. The team records spend as a guardrail.",
+        "prompt": "Why is a simple comparison with last month weaker evidence?",
+        "choices": [
+          "Audience, season and other conditions may have changed",
+          "Older data is always invalid",
+          "It always produces a smaller percentage"
+        ],
+        "correct": 0,
+        "feedback": [
+          "Correct. Other changes can explain a before/after difference.",
+          "Older data can be useful if its context and limitations are understood.",
+          "There is no rule that older results have a smaller rate."
+        ],
+        "transfer": "Write down the one thing you will change and at least two things you will try to keep consistent.",
+        "next": "Return to the learning path for your module activity and next lesson."
+      },
+      {
+        "id": "social-5-2",
+        "moduleIndex": 4,
+        "module": "05 · Experiments & interpretation",
+        "title": "5.2 — Read comments without inventing certainty",
+        "minutes": 8,
+        "learn": "Comment analysis can reveal themes, but a small set of comments may not represent everyone. Define categories before coding, allow an uncertain category and check ambiguous cases with another reader where possible. Sarcasm, language and context make automatic sentiment labels fallible.",
+        "example": "Ten fictional comments contain six questions about timing, two positive remarks and two unclear remarks. “Timing questions were the most common theme in this small sample” is supported. “Most of the audience dislikes the event” is not.",
+        "prompt": "Which statement is justified by the sample?",
+        "choices": [
+          "The whole audience has a negative opinion",
+          "Timing questions are the most common theme among these ten comments",
+          "The two unclear comments should be counted as negative"
+        ],
+        "correct": 1,
+        "feedback": [
+          "The sample does not support that broad claim.",
+          "Correct. It states the result and the limited scope of the evidence.",
+          "Unclear comments should not be forced into a category without a reason."
+        ],
+        "transfer": "Use theme counts to propose a content improvement, while stating how the comments were selected.",
+        "next": "Return to the learning path for your module activity and next lesson."
+      },
+      {
+        "id": "social-6-1",
+        "moduleIndex": 5,
+        "module": "06 · Campaign insight project",
+        "title": "6.1 — Turn a result into a recommendation",
+        "minutes": 8,
+        "learn": "A decision note connects objective, evidence, action and limitation. Use one relevant result rather than a list of impressive numbers. Explain why the action follows and how you will check whether it helps. Avoid presenting a small observed difference as a guaranteed future outcome.",
+        "example": "“Test the B-style call to action again: B01 produced 3 registrations from 15 clicks (20%). This is a small sample, so repeat under comparable conditions and monitor cost per registration.” The note gives evidence, a next action and a limitation.",
+        "prompt": "Which recommendation is strongest?",
+        "choices": [
+          "Always use video because one post had a high rate",
+          "Publish more posts without measuring the result",
+          "Run a comparable follow-up test and monitor registrations and cost"
+        ],
+        "correct": 2,
+        "feedback": [
+          "One observed post is not enough for a universal rule.",
+          "Activity alone is not evidence of useful outcomes.",
+          "Correct. The recommendation creates a way to learn whether the action helps."
+        ],
+        "transfer": "Prepare a four-part note: objective, evidence, proposed action and limitation. This becomes your final campaign plan.",
+        "next": "Return to the learning path for your module activity and next lesson."
+      },
+      {
+        "id": "social-6-2",
+        "moduleIndex": 5,
+        "module": "06 · Campaign insight project",
+        "title": "6.2 — Check your work before you share it",
+        "minutes": 8,
+        "learn": "Before sharing, reconcile totals after cleaning, recalculate rates, check every denominator and label the reporting period. Remove unnecessary personal details. Make clear which figures are observed, which are attributed and which are assumptions. Ask whether the recommendation answers the original question.",
+        "example": "A report says “B01 generated 20 registrations” because it copied the percentage into a count field. The source contains 3 registrations and 15 clicks. The corrected statement is “3 attributed registrations; 20% click-to-registration rate.”",
+        "prompt": "What should be corrected?",
+        "choices": [
+          "Replace the mistaken count with 3 and label 20% as a rate",
+          "Keep 20 because it sounds stronger",
+          "Remove all numbers from the report"
+        ],
+        "correct": 0,
+        "feedback": [
+          "Correct. Counts and rates should remain distinct and traceable to the source.",
+          "That would misrepresent the evidence.",
+          "Numbers are useful when accurate and clearly labelled."
+        ],
+        "transfer": "Complete your module activity, write the campaign plan and take the final quiz. You can revise and retry; there is no deadline or minimum time requirement.",
+        "next": "Return to the learning path for your module activity and next lesson."
+      }
+    ],
+    "activities": [
+      {
+        "title": "Write a measurement brief",
+        "prompt": "For the Northbank open day, write the business objective, one primary metric and one guardrail. Explain why likes alone would not answer the business question.",
+        "example": "Objective: completed registrations. Primary metric: registrations attributed to campaign links in the agreed seven-day window. Guardrail: cost per attributed registration. Engagement is supporting context."
+      },
+      {
+        "title": "Check the source data",
+        "prompt": "Download the campaign CSV. Record two checks you would make before comparing posts, including the duplicate A02 row and missing clicks for C02. Say what you would keep, remove or flag and why.",
+        "example": "Keep one A02 record after checking that the duplicate is identical. Flag C02 clicks as unknown; do not replace them with zero. Compare the same reporting window for every post."
+      },
+      {
+        "title": "Compare volume and rate",
+        "prompt": "A01 has 120 engagements / 4,000 impressions; B01 has 80 / 1,000. Calculate both engagement rates, identify the volume winner and the rate winner, and explain one limitation of comparing them.",
+        "example": "A01: 3%, with more total engagements. B01: 8%, with a higher rate. Different audiences, budgets or posting times could explain the difference; this comparison is not causal."
+      },
+      {
+        "title": "Follow the conversion funnel",
+        "prompt": "A01 has 40 clicks and 4 attributed registrations. B01 has 15 clicks and 3 registrations. Calculate click-to-registration rates, then explain why the higher rate alone is not enough to choose a campaign.",
+        "example": "A01: 10%; B01: 20%. A01 produced more registrations, and both sample sizes are small. Review total outcomes, cost and consistency before choosing."
+      },
+      {
+        "title": "Design a fair follow-up",
+        "prompt": "Propose a test comparing two calls to action. State what stays the same, what changes, the primary outcome and one reason that an uncontrolled before/after comparison could mislead.",
+        "example": "Randomly assign comparable audience members to two call-to-action variants, holding creative and delivery conditions consistent. Measure attributed registrations; seasonality can confound a simple before/after comparison."
+      },
+      {
+        "title": "Write a decision note",
+        "prompt": "Give Northbank one recommendation, cite one calculated result, and state a limitation. Include a follow-up measurement rather than claiming that one post proves a format is best.",
+        "example": "Test the B-style call to action again: B01 achieved 3/15 = 20% click-to-registration, but only three registrations. Compare more observations with consistent attribution and monitor cost per registration."
+      }
+    ],
+    "quiz": [
+      {
+        "question": "The goal is open-day registrations. Which primary result best matches it?",
+        "choices": [
+          "The largest number of likes",
+          "Completed registrations attributed within a defined reporting window",
+          "The number of posts published"
+        ],
+        "correct": 1,
+        "why": "The primary measure should match the desired action. Attribution must have a stated source and window."
+      },
+      {
+        "question": "A post has 60 engagements and 2,000 impressions. Its engagement rate per impression is:",
+        "choices": [
+          "3%",
+          "30%",
+          "0.3%"
+        ],
+        "correct": 0,
+        "why": "60 / 2,000 × 100 = 3%. Name the denominator when reporting the result."
+      },
+      {
+        "question": "A campaign export has a blank clicks cell. What is the sound first step?",
+        "choices": [
+          "Replace it with zero immediately",
+          "Exclude the entire campaign without checking",
+          "Treat it as unknown and investigate the source"
+        ],
+        "correct": 2,
+        "why": "Missing and zero are different. Flag the value and establish its meaning before calculating click-based rates."
+      },
+      {
+        "question": "A campaign has 8 attributed registrations from 80 clicks. Its click-to-registration rate is:",
+        "choices": [
+          "1%",
+          "10%",
+          "80%"
+        ],
+        "correct": 1,
+        "why": "8 / 80 × 100 = 10%. This rate describes the observed funnel, not causal impact."
+      },
+      {
+        "question": "Video posts have a higher engagement rate than image posts in an uncontrolled report. What can you conclude?",
+        "choices": [
+          "Video caused the improvement",
+          "Video should receive all the budget",
+          "Video had a higher observed rate; other differences may explain it"
+        ],
+        "correct": 2,
+        "why": "Audience, timing, spend and other factors may differ. Observation supports a follow-up question, not a causal conclusion."
+      },
+      {
+        "question": "You share a campaign report with a broad team. Which choice is most appropriate?",
+        "choices": [
+          "Use aggregate results and leave out unnecessary personal identifiers",
+          "Include every identifiable comment and profile",
+          "Publish the raw export so everyone can inspect it"
+        ],
+        "correct": 0,
+        "why": "Share the information needed for the decision and minimise unnecessary exposure of individual people."
+      }
+    ],
+    "projectFields": [
+      [
+        "objective",
+        "Objective & measurement",
+        "State the campaign objective, primary metric and reporting window."
+      ],
+      [
+        "evidence",
+        "Evidence & interpretation",
+        "Include at least two correctly defined metrics, with numbers and denominators."
+      ],
+      [
+        "recommendation",
+        "Recommendation & next test",
+        "Recommend an action and explain how you would test whether it helps."
+      ],
+      [
+        "limitations",
+        "Limits & responsible handling",
+        "Name at least one analytical limitation and how you would minimise personal data in the report."
+      ]
+    ],
+    "projectChecks": [
+      "I checked my calculations and named the denominators.",
+      "I distinguished observed results from causal claims.",
+      "I stated a reporting window and a limitation, and excluded unnecessary personal details."
+    ]
+  }
+}
