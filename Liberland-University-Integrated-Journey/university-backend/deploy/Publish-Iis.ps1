@@ -53,7 +53,7 @@ function Check-Release([string] $Base, [string] $ExpectedId) {
 }
 function Stop-CampusTask([string] $Name, [int] $ListenPort) {
     if (Get-ScheduledTask -TaskName $Name -ErrorAction SilentlyContinue) {
-        Stop-ScheduledTask -TaskName $Name
+        Stop-ScheduledTask -TaskName $Name -ErrorAction Stop
         for ($attempt = 0; $attempt -lt 15; $attempt++) {
             if (-not (Get-NetTCPConnection -State Listen -LocalPort $ListenPort -ErrorAction SilentlyContinue)) { return }
             Start-Sleep -Seconds 1
@@ -64,10 +64,10 @@ function Stop-CampusTask([string] $Name, [int] $ListenPort) {
 function Restore-Release($Record) {
     Stop-CampusTask $Record.taskName $Record.port
     $task = Get-ScheduledTask -TaskName $Record.taskName -ErrorAction SilentlyContinue
-    if ($task) { Unregister-ScheduledTask -TaskName $Record.taskName -Confirm:$false }
+    if ($task) { Unregister-ScheduledTask -TaskName $Record.taskName -Confirm:$false -ErrorAction Stop }
     if ($Record.previousTaskXml) {
-        Register-ScheduledTask -TaskName $Record.taskName -Xml $Record.previousTaskXml -User $ServiceCredential.UserName -Password ($ServiceCredential.GetNetworkCredential().Password) | Out-Null
-        Start-ScheduledTask -TaskName $Record.taskName
+        Register-ScheduledTask -TaskName $Record.taskName -Xml $Record.previousTaskXml -User $ServiceCredential.UserName -Password ($ServiceCredential.GetNetworkCredential().Password) -ErrorAction Stop | Out-Null
+        Start-ScheduledTask -TaskName $Record.taskName -ErrorAction Stop
     }
     Set-ItemProperty -LiteralPath $sitePath -Name physicalPath -Value $Record.previousSitePath
 }
@@ -195,8 +195,8 @@ try {
     $action = New-ScheduledTaskAction -Execute $node -Argument ('--env-file="' + $envFile + '" "' + (Join-Path $ReleasePath 'server\app.js') + '"') -WorkingDirectory $ReleasePath
     $trigger = New-ScheduledTaskTrigger -AtStartup
     $taskSettings = New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -RestartCount 999 -RestartInterval (New-TimeSpan -Minutes 1) -ExecutionTimeLimit ([TimeSpan]::Zero) -StartWhenAvailable
-    Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Settings $taskSettings -User $ServiceCredential.UserName -Password ($ServiceCredential.GetNetworkCredential().Password) -RunLevel Limited -Force | Out-Null
-    Start-ScheduledTask -TaskName $taskName
+    Register-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Settings $taskSettings -User $ServiceCredential.UserName -Password ($ServiceCredential.GetNetworkCredential().Password) -RunLevel Limited -Force -ErrorAction Stop | Out-Null
+    Start-ScheduledTask -TaskName $taskName -ErrorAction Stop
     Check-Release "http://127.0.0.1:$Port" $release.release
     Set-ItemProperty -LiteralPath $sitePath -Name physicalPath -Value $record.newSitePath
     Check-Release $PublicOrigin $release.release
