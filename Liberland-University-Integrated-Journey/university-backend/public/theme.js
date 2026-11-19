@@ -15,13 +15,19 @@
     if(persist) localStorage.setItem(storageKey,theme);
     document.querySelectorAll('[data-theme-toggle]').forEach(btn=>{
       const dark=theme==='dark';
-      btn.setAttribute('aria-pressed',String(dark));
-      btn.setAttribute('aria-label',dark?'Switch to day theme':'Switch to night theme');
-      btn.setAttribute('title',dark?'Switch to day theme':'Switch to night theme');
+      btn.classList.add('theme-toggle--switch');
+      btn.setAttribute('role','switch');
+      btn.removeAttribute('aria-pressed');
+      btn.setAttribute('aria-checked',String(dark));
+      btn.setAttribute('aria-label','Dark appearance');
+      btn.setAttribute('title',dark?'Switch to light appearance':'Switch to dark appearance');
+      if(!btn.querySelector('.theme-toggle__track')) btn.innerHTML='<span class="theme-toggle__track" aria-hidden="true"><span class="theme-toggle__icon"></span></span><span class="theme-toggle__label"></span>';
       const icon=btn.querySelector('.theme-toggle__icon');
       const label=btn.querySelector('.theme-toggle__label');
-      if(icon) icon.textContent=dark?'☀':'☾';
-      if(label) label.textContent=dark?'Day':'Night';
+      if(icon) icon.innerHTML=dark
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.9 13.1A9 9 0 0 1 10.9 3.1a9 9 0 1 0 10 10Z"/></svg>'
+        : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+      if(label) label.textContent=dark?'Dark':'Light';
     });
   }
 

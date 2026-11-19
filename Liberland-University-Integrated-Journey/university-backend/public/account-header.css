@@ -1,0 +1,28 @@
+.campus-account{position:relative;margin:0;font-family:var(--font-body,'Segoe UI',sans-serif);color:var(--text,#191b1d);flex-shrink:0}
+.campus-account summary{display:flex;align-items:center;gap:9px;min-height:44px;max-width:210px;padding:5px 9px;border:1px solid var(--border,#dcdad3);border-radius:6px;cursor:pointer;list-style:none;background:transparent}
+.campus-account summary::-webkit-details-marker{display:none}
+.campus-account summary::after{content:'⌄';color:var(--text-muted,#626862);margin-left:3px}
+.account-avatar{display:grid;place-items:center;width:28px;height:28px;flex:0 0 28px;border-radius:50%;font-size:11px;font-weight:700;background:var(--accent-soft,#eee5d5);color:var(--accent-text,#76551f)}
+.account-labels{min-width:0;display:grid;line-height:1.25}
+.account-name{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:600 13px/1.4 var(--font-body,'Segoe UI',sans-serif);color:inherit}
+.account-role{display:block;font-size:10px;white-space:nowrap;color:var(--text-muted,#626862)}
+.account-popover{position:absolute;right:0;top:calc(100% + 8px);z-index:100;width:240px;padding:8px;border:1px solid var(--border,#dcdad3);border-radius:8px;background:var(--surface,#fffefa);box-shadow:0 8px 26px #0002}
+.account-popover>a,.account-popover>button{display:block;width:100%;padding:11px 12px;min-height:44px;border:0;border-radius:4px;background:transparent;color:var(--text,#191b1d);text-decoration:none;text-align:left;font:500 14px/1.5 var(--font-body,'Segoe UI',sans-serif);cursor:pointer}
+.account-popover>a:hover,.account-popover>button:hover{background:var(--hover-bg,#f0efeb);color:var(--text-strong,#111315)}
+.campus-account summary:focus-visible,.account-popover>:focus-visible{outline:2px solid var(--accent,#946d2d);outline-offset:3px}
+.account-menu-error{padding:8px;color:#b33c32;font-size:12px}
+.topbar .header-actions>.account-sign-in{border-color:transparent}
+body[data-campus-space='learning'] .topbar .desktop-nav,body[data-campus-space='learning'] .topbar .header-contact{display:none}
+body[data-campus-space='learning'] .mobile-menu [data-route='courses'],body[data-campus-space='learning'] .mobile-menu [data-route='research'],body[data-campus-space='learning'] .mobile-menu [data-route='community'],body[data-campus-space='learning'] .mobile-menu [data-route='about']{display:none}
+.learning-account-status{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 24px;padding:12px 16px;border:1px solid var(--border,#dcdad3);border-left:3px solid var(--accent,#946d2d);border-radius:4px;color:var(--text,#191b1d);background:var(--surface,#fffefa);font-size:13px}
+.learning-account-status p{margin:0;color:inherit}.learning-account-status a{color:var(--accent-text,#76551f)}
+.learning-account-status small{display:block;color:var(--text-muted,#626862)}
+.account-identity{margin-left:auto}.account-identity:empty{display:none}
+.selected-course{padding:18px 20px;margin:20px 0;border:1px solid var(--line);border-left:3px solid var(--gold);background:var(--panel)}
+.selected-course h2{font-size:1.5rem;margin:4px 0 10px}.selected-course p{margin:6px 0}
+.enrolment-steps{display:flex;flex-wrap:wrap;gap:8px 20px;padding-left:20px;font-size:12px;color:var(--muted)}
+.enrolment-steps [aria-current='step']{font-weight:700;color:var(--ink)}
+@media(max-width:700px){.account-identity{margin-left:0}.account-popover{max-width:calc(100vw - 32px)}}
+@media(max-width:520px){.topbar .campus-account summary{max-width:clamp(88px,calc(100vw - 232px),170px);padding:5px 7px;gap:5px}.topbar .account-avatar{display:none}.topbar .account-role{font-size:9px}.topbar .account-popover{position:fixed;top:80px;left:16px;right:16px;width:auto}.learning-account-status{font-size:12px}}
+
+.cert-learning aside>strong{color:inherit}

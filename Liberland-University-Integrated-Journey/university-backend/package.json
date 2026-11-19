@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node server/app.js",
-    "test": "node --test test/api.test.js test/payments.test.js",
+    "test": "node --test test/api.test.js test/payments.test.js test/hosting.test.js test/journey.test.js test/demo.test.js",
     "stripe:listen": "node server/stripe-listen.js",
     "backup": "node server/backup.js"
   },

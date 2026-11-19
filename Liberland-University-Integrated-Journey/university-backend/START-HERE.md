@@ -1,5 +1,10 @@
 # Liberland student backend — local review
 
+**IIS hosting:** the integrated journey now has an explicit HTTPS origin setting
+and a staged Windows deployment routine. Read **IIS-HOSTING.md** for the existing
+`universityofliberland.land` site. Local startup below remains available. Hosting
+does not enable live Stripe payments or email delivery.
+
 **Stripe update:** sandbox checkout is now integrated. Read **STRIPE-TESTING.md** first for dependency installation, key configuration and the two local processes needed for payments. Earlier notes below describing payments as unconnected apply to the original backend milestone; Stripe sandbox testing is now available, while live payments remain disabled.
 
 This is a working **local Node.js + SQLite application**, built from the reviewed Liberland campus. It does not require a software subscription, a Supabase project or a payment account. SQLite is the first local storage implementation; a hosted Supabase connection and migration have **not** been implemented yet.
@@ -32,7 +37,7 @@ The server binds only to 127.0.0.1. Do not upload this package to a public websi
 
 Records are in `data/campus.sqlite`. Staff authenticator secrets are encrypted using `data/encryption.key`; losing that key prevents staff sign-in. Passwords use salted scrypt hashes. Sessions are stored server-side; the browser gets an HttpOnly, SameSite cookie, not a database password or role assignment. Sessions expire after eight hours. Staff suspension immediately invalidates student sessions. Students cannot grant themselves staff access or approve their own enrolments.
 
-`npm run backup` takes a SQLite backup while the server is running. Store the database backup and a protected copy of `data/encryption.key` securely. To restore, stop the server, preserve the current data directory, and restore a matched database/key backup into a fresh data directory. Restart with that directory selected through `DATA_DIR`. Backup access and retention are the operator's responsibility. This package has not implemented scheduled or off-device backups.
+`npm run backup` takes a SQLite backup while the server is running and copies its matching authenticator encryption key alongside it. Store both files securely. `BACKUP_DIR` selects an external backup directory when hosted. To restore, stop the server, preserve the current data directory, and restore the matched files as `campus.sqlite` and `encryption.key` into a fresh data directory. Restart with that directory selected through `DATA_DIR`. Backup access and retention are the operator's responsibility. This package has not implemented scheduled or off-device backups.
 
 Account deletion removes the account, enrolments, progress, linked enquiries and email previews. Historical audit entries retain opaque record identifiers. Backups and unlinked guest enquiries require separate review; deletion is not a claim of complete legal erasure across all retained copies.
 
@@ -41,7 +46,7 @@ Account deletion removes the account, enrolments, progress, linked enquiries and
 This local review is not a production or GDPR-compliance sign-off. The following are deliberate next steps:
 
 - Choose the hosted database and authentication service (the proposed path is Supabase), design and test the migration and permissions there.
-- Configure public HTTPS hosting and deployment-specific cookie/origin/proxy settings; the current local-only binding is deliberate.
+- Validate the IIS HTTPS deployment and its cookie/origin/proxy settings using IIS-HOSTING.md; the backend deliberately remains bound to loopback behind IIS.
 - Connect transactional email and add verified-email registration, password recovery and a documented staff MFA recovery process. These flows are not implemented in this local build.
 - Agree the privacy notice, lawful processing purposes, retention periods and staff responsibilities. This first registration collects only a name, email and password, not DOB or education history.
 - Set up and test scheduled backups, restore procedures, monitoring and production abuse controls. The included per-process rate limits are intended for a single local instance.

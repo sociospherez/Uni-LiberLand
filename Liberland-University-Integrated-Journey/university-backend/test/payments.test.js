@@ -32,6 +32,13 @@ test('Sandbox checkout: ownership, fixed prices, idempotency and verified fulfil
   await a('/checkout','POST',{course:'social-media'});assert.equal(creates,3);
   const s3=sessions.get('cs_test_fixture3');s3.status='complete';s3.payment_status='paid';app.db.prepare("INSERT INTO enrolments VALUES(?,?,'paused',?,?)").run(user.id,'social-media',new Date().toISOString(),new Date().toISOString());await event(s3);assert.equal((await a('/me')).enrolments.find(e=>e.course==='social-media').status,'paused');assert.equal((await a('/payments')).find(p=>p.course==='social-media'&&p.status==='paid').fulfilled,false);
   await a('/checkout','POST',{course:'python'});const s4=sessions.get('cs_test_fixture4');s4.status='complete';s4.payment_status='paid';await a('/payments/reconcile','POST',{session_id:s4.id});assert.equal((await a('/me')).enrolments.find(e=>e.course==='python').status,'active');
+  await a('/checkout','POST',{course:'databases'});const failed=sessions.get('cs_test_fixture5');failed.status='complete';
+  await event(failed,'checkout.session.async_payment_failed','evt_failed');
+  assert.equal((await a('/payments')).find(p=>p.course==='databases').status,'failed');
+  await a('/payments/reconcile','POST',{session_id:failed.id});
+  assert.equal((await a('/payments')).find(p=>p.course==='databases').status,'failed');
+  assert.equal((await a('/me')).enrolments.some(e=>e.course==='databases'),false);
+  await a('/checkout','POST',{course:'databases'});assert.equal(creates,6);
   await a('/admin/payments','GET',null,403);
   assert.throws(()=>createPayments(app.db,{secretKey:'sk_live_forbidden'}),/sandbox/);
  }finally{await app.close();fs.rmSync(dir,{recursive:true,force:true});}

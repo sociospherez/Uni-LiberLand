@@ -33,7 +33,7 @@ export function createPayments(db,{secretKey='',publishableKey='',webhookSecret=
      run("INSERT INTO enrolments VALUES(?,?,'active',?,?) ON CONFLICT(user_id,course) DO UPDATE SET status='active',updated_at=excluded.updated_at",current.user_id,current.course,now(),now());fulfilled=1;
      run('INSERT INTO audit(actor,action,target,created_at) VALUES(?,?,?,?)',null,'payment.test-enrolment',current.id,now());
     }
-   }else if(status!=='paid'){
+   }else if(!['paid','failed','expired'].includes(status)){
     if(s.status==='expired')status='expired';else if(event?.type==='checkout.session.async_payment_failed')status='failed';else status=s.status==='complete'?'pending':'open';
    }
    run('UPDATE payments SET status=?,session_id=?,payment_intent=?,fulfilled=?,updated_at=? WHERE id=?',status,s.id,typeof s.payment_intent==='string'?s.payment_intent:s.payment_intent?.id||null,fulfilled,now(),row.id);
