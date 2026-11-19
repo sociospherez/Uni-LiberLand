@@ -1,3 +1,4 @@
+import {demoEnabled, selectDataDirectory, seedDemoStaff, DEMO_STAFF_EMAIL, DEMO_STAFF_NAME} from './demo-mode.js';
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -29,13 +30,17 @@ function configuredOrigin(value){
  if(url.protocol!=='https:'||url.username||url.password||url.pathname!=='/'||url.search||url.hash)throw Error('PUBLIC_ORIGIN must be an HTTPS origin without credentials, a path, query or fragment.');
  return url.origin;
 }
-export function createApp({dataDir=process.env.DATA_DIR||path.join(root,'data'),port=Number(process.env.PORT||3000),publicOrigin=process.env.PUBLIC_ORIGIN||'',stripeOptions={}}={}){
+export function createApp({dataDir=process.env.DATA_DIR||path.join(root,'data'),port=Number(process.env.PORT||3000),publicOrigin=process.env.PUBLIC_ORIGIN||'',stripeOptions={},demoMode=demoEnabled()}={}){
+ if(typeof demoMode!=='boolean')throw Error('demoMode must be a boolean.');
+ const sessionCookie=demoMode?'campus_demo_session':'campus_session';
  const externalOrigin=configuredOrigin(publicOrigin);
  if(!Number.isInteger(port)||port<0||port>65535)throw Error('PORT must be an integer between 0 and 65535.');
+ dataDir=selectDataDirectory(dataDir,demoMode);
  fs.mkdirSync(dataDir,{recursive:true,mode:0o700});const db=openDatabase(path.join(dataDir,'campus.sqlite'));
  const keyFile=path.join(dataDir,'encryption.key');if(!fs.existsSync(keyFile))fs.writeFileSync(keyFile,randomBytes(32),{mode:0o600});const encryptionKey=fs.readFileSync(keyFile);
  const get=(sql,...args)=>db.prepare(sql).get(...args),all=(sql,...args)=>db.prepare(sql).all(...args),run=(sql,...args)=>db.prepare(sql).run(...args);
  for(const c of curriculum.courses)run('INSERT INTO courses(slug,title,hours) VALUES(?,?,?) ON CONFLICT(slug) DO UPDATE SET title=excluded.title,hours=excluded.hours',c.slug,c.title,c.hours);
+ const demoStaff=demoMode?seedDemoStaff(db):null;
  const payments=createPayments(db,stripeOptions);
  const setupFile=path.join(dataDir,'setup-token.txt');let setupToken=null;
  if(!get("SELECT id FROM users WHERE role='staff'")){setupToken=fs.existsSync(setupFile)?fs.readFileSync(setupFile,'utf8').trim():token();fs.writeFileSync(setupFile,setupToken,{mode:0o600});}else if(fs.existsSync(setupFile))fs.unlinkSync(setupFile);
@@ -43,8 +48,9 @@ export function createApp({dataDir=process.env.DATA_DIR||path.join(root,'data'),
  const audit=(u,action,target)=>run('INSERT INTO audit(actor,action,target,created_at) VALUES(?,?,?,?)',u?.id||null,action,target,now());
  const queue=(recipient,subject,message)=>run('INSERT INTO outbox VALUES(?,?,?,?,?,?)',randomUUID(),recipient,subject,message,'preview-only',now());
  function rate(req,key,max=30){const id=req.socket.remoteAddress+':'+key,t=Date.now();let r=limits.get(id);if(!r||r.until<t){r={n:0,until:t+600000};limits.set(id,r);}if(++r.n>max)fail(429,'Too many attempts. Please try again in 10 minutes.');if(limits.size>10000)for(const [k,v]of limits)if(v.until<t)limits.delete(k);}
- function auth(req){const sid=req.headers.cookie?.match(/(?:^|;\s*)campus_session=([a-f0-9]{64})(?:;|$)/)?.[1];if(!sid)return null;return get('SELECT u.* FROM users u JOIN sessions s ON u.id=s.user_id WHERE s.id=? AND s.expires>? AND u.status=\'active\'',hash(sid),Date.now())||null;}
- function login(res,u){const sid=token();run('DELETE FROM sessions WHERE expires<?',Date.now());run('INSERT INTO sessions VALUES(?,?,?)',hash(sid),u.id,Date.now()+8*3600000);res.setHeader('Set-Cookie',`campus_session=${sid}; Path=/; HttpOnly; SameSite=Strict; Max-Age=28800${origin.startsWith('https:')?'; Secure':''}`);}
+ function sessionId(req){return req.headers.cookie?.split(';').map(part=>part.trim()).find(part=>part.startsWith(sessionCookie+'='))?.slice(sessionCookie.length+1);}
+ function auth(req){const sid=sessionId(req);if(sid&&!/^[a-f0-9]{64}$/.test(sid))return null;if(!sid)return null;return get('SELECT u.* FROM users u JOIN sessions s ON u.id=s.user_id WHERE s.id=? AND s.expires>? AND u.status=\'active\'',hash(sid),Date.now())||null;}
+ function login(res,u){const sid=token();run('DELETE FROM sessions WHERE expires<?',Date.now());run('INSERT INTO sessions VALUES(?,?,?)',hash(sid),u.id,Date.now()+8*3600000);res.setHeader('Set-Cookie',`${sessionCookie}=${sid}; Path=/; HttpOnly; SameSite=Strict; Max-Age=28800${origin.startsWith('https:')?'; Secure':''}`);}
  const staff=u=>{if(!u||u.role!=='staff')fail(403,'Staff access required.');};
  const own=(u,id)=>{if(!u||(u.id!==id&&u.role!=='staff'))fail(403,'This record is not available.');};
  const course=slug=>{const c=courseMap.get(slug);if(!c)fail(404,'Course not found.');return c;};
@@ -78,8 +84,15 @@ export function createApp({dataDir=process.env.DATA_DIR||path.join(root,'data'),
     if(!types[ext]||!fs.existsSync(file)||!fs.statSync(file).isFile())fail(404,'Not found.');res.setHeader('Content-Type',types[ext]);res.statusCode=200;if(method==='HEAD')return res.end();fs.createReadStream(file).pipe(res);return;
    }
    const u=auth(req);
-   if(method==='GET'&&p==='/api/config')return json(res,200,{mode:externalOrigin?'hosted-sandbox':'local-review',email:'preview-only',setupRequired:!!setupToken,payments:payments.config()});
+   if(method==='GET'&&p==='/api/config')return json(res,200,{mode:externalOrigin?'hosted-sandbox':'local-review',email:'preview-only',demoMode,...(demoMode?{demoStaff:{name:DEMO_STAFF_NAME,email:DEMO_STAFF_EMAIL}}:{}),setupRequired:!!setupToken,payments:payments.config()});
    if(method==='GET'&&p==='/api/courses')return json(res,200,all('SELECT * FROM courses').map(c=>({...c,available_lessons:courseMap.get(c.slug).lessons.length,full_course:c.slug==='social-media'})));
+   if(method==='POST'&&p==='/api/demo/staff-login'){
+    if(!demoMode)fail(404,'Demo staff access is disabled.');
+    rate(req,'demo-login',60);
+    const user=get("SELECT * FROM users WHERE id=? AND role='staff' AND status='active'",demoStaff.id);
+    if(!user)fail(403,'Demo staff access is unavailable.');
+    login(res,user);audit(user,'demo.staff-login',user.id);return json(res,200,safeUser(user));
+   }
    if(method==='POST'&&p==='/api/setup/start'){
     rate(req,'setup',10);const b=await body(req);if(!setupToken||typeof b.token!=='string'||hash(b.token)!==hash(setupToken))fail(403,'Invalid setup token.');
     const secret=newTotpSecret(),id=token();challenges.set(id,{email:email(b.email),name:text(b.name,2,100),password:await passwordHash(password(b.password)),secret,expires:Date.now()+600000});
@@ -97,11 +110,11 @@ export function createApp({dataDir=process.env.DATA_DIR||path.join(root,'data'),
     rate(req,'login',20);const b=await body(req),e=email(b.email),pw=password(b.password),user=get('SELECT * FROM users WHERE email=?',e);
     // Hash even unknown accounts to avoid a cheap account-existence timing signal.
     const valid=await passwordCheck(pw,user?.password||'00000000000000000000000000000000:'+ '00'.repeat(64));
-    if(!user||!valid||user.status!=='active')fail(401,'Sign-in details not accepted.');
+    if(!user||!valid||user.status!=='active'||(demoMode&&user.id===demoStaff.id))fail(401,'Sign-in details not accepted.');
     if(user.role==='staff'){const step=totpStep(unseal(user.totp,encryptionKey),b.code,user.totp_step);if(step===null)fail(401,'A fresh authenticator code is required for staff.');run('UPDATE users SET totp_step=? WHERE id=?',step,user.id);}
     login(res,user);audit(user,'account.login',user.id);return json(res,200,safeUser(user));
    }
-   if(method==='POST'&&p==='/api/logout'){const sid=req.headers.cookie?.match(/campus_session=([a-f0-9]{64})/)?.[1];if(sid)run('DELETE FROM sessions WHERE id=?',hash(sid));res.setHeader('Set-Cookie',`campus_session=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0${origin.startsWith('https:')?'; Secure':''}`);return json(res,200,{ok:true});}
+   if(method==='POST'&&p==='/api/logout'){const sid=sessionId(req);if(sid)run('DELETE FROM sessions WHERE id=?',hash(sid));res.setHeader('Set-Cookie',`${sessionCookie}=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0${origin.startsWith('https:')?'; Secure':''}`);return json(res,200,{ok:true});}
    if(method==='POST'&&p==='/api/enquiries'){
     rate(req,'enquiry',10);const b=await body(req);if(b.website)fail(400,'Unable to submit.');const n=u?.name||text(b.name,2,100),e=u?.email||email(b.email),subject=text(b.subject,3,160),message=text(b.message,5,5000),slug=b.course||null;if(slug)course(slug);const id=randomUUID(),at=now();
     db.exec('BEGIN');try{run('INSERT INTO enquiries(id,user_id,name,email,subject,course,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?)',id,u?.id||null,n,e,subject,slug,at,at);run('INSERT INTO messages VALUES(?,?,?,?,?,?,?)',randomUUID(),id,u?.id||null,n,'message',message,at);queue(e,'Enquiry received: '+subject,'Your reference is '+id+'. Email delivery is not enabled in this local review.');audit(u,'enquiry.create',id);db.exec('COMMIT');}catch(err){db.exec('ROLLBACK');throw err;}return json(res,201,{id});

@@ -9,7 +9,8 @@ param(
     [Parameter(Mandatory = $true)] [ValidatePattern('^[0-9a-f]{40}$')] [string] $SourceCommit,
     [string] $SiteName = 'UOLedu',
     [string] $InstallRoot = 'C:\Apps\LiberlandAtlas',
-    [PSCredential] $ServiceCredential
+    [PSCredential] $ServiceCredential,
+    [ValidateSet('Keep', 'On', 'Off')] [string] $DemoMode = 'Keep'
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -34,5 +35,9 @@ if (-not $ServiceCredential) {
 }
 if (-not $ServiceCredential) { throw 'No credentials supplied. The staged release has not been activated.' }
 & $publisher -SiteName $SiteName -InstallRoot $InstallRoot -Mode Activate -ReleasePath $release -ServiceCredential $ServiceCredential
+if ($DemoMode -ne 'Keep') {
+    $enabled = if ($DemoMode -eq 'On') { 'true' } else { 'false' }
+    & (Join-Path $backend 'deploy\Set-DemoMode.ps1') -Enabled $enabled -SiteName $SiteName -InstallRoot $InstallRoot
+}
 Write-Host 'Course journey update activated. Complete SANDBOX-SIGNOFF.md on the hosted site.'
 Write-Host "Staged source and deployment scripts: $backend"

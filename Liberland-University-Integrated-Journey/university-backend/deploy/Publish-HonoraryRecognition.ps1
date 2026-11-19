@@ -22,7 +22,7 @@ if ($original -notmatch 'class="header-actions"' -or $original -notmatch 'id="mo
 $stage=Join-Path $env:TEMP ('AtlasHonorary-'+[guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $stage | Out-Null
 $assets=@{
- 'honorary-recognition.html'='3A224A07C2E06896BA3BA1A32E718527094757C6CFA1046A688D3615CBCCD84E'
+ 'honorary-recognition.html'='C7483EC83543F62F6CB9595E3521A3CEE970893FADE422BC0CC9487F6886801F'
  'honorary-recognition.css'='956B6B9C8A9EB7517F40E272D8444C1673AD74113AC5CB3CF5EF65D9C29FB56F'
  'honorary-recognition.js'='D2ED9BBA1C2082C0D4D005725BF0070A9C339968C7D654BCF1A5FAA6CAB7A888'
  'honorary-nav.css'='1FB5FE3DEF94EDE756489C55519C4BBCD1CCE3586E097183EAAFEA2E9052AF88'
@@ -31,6 +31,8 @@ $assets=@{
  'honorary-regalia-woman.jpg'='5B399B3E0D2BBC2F4093F015F78B4091A25593E7A2D4174A2A360839891D5175'
  'honorary-gown.jpg'='EAAC5498AE2950B3A849E07F09DBE04D7DD1F337D618B7333518A58616BB983C'
  'honorary-celebration.jpg'='408A579E0990C9994B588D4E0A1DA089472C8B7BAD9B6AC9D9E97D73B608B0EA'
+ 'demo-mode.js'='DBB5BB45D1D8EF1D296D2B3893C98D9CF6E2987089AB49BFD25633551A67BE46'
+ 'demo-mode.css'='F1CA6681F34592468BD7FA01B8689BBD4B59C01AD10810F9B0A4DE6169E20359'
 }
 $base="https://raw.githubusercontent.com/sociospherez/Uni-LiberLand/$SourceCommit/Liberland-University-Integrated-Journey/university-backend/public"
 foreach($name in $assets.Keys){
