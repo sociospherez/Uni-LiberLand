@@ -22,7 +22,7 @@ if ($original -notmatch 'class="header-actions"' -or $original -notmatch 'id="mo
 $stage=Join-Path $env:TEMP ('AtlasHonorary-'+[guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $stage | Out-Null
 $assets=@{
- 'honorary-recognition.html'='BA66470A9A3918C70525E544E553E7D4F30F386AE468B308A28AE80DAC9D0DB0'
+ 'honorary-recognition.html'='3A224A07C2E06896BA3BA1A32E718527094757C6CFA1046A688D3615CBCCD84E'
  'honorary-recognition.css'='956B6B9C8A9EB7517F40E272D8444C1673AD74113AC5CB3CF5EF65D9C29FB56F'
  'honorary-recognition.js'='D2ED9BBA1C2082C0D4D005725BF0070A9C339968C7D654BCF1A5FAA6CAB7A888'
  'honorary-nav.css'='1FB5FE3DEF94EDE756489C55519C4BBCD1CCE3586E097183EAAFEA2E9052AF88'

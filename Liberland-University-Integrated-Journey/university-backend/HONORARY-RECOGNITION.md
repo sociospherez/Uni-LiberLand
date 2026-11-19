@@ -2,7 +2,7 @@
 
 Public information page: `/honorary-recognition.html`. The campus header links to it; on small screens the link is in the hamburger menu. The page explains honorary doctoral, master's and bachelor's titles without representing them as awards currently offered by the university.
 
-Visitors can enquire or discuss a potential nomination through a direct form with an honorary doctorate, master’s, bachelor’s or general-interest selector. The form stores a tagged enquiry in the existing staff inbox through POST /api/enquiries. Submissions do not guarantee an award; awarding authority and regulations still require confirmation. Sandbox email remains preview-only. Five supplied images are labelled as illustrative ceremonial concepts, rather than past recipients or events.
+Visitors can enquire or discuss a potential nomination through a direct form with an honorary doctorate, master’s, bachelor’s or general-interest selector. The form stores a tagged enquiry in the existing staff inbox through POST /api/enquiries. Submissions do not guarantee an award; awarding authority and regulations still require confirmation. Sandbox email remains preview-only. Five supplied images illustrate the page. Image alternative text is descriptive; the page makes no claims that the people pictured are past recipients.
 
 ## Publish to the existing Windows server
 
