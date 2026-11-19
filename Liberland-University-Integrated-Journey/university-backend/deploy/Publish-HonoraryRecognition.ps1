@@ -25,7 +25,7 @@ $assets=@{
  'honorary-recognition.html'='7DC4E02662D6612AE53736ABEDF47C1C0E8B3701D3CA16B797DCD60DDA8FB6A3'
  'honorary-recognition.css'='6FE193AABFB2375EC439A8EAB155093C8DCAB55FF2748E13BEA7D6934116EFF3'
  'honorary-recognition.js'='DFA1C92A28FDB88C6C457D61081208DA567A900C7D9C57FA9FF73388C17309D9'
- 'honorary-nav.css'='0DDE7C24B1B67A5E50FFD3E4328EF5025AF66D24EFC9CFA20CDF06DA94F81C8B'
+ 'honorary-nav.css'='1FB5FE3DEF94EDE756489C55519C4BBCD1CCE3586E097183EAAFEA2E9052AF88'
 }
 $base="https://raw.githubusercontent.com/sociospherez/Uni-LiberLand/$SourceCommit/Liberland-University-Integrated-Journey/university-backend/public"
 foreach($name in $assets.Keys){
