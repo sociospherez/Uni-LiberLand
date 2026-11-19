@@ -22,10 +22,15 @@ if ($original -notmatch 'class="header-actions"' -or $original -notmatch 'id="mo
 $stage=Join-Path $env:TEMP ('AtlasHonorary-'+[guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $stage | Out-Null
 $assets=@{
- 'honorary-recognition.html'='7DC4E02662D6612AE53736ABEDF47C1C0E8B3701D3CA16B797DCD60DDA8FB6A3'
- 'honorary-recognition.css'='6FE193AABFB2375EC439A8EAB155093C8DCAB55FF2748E13BEA7D6934116EFF3'
- 'honorary-recognition.js'='DFA1C92A28FDB88C6C457D61081208DA567A900C7D9C57FA9FF73388C17309D9'
+ 'honorary-recognition.html'='BA66470A9A3918C70525E544E553E7D4F30F386AE468B308A28AE80DAC9D0DB0'
+ 'honorary-recognition.css'='956B6B9C8A9EB7517F40E272D8444C1673AD74113AC5CB3CF5EF65D9C29FB56F'
+ 'honorary-recognition.js'='D2ED9BBA1C2082C0D4D005725BF0070A9C339968C7D654BCF1A5FAA6CAB7A888'
  'honorary-nav.css'='1FB5FE3DEF94EDE756489C55519C4BBCD1CCE3586E097183EAAFEA2E9052AF88'
+ 'honorary-diploma.jpg'='C21597DC8707A9EC0965D1544150664D9DDCA3010B72EA6AAC4BF43BC62552DB'
+ 'honorary-regalia-man.jpg'='860AD3E5D46A594A44DABBE94EA84C519DAC4D185DD7DA8A33A314B5583D8849'
+ 'honorary-regalia-woman.jpg'='5B399B3E0D2BBC2F4093F015F78B4091A25593E7A2D4174A2A360839891D5175'
+ 'honorary-gown.jpg'='EAAC5498AE2950B3A849E07F09DBE04D7DD1F337D618B7333518A58616BB983C'
+ 'honorary-celebration.jpg'='408A579E0990C9994B588D4E0A1DA089472C8B7BAD9B6AC9D9E97D73B608B0EA'
 }
 $base="https://raw.githubusercontent.com/sociospherez/Uni-LiberLand/$SourceCommit/Liberland-University-Integrated-Journey/university-backend/public"
 foreach($name in $assets.Keys){
@@ -75,4 +80,4 @@ try{
 Write-Host "Honorary Recognition published in the active release: $public"
 Write-Host "Backup: $backup"
 Write-Host 'Open https://universityofliberland.land/honorary-recognition.html and hard-refresh the home page.'
-Write-Host 'No service restart was required. Enquiries use the existing campus enquiry form.'
+Write-Host 'No service restart was required. Enquiries are saved through the existing campus enquiry service.'
