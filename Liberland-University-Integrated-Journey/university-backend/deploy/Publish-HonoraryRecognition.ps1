@@ -57,8 +57,8 @@ try{
  [IO.File]::WriteAllText($index,$updated,(New-Object Text.UTF8Encoding($false)))
  $page=Invoke-WebRequest -UseBasicParsing -Uri ($LocalOrigin.TrimEnd('/')+'/honorary-recognition.html')
  if($page.StatusCode -ne 200 -or $page.Content -notmatch 'id="pageTitle"'){throw 'Local page health check failed.'}
- $home=Invoke-WebRequest -UseBasicParsing -Uri ($LocalOrigin.TrimEnd('/')+'/index.html')
- if($home.Content -notmatch 'class="honorary-nav-link"'){throw 'Local navigation health check failed.'}
+ $campusHomeResponse=Invoke-WebRequest -UseBasicParsing -Uri ($LocalOrigin.TrimEnd('/')+'/index.html')
+ if($campusHomeResponse.Content -notmatch 'class="honorary-nav-link"'){throw 'Local navigation health check failed.'}
  foreach($name in $assets.Keys){
   $check=Join-Path $stage ('served-'+$name)
   Invoke-WebRequest -UseBasicParsing -Uri ($LocalOrigin.TrimEnd('/')+'/'+$name) -OutFile $check
