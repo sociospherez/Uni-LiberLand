@@ -1,3 +1,4 @@
+import '../public/professional-certificates.js';
 import {demoEnabled, selectDataDirectory, seedDemoStaff, DEMO_STAFF_EMAIL, DEMO_STAFF_NAME} from './demo-mode.js';
 import http from 'node:http';
 import fs from 'node:fs';
@@ -10,7 +11,11 @@ import {loadEnvFile} from 'node:process';
 import { token,hash,passwordHash,passwordCheck,newTotpSecret,totpStep,seal,unseal } from './security.js';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const curriculum=JSON.parse(fs.readFileSync(path.join(root,'server/curriculum.json'),'utf8'));
-const courseMap=new Map(curriculum.courses.map(c=>[c.slug,c]));
+const lessonsByCourse=new Map(curriculum.courses.map(c=>[c.slug,c.lessons]));
+const courseMap=new Map(globalThis.professionalCertificates.map(c=>[c.slug,{
+ ...c,hours:c.duration.endsWith(' hours')?parseInt(c.duration,10):0,
+ lessons:lessonsByCourse.get(c.slug)||[]
+}]));
 const now=()=>new Date().toISOString();
 class HttpError extends Error {constructor(status,message){super(message);this.status=status;}}
 const fail=(status,message)=>{throw new HttpError(status,message)};
@@ -39,7 +44,7 @@ export function createApp({dataDir=process.env.DATA_DIR||path.join(root,'data'),
  fs.mkdirSync(dataDir,{recursive:true,mode:0o700});const db=openDatabase(path.join(dataDir,'campus.sqlite'));
  const keyFile=path.join(dataDir,'encryption.key');if(!fs.existsSync(keyFile))fs.writeFileSync(keyFile,randomBytes(32),{mode:0o600});const encryptionKey=fs.readFileSync(keyFile);
  const get=(sql,...args)=>db.prepare(sql).get(...args),all=(sql,...args)=>db.prepare(sql).all(...args),run=(sql,...args)=>db.prepare(sql).run(...args);
- for(const c of curriculum.courses)run('INSERT INTO courses(slug,title,hours) VALUES(?,?,?) ON CONFLICT(slug) DO UPDATE SET title=excluded.title,hours=excluded.hours',c.slug,c.title,c.hours);
+ for(const c of courseMap.values())run('INSERT INTO courses(slug,title,hours) VALUES(?,?,?) ON CONFLICT(slug) DO UPDATE SET title=excluded.title,hours=excluded.hours',c.slug,c.title,c.hours);
  const demoStaff=demoMode?seedDemoStaff(db):null;
  const payments=createPayments(db,stripeOptions);
  const setupFile=path.join(dataDir,'setup-token.txt');let setupToken=null;
@@ -85,7 +90,11 @@ export function createApp({dataDir=process.env.DATA_DIR||path.join(root,'data'),
    }
    const u=auth(req);
    if(method==='GET'&&p==='/api/config')return json(res,200,{mode:externalOrigin?'hosted-sandbox':'local-review',email:'preview-only',demoMode,...(demoMode?{demoStaff:{name:DEMO_STAFF_NAME,email:DEMO_STAFF_EMAIL}}:{}),setupRequired:!!setupToken,payments:payments.config()});
-   if(method==='GET'&&p==='/api/courses')return json(res,200,all('SELECT * FROM courses').map(c=>({...c,available_lessons:courseMap.get(c.slug).lessons.length,full_course:c.slug==='social-media'})));
+   if(method==='GET'&&p==='/api/courses')return json(res,200,Array.from(courseMap.values(),({slug,title,hours,duration,tuition_pence,lessons})=>({
+    slug,title,hours:hours||null,duration,tuition_pence,currency:'gbp',
+    available:get('SELECT available FROM courses WHERE slug=?',slug).available,
+    available_lessons:lessons.length,full_course:slug==='social-media'
+   })));
    if(method==='POST'&&p==='/api/demo/staff-login'){
     if(!demoMode)fail(404,'Demo staff access is disabled.');
     rate(req,'demo-login',60);
@@ -124,7 +133,10 @@ export function createApp({dataDir=process.env.DATA_DIR||path.join(root,'data'),
     rate(req,'checkout',30);const b=await body(req),c=course(b.course);if(!get('SELECT available FROM courses WHERE slug=?',c.slug).available)fail(400,'This course is not accepting enrolments.');return json(res,200,await payments.create(u,c,origin));
    }
    if(method==='GET'&&p==='/api/payments')return json(res,200,payments.list(u));
-   if(method==='GET'&&p==='/api/checkout-status')return json(res,200,payments.status(u,url.searchParams.get('session_id')));
+   if(method==='GET'&&p==='/api/checkout-status'){
+    const payment=payments.status(u,url.searchParams.get('session_id'));
+    return json(res,200,{...payment,has_lessons:course(payment.course).lessons.length>0});
+   }
    if(method==='POST'&&p==='/api/payments/reconcile'){rate(req,'reconcile',60);const b=await body(req);return json(res,200,await payments.reconcile(u,b.session_id));}
    if(method==='GET'&&p==='/api/me')return json(res,200,{user:safeUser(u),enrolments:enrolments(u.id)});
    if(method==='PATCH'&&p==='/api/me'){const b=await body(req);run('UPDATE users SET name=? WHERE id=?',text(b.name,2,100),u.id);audit(u,'profile.update',u.id);return json(res,200,safeUser(get('SELECT * FROM users WHERE id=?',u.id)));}

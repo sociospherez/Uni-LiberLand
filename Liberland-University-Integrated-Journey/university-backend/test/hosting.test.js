@@ -61,6 +61,6 @@ test('Hosted backups retain a matched database and MFA key outside the release',
   assert.equal(files.length,2);assert.equal(database.replace('.sqlite',''),key.replace('.encryption.key',''));
   assert.deepEqual(fs.readFileSync(path.join(backupDir,key)),fs.readFileSync(path.join(dataDir,'encryption.key')));
   const restored=new DatabaseSync(path.join(backupDir,database),{readOnly:true});
-  try{assert.equal(restored.prepare('SELECT count(*) AS n FROM courses').get().n,9);}finally{restored.close();}
+  try{assert.equal(restored.prepare('SELECT count(*) AS n FROM courses').get().n,29);}finally{restored.close();}
  }finally{await app.close();fs.rmSync(dir,{recursive:true,force:true});}
 });

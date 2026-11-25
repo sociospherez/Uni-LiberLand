@@ -21,6 +21,7 @@ test('Course journey retains the chosen course without offering duplicate paymen
   assert.equal(courseDestination({...base, course: {...course, available: 0}}).state, 'unavailable');
   assert.equal(courseDestination({...base, user: {role: 'staff'}}).href, null);
   assert.equal(courseDestination({...base, paymentsReady: false}).state, 'manual');
+  assert.equal(courseDestination({...base, course: {...course, available_lessons: 0}, enrolments: [{course: course.slug, status: 'active'}]}).state, 'enrolled');
   assert.equal(courseDestination({...base, course: null}).state, 'unknown');
 });
 
