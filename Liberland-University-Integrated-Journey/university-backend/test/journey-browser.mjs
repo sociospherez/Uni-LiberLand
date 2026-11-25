@@ -23,7 +23,12 @@ await page.goto(base+'/portal.html?course=social-media');await page.getByRole('l
 await page.goto(base+'/index.html');
 await page.waitForFunction(()=>!document.documentElement.classList.contains('account-loading'));
 await page.evaluate(()=>openCertificateCatalogue());
-assert.equal(await page.locator('.cert-catalogue-card').count(),29);
+assert.equal(await page.locator('.cert-catalogue-card').count(),35);
+await page.getByRole('button',{name:'Technology',exact:true}).click();
+assert.equal(await page.locator('.cert-catalogue-card').count(),2);
+await page.getByRole('heading',{name:'Cyber Security & Digital Trust'}).waitFor();
+await page.goto(base+'/index.html?programme=cyber');
+await page.getByText('£950.00',{exact:false}).waitFor();
 await page.goto(base+'/index.html?programme=ai-in-executive-strategy');
 await page.getByRole('heading',{name:'AI in Executive Strategy'}).waitFor();
 await page.getByText('£1,300.00',{exact:false}).waitFor();

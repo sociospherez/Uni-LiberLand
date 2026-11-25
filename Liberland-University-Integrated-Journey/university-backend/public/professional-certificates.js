@@ -28,5 +28,11 @@ globalThis.professionalCertificates = [
   {"slug":"ai-in-executive-strategy","title":"AI in Executive Strategy","duration":"3 months","tuition_pence":130000},
   {"slug":"business-analytics","title":"Business Analytics Professional","duration":"50 hours","tuition_pence":65000},
   {"slug":"agentic-ai-autonomous-systems","title":"Agentic AI & Autonomous Systems","duration":"3 months","tuition_pence":130000},
-  {"slug":"data-engineering","title":"Applied Data Engineering","duration":"60 hours","tuition_pence":95000}
+  {"slug":"data-engineering","title":"Applied Data Engineering","duration":"60 hours","tuition_pence":95000},
+  {"slug":"ai","title":"Artificial Intelligence & Digital Governance","duration":"3 months","tuition_pence":80000,"category":"Technology","summary":"Build practical AI capability with ethical, governance and leadership foundations."},
+  {"slug":"business","title":"Digital Business & Entrepreneurship","duration":"40 hours","tuition_pence":60000,"category":"Business","summary":"Turn ideas into sustainable digital ventures and lead in borderless markets."},
+  {"slug":"cyber","title":"Cyber Security & Digital Trust","duration":"60 hours","tuition_pence":95000,"category":"Technology","summary":"Develop the practical and strategic skills required to protect digital organisations."},
+  {"slug":"governance","title":"Future Governance & Public Leadership","duration":"40 hours","tuition_pence":60000,"category":"Governance","summary":"Explore public leadership, policy innovation and digital-first governance."},
+  {"slug":"research","title":"Research Methods & Innovation Practice","duration":"32 hours","tuition_pence":35000,"category":"Research","summary":"Move from a strong question to credible, collaborative and publishable research."},
+  {"slug":"leadership","title":"Executive Digital Leadership","duration":"3 months","tuition_pence":80000,"category":"Business","summary":"Lead transformation, align teams and make stronger decisions in digital organisations."}
 ];

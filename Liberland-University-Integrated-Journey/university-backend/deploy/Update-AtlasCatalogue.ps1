@@ -4,14 +4,15 @@
 param(
     [string] $SiteName = 'UOLedu',
     [string] $InstallRoot = 'C:\Apps\LiberlandAtlas',
+    [ValidatePattern('^[0-9a-f]{40}$')] [string] $SourceCommit = '8b9e4e157213b640e1331ae690033c587a2bdb33',
+    [ValidateRange(1, 10000)] [int] $ExpectedCount = 29,
     [PSCredential] $ServiceCredential
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 Import-Module WebAdministration
 
-$commit = '8b9e4e157213b640e1331ae690033c587a2bdb33'
-$base = "https://raw.githubusercontent.com/sociospherez/Uni-LiberLand/$commit/Liberland-University-Integrated-Journey/university-backend"
+$base = "https://raw.githubusercontent.com/sociospherez/Uni-LiberLand/$SourceCommit/Liberland-University-Integrated-Journey/university-backend"
 $releases = (Resolve-Path -LiteralPath (Join-Path $InstallRoot 'releases')).Path
 $site = Get-Item -LiteralPath "IIS:\Sites\$SiteName"
 $gateway = (Resolve-Path -LiteralPath ([Environment]::ExpandEnvironmentVariables([string] $site.physicalPath))).Path
@@ -71,7 +72,7 @@ $metadata.release = $id
 [IO.File]::WriteAllText((Join-Path $staged 'public\atlas-release.json'), (@{release=$id} | ConvertTo-Json), $utf8)
 Push-Location $staged
 try {
-    & node.exe --input-type=module -e "import './server/app.js'; if (globalThis.professionalCertificates.length !== 29) process.exit(1);"
+    & node.exe --input-type=module -e "import './server/app.js'; if (globalThis.professionalCertificates.length !== $ExpectedCount) process.exit(1);"
     if ($LASTEXITCODE -ne 0) { throw 'The staged backend could not load its dependencies and catalogue. Activation has not started.' }
 } finally { Pop-Location }
 
@@ -85,7 +86,7 @@ if ((Resolve-Path -LiteralPath ([Environment]::ExpandEnvironmentVariables([strin
 }
 & (Join-Path $download 'deploy\Publish-Iis.ps1') -Mode Activate -SiteName $SiteName -InstallRoot $InstallRoot -ReleasePath $staged -PublicOrigin $metadata.publicOrigin -Port $metadata.port -ServiceCredential $ServiceCredential
 $courses = Invoke-RestMethod -Uri "$($metadata.publicOrigin)/api/courses" -TimeoutSec 15
-if ($courses.Count -ne 29 -or @($courses | Where-Object { -not $_.tuition_pence }).Count -ne 0) {
-    throw 'Activation ran, but the public catalogue did not return 29 priced certificates.'
+if ($courses.Count -ne $ExpectedCount -or @($courses | Where-Object { -not $_.tuition_pence }).Count -ne 0) {
+    throw "Activation ran, but the public catalogue did not return $ExpectedCount priced certificates."
 }
-Write-Host 'Catalogue update activated. The public site returned 29 priced certificates.'
+Write-Host "Catalogue update activated. The public site returned $ExpectedCount priced certificates."

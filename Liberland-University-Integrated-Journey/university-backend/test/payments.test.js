@@ -40,7 +40,17 @@ test('Sandbox checkout: ownership, fixed prices, idempotency and verified fulfil
   assert.equal((await a('/me')).enrolments.some(e=>e.course==='databases'),false);
   await a('/checkout','POST',{course:'databases'});assert.equal(creates,6);
   const catalogue=await a('/courses');
-  assert.equal(catalogue.length,29);
+  assert.equal(catalogue.length,35);
+  const reclassified = Object.entries({"ai":["3 months",80000],"business":["40 hours",60000],"cyber":["60 hours",95000],"governance":["40 hours",60000],"research":["32 hours",35000],"leadership":["3 months",80000]});
+  for (const [slug, [duration, tuition]] of reclassified) {
+   const course = catalogue.find(c => c.slug === slug);
+   assert.equal(course.duration, duration);
+   assert.equal(course.tuition_pence, tuition);
+   assert.equal(course.currency, 'gbp');
+   const checkout = await a('/checkout', 'POST', {course: slug, amount: 1});
+   assert.equal(checkout.order.amount, tuition);
+   assert.equal(checkout.order.currency, 'gbp');
+  }
   const strategy=catalogue.find(c=>c.slug==='ai-in-executive-strategy');
   assert.equal(strategy.duration,'3 months');
   assert.equal(strategy.tuition_pence,130000);
