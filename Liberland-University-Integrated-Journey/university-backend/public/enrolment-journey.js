@@ -18,7 +18,7 @@ export function courseDestination({course, user, enrolments = [], payments = [],
 }
 
 export function paymentReturnUrl(session) {
-  return /^cs_test_[A-Za-z0-9]+$/.test(session || '')
+  return /^cs_(?:test|live)_[A-Za-z0-9]+$/.test(session || '')
     ? '/payment-return.html?session_id=' + encodeURIComponent(session)
     : null;
 }

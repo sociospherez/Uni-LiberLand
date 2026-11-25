@@ -2,6 +2,28 @@ import test from 'node:test';import assert from 'node:assert/strict';import fs f
 import {createApp} from '../server/app.js';
 import {createPayments} from '../server/payments.js';
 const signingSecret='whsec_local_test_fixture_only';
+test('Live mode uses fresh storage and rejects demo mode and test keys',async()=>{
+ const root=fs.mkdtempSync(path.join(os.tmpdir(),'atlas-live-'));
+ const options={dataDir:root,port:0,publicOrigin:'https://example.test'};
+ try{
+  const sandbox=createApp({...options,demoMode:true});
+  await sandbox.start();
+  assert.equal(sandbox.db.prepare('SELECT count(*) AS n FROM users').get().n,1);
+  await sandbox.close();
+  assert.throws(()=>createApp({...options,demoMode:true,paymentMode:'live'}),/demo mode disabled/);
+  const live=createApp({...options,demoMode:false,paymentMode:'live'});
+  const base=await live.start();
+  try{
+   assert.equal(live.dataDir,path.join(root,'live'));
+   assert.equal(live.db.prepare('SELECT count(*) AS n FROM users').get().n,0);
+   assert.ok(live.setupToken);
+   const config=await (await fetch(base+'/api/config')).json();
+   assert.equal(config.payments.mode,'live');
+   assert.equal(config.payments.ready,false);
+   assert.throws(()=>createPayments(live.db,{mode:'live',secretKey:'sk_test_fixture'}),/live API keys/);
+  }finally{await live.close();}
+ }finally{fs.rmSync(root,{recursive:true,force:true});}
+});
 test('Sandbox checkout: ownership, fixed prices, idempotency and verified fulfilment',async()=>{
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'liberland-payments-')),sessions=new Map(),keys=new Map();let creates=0;
  const real=new Stripe('sk_test_fixture');

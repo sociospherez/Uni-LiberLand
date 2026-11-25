@@ -27,7 +27,8 @@ test('Course journey retains the chosen course without offering duplicate paymen
 
 test('Session recovery never accepts an arbitrary return URL and learning headers stay scoped to learning', () => {
   assert.equal(paymentReturnUrl('cs_test_abc123'), '/payment-return.html?session_id=cs_test_abc123');
-  for (const input of ['https://untrusted.example', '//untrusted.example', 'cs_live_123', 'cs_test_abc&next=//untrusted.example', null]) assert.equal(paymentReturnUrl(input), null);
+  assert.equal(paymentReturnUrl('cs_live_123'), '/payment-return.html?session_id=cs_live_123');
+  for (const input of ['https://untrusted.example', '//untrusted.example', 'cs_test_abc&next=//untrusted.example', null]) assert.equal(paymentReturnUrl(input), null);
   assert.equal(enrolmentUrl('a&tab=profile'), '/portal.html?course=a%26tab%3Dprofile&intent=enrol');
   for (const route of ['learning-path', 'enrolled-lesson', 'social-assessment', 'social-quiz', 'social-certificate']) assert.equal(isLearningRoute(route), true);
   for (const route of ['home', 'programme', 'courses', 'dashboard']) assert.equal(isLearningRoute(route), false);

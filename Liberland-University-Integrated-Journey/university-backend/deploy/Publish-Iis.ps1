@@ -180,7 +180,7 @@ Set-DirectoryAccess $dataDirectory @() @($serviceSid)
 Set-DirectoryAccess $backupDirectory @() @($serviceSid)
 Set-DirectoryAccess $stateDirectory @()
 Set-DirectoryAccess (Join-Path $ReleasePath 'iis') @($serviceSid, 'S-1-5-32-568', 'S-1-5-17')
-if ((Test-Path -LiteralPath (Join-Path $dataDirectory 'campus.sqlite')) -or (Test-Path -LiteralPath (Join-Path $dataDirectory 'demo\campus.sqlite'))) {
+if ((Test-Path -LiteralPath (Join-Path $dataDirectory 'campus.sqlite')) -or (Test-Path -LiteralPath (Join-Path $dataDirectory 'demo\campus.sqlite')) -or (Test-Path -LiteralPath (Join-Path $dataDirectory 'live\campus.sqlite'))) {
     & $node "--env-file=$envFile" (Join-Path $ReleasePath 'server\backup.js')
     if ($LASTEXITCODE -ne 0) { throw 'Database/key backup failed. Activation stopped.' }
 }
