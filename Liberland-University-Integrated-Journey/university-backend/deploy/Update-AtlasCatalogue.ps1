@@ -25,11 +25,15 @@ if ($metadata.siteName -ne $SiteName -or $metadata.release -ne (Split-Path $acti
 }
 
 $files = @(
-    'public/account-learning.js', 'public/certificates.js', 'public/checkout.html',
-    'public/checkout.js', 'public/enrolment-journey.js', 'public/index.html',
-    'public/payment-return.js', 'public/payments-ui.js', 'public/portal.js',
-    'public/professional-certificates.js', 'public/script.js',
-    'server/app.js', 'server/payments.js'
+    'public/account-header.css', 'public/account-header.js', 'public/account-learning.js',
+    'public/campus.css', 'public/certificates.js', 'public/checkout.html',
+    'public/checkout.js', 'public/demo-mode.css', 'public/demo-mode.js',
+    'public/enrolment-journey.js', 'public/honorary-nav.css', 'public/index.html',
+    'public/my-learning.js', 'public/payment-return.html', 'public/payment-return.js',
+    'public/payments-ui.js', 'public/portal.html', 'public/portal.js',
+    'public/professional-certificates.js', 'public/script.js', 'public/social-journey.js',
+    'public/theme.js', 'server/app.js', 'server/backup.js', 'server/demo-mode.js',
+    'server/payments.js'
 )
 $tools = @('deploy/Publish-Iis.ps1', 'deploy/read-settings.mjs')
 $id = (Get-Date -Format 'yyyyMMdd-HHmmss') + '-catalogue-' + [guid]::NewGuid().ToString('N').Substring(0, 8)
@@ -67,10 +71,8 @@ $metadata.release = $id
 [IO.File]::WriteAllText((Join-Path $staged 'public\atlas-release.json'), (@{release=$id} | ConvertTo-Json), $utf8)
 Push-Location $staged
 try {
-    & node.exe --check server/app.js
-    if ($LASTEXITCODE -ne 0) { throw 'The staged server failed the syntax check.' }
-    & node.exe --input-type=module -e "import './public/professional-certificates.js'; if (globalThis.professionalCertificates.length !== 29) process.exit(1);"
-    if ($LASTEXITCODE -ne 0) { throw 'The staged catalogue does not contain 29 certificates.' }
+    & node.exe --input-type=module -e "import './server/app.js'; if (globalThis.professionalCertificates.length !== 29) process.exit(1);"
+    if ($LASTEXITCODE -ne 0) { throw 'The staged backend could not load its dependencies and catalogue. Activation has not started.' }
 } finally { Pop-Location }
 
 if (-not $ServiceCredential) {
