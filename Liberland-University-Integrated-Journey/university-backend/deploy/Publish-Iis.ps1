@@ -64,10 +64,18 @@ function Stop-CampusTask([string] $Name, [int] $ListenPort) {
 function Restore-Release($Record) {
     Stop-CampusTask $Record.taskName $Record.port
     $task = Get-ScheduledTask -TaskName $Record.taskName -ErrorAction SilentlyContinue
-    if ($task) { Unregister-ScheduledTask -TaskName $Record.taskName -Confirm:$false -ErrorAction Stop }
     if ($Record.previousTaskXml) {
-        Register-ScheduledTask -TaskName $Record.taskName -Xml $Record.previousTaskXml -User $ServiceCredential.UserName -Password ($ServiceCredential.GetNetworkCredential().Password) -ErrorAction Stop | Out-Null
+        $priorAction = ([xml] $Record.previousTaskXml).Task.Actions.Exec
+        $alreadyRegistered = $task -and $task.Actions.Count -eq 1 -and
+            $task.Actions.Execute -eq $priorAction.Command -and
+            $task.Actions.Arguments -eq $priorAction.Arguments -and
+            $task.Actions.WorkingDirectory -eq $priorAction.WorkingDirectory
+        if (-not $alreadyRegistered) {
+            Register-ScheduledTask -TaskName $Record.taskName -Xml $Record.previousTaskXml -User $ServiceCredential.UserName -Password ($ServiceCredential.GetNetworkCredential().Password) -Force -ErrorAction Stop | Out-Null
+        }
         Start-ScheduledTask -TaskName $Record.taskName -ErrorAction Stop
+    } elseif ($task) {
+        Unregister-ScheduledTask -TaskName $Record.taskName -Confirm:$false -ErrorAction Stop
     }
     Set-ItemProperty -LiteralPath $sitePath -Name physicalPath -Value $Record.previousSitePath
 }
