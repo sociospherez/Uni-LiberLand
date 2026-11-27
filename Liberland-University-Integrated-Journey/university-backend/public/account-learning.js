@@ -38,9 +38,11 @@
  const originalRender=render;
  render=function(){
   const params=new URLSearchParams(location.search),c=currentCourse().certificate;
+  const certificateCatalogue=state.route==='courses'&&params.get('catalogue')==='certificates';
   params.delete('learn');params.delete('programme');params.delete('catalogue');params.delete('page');
   if(journey.isLearningRoute(state.route)&&c)params.set('learn',c.slug);
   else if(state.route==='programme'&&c)params.set('programme',c.slug);
+  else if(certificateCatalogue)params.set('catalogue','certificates');
   else if(['research','about'].includes(state.route))params.set('page',state.route);
   const query=params.toString();history.replaceState(null,'',location.pathname+(query?'?'+query:'')+location.hash);
   const signIn=document.querySelector('.account-sign-in');if(signIn)signIn.href=c&&['programme','certificate-lesson'].includes(state.route)?journey.enrolmentUrl(c.slug)+'&tab=login':'/portal.html?tab=login';

@@ -862,14 +862,22 @@ html[data-theme="dark"] .header-actions .primary.small { background: var(--accen
 .card, .panel, .ui-card, .stat-card, .form-card, .result-card, .ldc-course-card, .catalogue-help, .programme-tab-content, .atlas-context-panel, .planner-journey { border-radius: 6px; box-shadow: var(--elevation-1); }
 .card:hover, .ui-card:hover, .ldc-course-card:hover { transform: translateY(-2px); box-shadow: var(--elevation-2); }
 footer { border-top: 0px; background: var(--canvas); padding-inline: clamp(22px, 4vw, 64px); }
-.campus-footer { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 30px; align-items: start; border-top: 1px solid var(--border); padding-bottom: 72px; }
-.campus-footer__links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
-.campus-footer__links h2 { margin: 0 0 8px; font: 650 1rem var(--font-body, system-ui); }
-.campus-footer__links ul { list-style: none; margin: 0; padding: 0; }
-.campus-footer__links a { display: inline-block; padding-block: 5px; color: var(--text); text-underline-offset: .2em; }
-.campus-footer__links a:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.campus-footer { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 24px; align-items: start; border-top: 1px solid var(--border); padding-bottom: 72px; font-size: .875rem; }
+.campus-footer strong { font-size: 1.125rem; }
+.campus-footer__links, .campus-footer__subjects { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.campus-footer h2, .campus-footer h3 { margin: 0 0 8px; font: 650 .875rem var(--font-body, system-ui); }
+.campus-footer ul { list-style: none; margin: 0; padding: 0; }
+.campus-footer a { display: inline-block; padding-block: 5px; color: var(--text); text-underline-offset: .2em; overflow-wrap: anywhere; }
+.campus-footer :is(a, summary):focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.campus-footer__certificates { grid-column: 1 / -1; border-top: 1px solid var(--border); padding-top: 16px; }
+.campus-footer__certificates summary { cursor: pointer; font-weight: 650; }
+.campus-footer__subjects { margin-top: 18px; }
 @media (max-width: 680px) {
   .campus-footer { grid-template-columns: 1fr; gap: 24px; }
+  .campus-footer__links, .campus-footer__subjects { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 380px) {
+  .campus-footer__subjects { grid-template-columns: 1fr; }
 }
 @media (max-width: 680px) {
 body { background-size: 64px 64px; }

@@ -1,4 +1,5 @@
 import '../public/professional-certificates.js';
+import {certificateDirectory, publicSitemap} from './public-directory.js';
 import {demoEnabled, selectDataDirectory, seedDemoStaff, DEMO_STAFF_EMAIL, DEMO_STAFF_NAME} from './demo-mode.js';
 import http from 'node:http';
 import fs from 'node:fs';
@@ -11,6 +12,8 @@ import {loadEnvFile} from 'node:process';
 import { token,hash,passwordHash,passwordCheck,newTotpSecret,totpStep,seal,unseal } from './security.js';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const curriculum=JSON.parse(fs.readFileSync(path.join(root,'server/curriculum.json'),'utf8'));
+const catalogue=globalThis.professionalCertificates;
+const footerDirectory=certificateDirectory(catalogue);
 const lessonsByCourse=new Map(curriculum.courses.map(c=>[c.slug,c.lessons]));
 const courseMap=new Map(globalThis.professionalCertificates.map(c=>[c.slug,{
  ...c,hours:c.duration.endsWith(' hours')?parseInt(c.duration,10):0,
@@ -82,6 +85,7 @@ export function createApp({dataDir=process.env.DATA_DIR||path.join(root,'data'),
  function detail(u,id){const e=enquiry(u,id);return {...e,messages:all(`SELECT id,author_name,kind,body,created_at FROM messages WHERE enquiry=? ${u.role==='staff'?'':"AND kind='message'"} ORDER BY created_at,rowid`,id)};}
  const server=http.createServer(async(req,res)=>{
   res.setHeader('X-Content-Type-Options','nosniff');res.setHeader('Referrer-Policy','same-origin');res.setHeader('X-Frame-Options','DENY');res.setHeader('Cache-Control','no-store');
+  if(demoMode)res.setHeader('X-Robots-Tag','noindex');
   // Inline handlers belong to the existing learning demonstrator; the portal itself uses external scripts only.
   res.setHeader('Content-Security-Policy',"default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");
   if(req.url?.startsWith('/checkout.html'))res.setHeader('Content-Security-Policy',"default-src 'self'; script-src 'self' https://js.stripe.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.stripe.com; connect-src 'self' https://*.stripe.com https://*.stripe.network; frame-src https://*.stripe.com https://*.stripe.network; font-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'");
@@ -98,10 +102,20 @@ export function createApp({dataDir=process.env.DATA_DIR||path.join(root,'data'),
    }
    if(!p.startsWith('/api/')){
     if(!['GET','HEAD'].includes(method))fail(405,'Method not allowed.');
+    if(p==='/sitemap.xml'){
+     res.writeHead(200,{'Content-Type':'application/xml; charset=utf-8'});
+     return res.end(method==='HEAD'?undefined:publicSitemap(origin,catalogue));
+    }
+    if(p==='/robots.txt'){
+     res.writeHead(200,{'Content-Type':'text/plain; charset=utf-8'});
+     return res.end(method==='HEAD'?undefined:`User-agent: *\nSitemap: ${origin}/sitemap.xml\n`);
+    }
     const name=decodeURIComponent(p==='/'?'/index.html':p);const file=path.resolve(root,'public','.'+name);const publicRoot=path.join(root,'public')+path.sep;
     if(!file.startsWith(publicRoot)||name.split('/').some(part=>part.startsWith('.')))fail(404,'Not found.');
     const ext=path.extname(file).toLowerCase(),types={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.png':'image/png','.webp':'image/webp','.jpg':'image/jpeg','.svg':'image/svg+xml','.csv':'text/csv','.pdf':'application/pdf','.json':'application/json'};
-    if(!types[ext]||!fs.existsSync(file)||!fs.statSync(file).isFile())fail(404,'Not found.');res.setHeader('Content-Type',types[ext]);res.statusCode=200;if(method==='HEAD')return res.end();fs.createReadStream(file).pipe(res);return;
+    if(!types[ext]||!fs.existsSync(file)||!fs.statSync(file).isFile())fail(404,'Not found.');res.setHeader('Content-Type',types[ext]);res.statusCode=200;if(method==='HEAD')return res.end();
+    if(name==='/index.html')return res.end((await fs.promises.readFile(file,'utf8')).replace('<!-- certificate-directory -->',()=>footerDirectory));
+    fs.createReadStream(file).pipe(res);return;
    }
    const u=auth(req);
    if(method==='GET'&&p==='/api/config')return json(res,200,{mode:externalOrigin?'hosted-sandbox':'local-review',email:'preview-only',demoMode,...(demoMode?{demoStaff:{name:DEMO_STAFF_NAME,email:DEMO_STAFF_EMAIL}}:{}),setupRequired:!!setupToken,payments:{...payments.config(),ready:payments.config().ready&&(!livePayments||!setupToken)}});
