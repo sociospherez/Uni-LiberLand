@@ -55,19 +55,32 @@
  renderEnrolledLesson=function(){originalLesson();const note=document.getElementById('ml-save');if(note&&note.textContent.includes('browser'))note.textContent='Your answer is saved to your account.';};
  const originalChoose=enrolledChoose;enrolledChoose=function(answer){originalChoose(answer);const note=document.getElementById('ml-save');if(note)note.textContent='Saving your answer to your account…';};
  addEventListener('beforeunload',e=>{if(pending||blocked){e.preventDefault();e.returnValue='';}});
+ let accountRoutesOpen=true;
  try{
-  const me=await request('/me');user=me.user;
+  const response=await fetch('/api/me');
+  if(response.status===404){
+   accountRoutesOpen=false;
+   // The public catalogue can run with account routes closed at IIS.
+   document.querySelectorAll('.header-actions a[href^="/portal.html"],.mobile-contact,[data-route="dashboard"]').forEach(link=>link.remove());
+   enrolmentAction=()=>'<p>Online enrolment is currently unavailable.</p>';
+   renderApply=()=>go('courses');
+  }else{
+  if(!response.ok)throw Error('Unable to load your account.');
+  const me=await response.json();user=me.user;
   const records=await Promise.all(me.enrolments.filter(e=>e.status==='active'&&e.available_lessons>0).map(async e=>[e,await request('/learning/'+e.course)]));
   for(const [e,data]of records){revision[e.course]=data.revision;learningStore.enrolments[e.course]={status:'demo-enrolled',enrolledAt:e.created_at,updatedAt:e.updated_at,activeLesson:data.activeLesson||availableLessons(certificateProgrammes.find(c=>c.slug===e.course))[0].id,lessons:data.lessons||{}};if(e.course==='social-media')hydrateSocial(data.social);}
- }catch(err){if(!err.message.includes('sign in'))status(err.message,true);}
+  }
+  if(response.status!==404){
  CampusAccount.mount(document.querySelector('.header-actions'),user,{prepend:true,beforeSignOut:async()=>{
   while(pending)await chain;if(blocked)throw Error('Saving is paused. Copy any unsaved work before reloading or signing out.');
  }});
  if(user?.role==='staff')document.querySelectorAll('[data-route="dashboard"]').forEach(el=>el.textContent='Staff dashboard');
  const footer=document.createElement('a');footer.href='/portal.html?tab=enquiries';footer.textContent='Contact / enquiries';document.querySelector('.footer-links').appendChild(footer);
+  }
+ }catch(err){if(!err.message.includes('sign in'))status(err.message,true);}
  document.documentElement.classList.remove('account-loading');
  const params=new URLSearchParams(location.search),slug=params.get('learn'),programme=params.get('programme');
- if(slug){if(!certificateProgrammes.some(c=>c.slug===slug)){location.replace('/portal.html?course='+encodeURIComponent(slug));return;}if(!user||!learningStore.enrolments[slug])return enrolDemo(slug);openLearningPath(slug);}
+ if(slug&&accountRoutesOpen){if(!certificateProgrammes.some(c=>c.slug===slug)){location.replace('/portal.html?course='+encodeURIComponent(slug));return;}if(!user||!learningStore.enrolments[slug])return enrolDemo(slug);openLearningPath(slug);}
  else if(programme&&globalThis.professionalCertificates.some(c=>c.slug===programme))go('programme',{course:'cert-'+programme});
  else if(params.get('catalogue')==='certificates')openCertificateCatalogue();
  else render();
