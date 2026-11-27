@@ -65,8 +65,8 @@
    enrolmentAction=()=>'<p>Online enrolment is currently unavailable.</p>';
    renderApply=()=>go('courses');
   }else{
-  if(!response.ok)throw Error('Unable to load your account.');
-  const me=await response.json();user=me.user;
+  if(!response.ok&&response.status!==401)throw Error('Unable to load your account.');
+  const me=response.status===401?{user:null,enrolments:[]}:await response.json();user=me.user;
   const records=await Promise.all(me.enrolments.filter(e=>e.status==='active'&&e.available_lessons>0).map(async e=>[e,await request('/learning/'+e.course)]));
   for(const [e,data]of records){revision[e.course]=data.revision;learningStore.enrolments[e.course]={status:'demo-enrolled',enrolledAt:e.created_at,updatedAt:e.updated_at,activeLesson:data.activeLesson||availableLessons(certificateProgrammes.find(c=>c.slug===e.course))[0].id,lessons:data.lessons||{}};if(e.course==='social-media')hydrateSocial(data.social);}
   }
