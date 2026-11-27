@@ -42,10 +42,25 @@
   <div class="journey-strip" id="journeyStrip" aria-label="Application journey progress"></div>
   <main id="app" tabindex="-1"></main>
 
-  <footer>
+  <footer class="campus-footer">
     <div><strong>Liberland University</strong><span>Education without borders.</span></div>
-    <div class="footer-links"><button data-route="courses">Courses</button><button data-route="research">Research</button><button data-route="apply">Admissions</button></div>
-    <small>Experience Preview EP1 · Demonstration environment</small>
+    <nav class="campus-footer__links" aria-label="University links">
+      <div>
+        <h2>Study</h2>
+        <ul>
+          <li><a href="/index.html?catalogue=certificates">Professional certificates</a></li>
+          <li data-account-link><a href="/portal.html?tab=enquiries">Contact admissions</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>University</h2>
+        <ul>
+          <li><a href="/index.html?page=research">Research</a></li>
+          <li><a href="/honorary-recognition.html">Honorary Recognition</a></li>
+          <li><a href="/index.html?page=about">About the university</a></li>
+        </ul>
+      </div>
+    </nav>
   </footer>
 
   <button class="motion-toggle" id="motionToggle" aria-pressed="false" title="Reduce or enable motion">Motion: On</button>

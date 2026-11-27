@@ -38,9 +38,10 @@
  const originalRender=render;
  render=function(){
   const params=new URLSearchParams(location.search),c=currentCourse().certificate;
-  params.delete('learn');params.delete('programme');params.delete('catalogue');
+  params.delete('learn');params.delete('programme');params.delete('catalogue');params.delete('page');
   if(journey.isLearningRoute(state.route)&&c)params.set('learn',c.slug);
   else if(state.route==='programme'&&c)params.set('programme',c.slug);
+  else if(['research','about'].includes(state.route))params.set('page',state.route);
   const query=params.toString();history.replaceState(null,'',location.pathname+(query?'?'+query:'')+location.hash);
   const signIn=document.querySelector('.account-sign-in');if(signIn)signIn.href=c&&['programme','certificate-lesson'].includes(state.route)?journey.enrolmentUrl(c.slug)+'&tab=login':'/portal.html?tab=login';
   originalRender();
@@ -61,7 +62,7 @@
   if(response.status===404){
    accountRoutesOpen=false;
    // The public catalogue can run with account routes closed at IIS.
-   document.querySelectorAll('.header-actions a[href^="/portal.html"],.mobile-contact,[data-route="dashboard"]').forEach(link=>link.remove());
+   document.querySelectorAll('.header-actions a[href^="/portal.html"],.mobile-contact,[data-route="dashboard"],[data-account-link]').forEach(link=>link.remove());
    enrolmentAction=()=>'<p>Online enrolment is currently unavailable.</p>';
    renderApply=()=>go('courses');
   }else{
@@ -75,7 +76,6 @@
   while(pending)await chain;if(blocked)throw Error('Saving is paused. Copy any unsaved work before reloading or signing out.');
  }});
  if(user?.role==='staff')document.querySelectorAll('[data-route="dashboard"]').forEach(el=>el.textContent='Staff dashboard');
- const footer=document.createElement('a');footer.href='/portal.html?tab=enquiries';footer.textContent='Contact / enquiries';document.querySelector('.footer-links').appendChild(footer);
   }
  }catch(err){if(!err.message.includes('sign in'))status(err.message,true);}
  document.documentElement.classList.remove('account-loading');
@@ -83,5 +83,6 @@
  if(slug&&accountRoutesOpen){if(!certificateProgrammes.some(c=>c.slug===slug)){location.replace('/portal.html?course='+encodeURIComponent(slug));return;}if(!user||!learningStore.enrolments[slug])return enrolDemo(slug);openLearningPath(slug);}
  else if(programme&&globalThis.professionalCertificates.some(c=>c.slug===programme))go('programme',{course:'cert-'+programme});
  else if(params.get('catalogue')==='certificates')openCertificateCatalogue();
+ else if(['research','about'].includes(params.get('page')))go(params.get('page'));
  else render();
 })();
