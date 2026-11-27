@@ -14,8 +14,9 @@ function navigation(){
  const items=me?[['overview',me.role==='staff'?'Dashboard':'My learning'],['enquiries','Enquiries'],['profile','My profile']]:[['login','Sign in'],['register','Register'],['enquiries','Ask a question']];
  $('#navigation').innerHTML=items.map(([id,label])=>`<button data-tab="${id}" ${tab===id?'aria-current="page"':''}>${label}</button>`).join('');
  document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>openTab(b.dataset.tab));
- const signInHref=selectedSlug?'/portal.html?course='+encodeURIComponent(selectedSlug)+'&intent=enrol&tab=login':journey?.paymentReturnUrl(journeyParams.get('payment_session'))?'/portal.html?tab=login&payment_session='+encodeURIComponent(journeyParams.get('payment_session')):'/portal.html?tab=login';
- CampusAccount.mount($('#account-identity'),me,{signInHref});
+ const identity=$('#account-identity');
+ if(me)CampusAccount.mount(identity,me);
+ else identity.replaceChildren();
 }
 async function refresh(){const r=await api('/me');me=r.user;navigation();return r;}
 async function openTab(t){tab=t;navigation();try{if(t==='login'||t==='register')return authView(t);if(t==='enquiries')return await enquiriesView();if(!me)return authView('login');if(t==='profile')return profileView();if(me.role==='staff')return await staffView();if(selectedSlug&&t==='overview')return await selectedCourseView();return await studentView();}catch(err){notice(err.message,true);}}
