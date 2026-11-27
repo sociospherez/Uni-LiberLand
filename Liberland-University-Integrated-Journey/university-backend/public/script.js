@@ -1,12 +1,14 @@
-const courses = [
-  {id:'ai',title:'Artificial Intelligence & Digital Governance',category:'Technology',duration:'24 months',mode:'100% online',fee:'€4,800',tag:'Most popular',summary:'Build practical AI capability with ethical, governance and leadership foundations.',skills:['AI fundamentals','Machine learning concepts','Responsible AI','Digital governance','Applied research','Leadership']},
-  {id:'business',title:'Digital Business & Entrepreneurship',category:'Business',duration:'18 months',mode:'Flexible online',fee:'€3,900',tag:'Founder pathway',summary:'Turn ideas into sustainable digital ventures and lead in borderless markets.',skills:['Business modelling','Digital finance','Growth strategy','Leadership','Innovation','Venture execution']},
-  {id:'cyber',title:'Cyber Security & Digital Trust',category:'Technology',duration:'20 months',mode:'100% online',fee:'€4,200',tag:'High demand',summary:'Develop the practical and strategic skills required to protect digital organisations.',skills:['Security fundamentals','Risk management','Cloud security','Governance','Incident response','Digital trust']},
-  {id:'governance',title:'Future Governance & Public Leadership',category:'Governance',duration:'18 months',mode:'Flexible online',fee:'€3,600',tag:'Liberland focus',summary:'Explore public leadership, policy innovation and digital-first governance.',skills:['Policy design','Systems thinking','Civic innovation','Leadership','Economics','Digital institutions']},
-  {id:'research',title:'Research Methods & Innovation Practice',category:'Research',duration:'12 months',mode:'Mentor-supported',fee:'€2,700',tag:'Research pathway',summary:'Move from a strong question to credible, collaborative and publishable research.',skills:['Research design','Evidence review','Data literacy','Academic writing','Ethics','Collaboration']},
-  {id:'leadership',title:'Executive Digital Leadership',category:'Business',duration:'9 months',mode:'Part-time online',fee:'€2,950',tag:'Executive',summary:'Lead transformation, align teams and make stronger decisions in digital organisations.',skills:['Transformation','Strategy','Decision-making','Operating models','AI leadership','Change management']}
-];
-courses.push(...certificateProgrammes.map(c=>({id:'cert-'+c.slug,title:c.title,category:'Hourly certificates',duration:c.hours+' hours',mode:'Online · self-paced (proposed)',fee:'To be decided',tag:c.level,summary:c.overview[0],skills:c.outcomes,certificate:c})));
+const formatTuition = pence => new Intl.NumberFormat('en-GB',{style:'currency',currency:'GBP'}).format(pence/100);
+const courses = globalThis.professionalCertificates.map(entry=>{
+  const preview=certificateProgrammes.find(c=>c.slug===entry.slug);
+  const fee=formatTuition(entry.tuition_pence);
+  return {
+    id:'cert-'+entry.slug,title:entry.title,category:entry.category||'Professional certificates',
+    duration:entry.duration,fee,tag:preview?.level||'Professional certificate',
+    summary:preview?.overview[0]||entry.summary||'',skills:preview?.outcomes||[],
+    certificate:{...preview,...entry,fee}
+  };
+});
 // A fresh campus visit starts publicly; explicit learning links are handled by the account adapter.
 const state = (()=>{try{const saved=JSON.parse(localStorage.getItem('ldc-state')||'{}');return saved&&typeof saved==='object'&&!Array.isArray(saved)?saved:{};}catch{return {};}})();
 state.route = 'home'; state.selectedCourse ||= 'ai'; state.plannerStep ||= 0; state.applicationStep ||= 0;
@@ -17,10 +19,10 @@ const routes = ['home','courses','certificate-enrol','certificate-enrolled','lea
 
 function save(){try{localStorage.setItem('ldc-state',JSON.stringify(state));}catch(e){learningStorageAvailable=false;}}
 function go(route, options={}){state.route=route;if(options.course)state.selectedCourse=options.course;save();render();window.scrollTo({top:0,behavior:'smooth'});document.getElementById('mobileMenu').classList.remove('open');}
-function currentCourse(){return courses.find(c=>c.id===state.selectedCourse)||courses[0];}
+function currentCourse(){return courses.find(c=>c.id===state.selectedCourse||c.certificate.slug===state.selectedCourse)||courses[0];}
 function showToast(message){const t=document.getElementById('toast');t.textContent=message;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
 function actionButtons(){document.querySelectorAll('[data-route]').forEach(el=>el.onclick=()=>go(el.dataset.route));}
-function journey(){if(currentCourse().certificate && ['programme','apply','payment','welcome'].includes(state.route)){journeyStrip.innerHTML='<div class="journey-inner">Hourly certificate · Programme prospectus · Learning preview</div>';return;}
+function journey(){if(currentCourse().certificate && ['programme','apply','payment','welcome'].includes(state.route)){journeyStrip.innerHTML='<div class="journey-inner">Professional certificate · Programme prospectus</div>';return;}
   const activeRoutes=['courses','programme','planner','path','advisor','apply','payment','welcome'];
   if(!activeRoutes.includes(state.route)){journeyStrip.innerHTML='';return;}
   const steps=[['Discover','courses'],['Programme','programme'],['Application','apply'],['Documents','apply'],['Payment','payment'],['Welcome','welcome']];
@@ -57,10 +59,10 @@ function renderHome(){page(`
     </section>
 
     <section class="arch-section">
-      <div class="arch-section__head"><div><p class="eyebrow">Study at Liberland</p><h2>Designed for the way you learn.</h2></div><p>Clear routes into degrees, professional development, research and a global academic community—without unnecessary complexity.</p></div>
+      <div class="arch-section__head"><div><p class="eyebrow">Study at Liberland</p><h2>Designed for the way you learn.</h2></div><p>Professional development, research and a global academic community—without unnecessary complexity.</p></div>
       <div class="arch-programmes">
-        <article class="arch-programme"><div class="arch-programme__image"></div><div class="arch-programme__body"><span class="meta">Academic pathways</span><h3>Degree programmes</h3><p>Bachelor's, Master's and doctoral routes across leading disciplines.</p><button data-route="courses">Explore →</button></div></article>
-        <article class="arch-programme"><div class="arch-programme__image ai"></div><div class="arch-programme__body"><span class="meta">Career acceleration</span><h3>Hourly certificates</h3><p>Nine focused programmes, from 16 to 60 hours, with practical learning previews.</p><button onclick="openCertificateCatalogue()">Explore →</button></div></article>
+        <article class="arch-programme"><div class="arch-programme__image"></div><div class="arch-programme__body"><span class="meta">Professional development</span><h3>Browse by subject</h3><p>Explore certificates in technology, business, governance and research.</p><button data-route="courses">Explore →</button></div></article>
+        <article class="arch-programme"><div class="arch-programme__image ai"></div><div class="arch-programme__body"><span class="meta">Career acceleration</span><h3>Professional certificates</h3><p>Explore ${courses.length} professional certificates and their tuition fees.</p><button onclick="openCertificateCatalogue()">Explore →</button></div></article>
         <article class="arch-programme"><div class="arch-programme__image research"></div><div class="arch-programme__body"><span class="meta">Knowledge & impact</span><h3>Research and innovation</h3><p>Collaborate on credible questions and solve meaningful challenges.</p><button data-route="research">Explore →</button></div></article>
         <article class="arch-programme"><div class="arch-programme__image community"></div><div class="arch-programme__body"><span class="meta">Belonging</span><h3>Global community</h3><p>Connect with learners, academics, mentors and industry partners.</p><button data-route="community">Explore →</button></div></article>
       </div>
@@ -87,13 +89,13 @@ function courseCards(list){return list.map((c,i)=>c.certificate?certificateCard(
 
 function renderCourses(){activeCourseCategory='All';page(`
   <div class="catalogue-hero hero-shell"><div class="hero-shell__grid"><div><span class="badge badge-blue">Course catalogue</span><p class="eyebrow">Choose with confidence</p><h1>Find the right programme.</h1><p class="lead">Search and compare clear, career-focused online pathways without unnecessary complexity.</p><div class="catalogue-search"><span>⌕</span><input id="courseSearch" type="search" placeholder="Search by subject, skill or programme" oninput="updateCourseResults()" aria-label="Search courses"></div></div><div class="ai-panel"><h3>Would you rather be guided?</h3><p>Atlas can recommend a pathway based on your goal, interests, education and preferred pace.</p><button class="btn btn-primary" data-route="planner">Discover your path</button></div></div></div>
-  <section class="section catalogue-controls"><div><strong id="courseCount">${courses.length} programmes</strong><small> · Flexible online pathways</small></div><div class="filters"><button class="filter active" data-category="All" onclick="setCourseCategory('All',this)">All</button>${['Hourly certificates','Technology','Business','Governance','Research'].map(x=>`<button class="filter" data-category="${x}" onclick="setCourseCategory('${x}',this)">${x}</button>`).join('')}</div></section>
+  <section class="section catalogue-controls"><div><strong id="courseCount">${courses.length} programmes</strong><small> · Flexible online pathways</small></div><div class="filters"><button class="filter active" data-category="All" onclick="setCourseCategory('All',this)">All</button>${['Professional certificates','Technology','Business','Governance','Research'].map(x=>`<button class="filter" data-category="${x}" onclick="setCourseCategory('${x}',this)">${x}</button>`).join('')}</div></section>
   <div class="grid three" id="courseGrid">${courseCards(courses)}</div>
   <section class="section catalogue-help"><div class="alert"><span>i</span><div><strong>Need a human answer?</strong><br><small>View a programme and open Atlas, or begin an application and save your progress.</small></div></div><div class="actions"><button class="btn btn-secondary" data-route="advisor">Ask Atlas</button><button class="btn btn-primary" data-route="apply">Apply now</button></div></section>`)}
 
 let activeCourseCategory='All';
 function setCourseCategory(category,el){activeCourseCategory=category;document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active'));el.classList.add('active');updateCourseResults();}
-function updateCourseResults(){const term=(document.getElementById('courseSearch')?.value||'').trim().toLowerCase();const list=courses.filter(c=>(activeCourseCategory==='All'||c.category===activeCourseCategory)&&(!term||[c.title,c.category,c.summary,...c.skills].join(' ').toLowerCase().includes(term)));const grid=document.getElementById('courseGrid');if(!grid)return;grid.innerHTML=list.length?courseCards(list):`<div class="catalogue-empty"><div class="ui-card__icon">⌕</div><h3>No programmes found</h3><p>Try a broader search or use Atlas to build a recommendation.</p><button class="btn btn-primary" data-route="planner">Use Atlas</button></div>`;document.getElementById('courseCount').textContent=`${list.length} programme${list.length===1?'':'s'}`;actionButtons();prepareMotion();}
+function updateCourseResults(){const term=(document.getElementById('courseSearch')?.value||'').trim().toLowerCase();const list=courses.filter(c=>(activeCourseCategory==='All'||activeCourseCategory==='Professional certificates'||c.category===activeCourseCategory)&&(!term||[c.title,c.category,c.summary,...c.skills].join(' ').toLowerCase().includes(term)));const grid=document.getElementById('courseGrid');if(!grid)return;grid.innerHTML=list.length?courseCards(list):`<div class="catalogue-empty"><div class="ui-card__icon">⌕</div><h3>No programmes found</h3><p>Try a broader search or use Atlas to build a recommendation.</p><button class="btn btn-primary" data-route="planner">Use Atlas</button></div>`;document.getElementById('courseCount').textContent=`${list.length} programme${list.length===1?'':'s'}`;actionButtons();prepareMotion();}
 function filterCourses(category,el){setCourseCategory(category,el)}
 
 function programmeData(c){

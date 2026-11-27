@@ -18,7 +18,7 @@
  socialNote=function(){return '<p class="ml-storage" id="social-save">Self-paced · 24 hours is an indicative estimate · Account-based saving.</p>';};
  socialSaveFeedback=function(){const el=document.getElementById('social-save');if(el)el.textContent=blocked?'Saving paused — check the message below.':'Changes queued for account saving.';const r=socialRequirements();document.querySelectorAll('[data-social-requirement]').forEach(el=>{const ok=r[el.dataset.socialRequirement];el.querySelector('span').textContent=ok?'✓':'○';el.querySelector('strong').textContent=ok?'Done':'To do';});const b=document.getElementById('social-award-action');if(b)b.disabled=!socialEligible();};
  enrolDemo=slug=>{location.href=journey.enrolmentUrl(slug);};renderEnrolment=()=>enrolDemo(currentCourse().certificate?.slug||'');renderEnrolled=portal;renderMyLearning=portal;renderDashboard=portal;
- renderApply=function(){page('<div class="cert-shell"><p class="cert-kicker">Admissions</p><h1>Start with your student account.</h1><p>Certificate enrolments are managed in the student space. For degree programme questions, send an enquiry. Degree applications and payments are not connected in this first release.</p><a class="btn btn-primary" href="/portal.html">Open student space</a> <a class="btn btn-secondary" href="/portal.html?tab=enquiries">Ask admissions</a></div>');};
+ renderApply=function(){page('<div class="cert-shell"><p class="cert-kicker">Admissions</p><h1>Start with your student account.</h1><p>Choose a professional certificate to see its duration and tuition, or contact admissions for help.</p><a class="btn btn-primary" href="/index.html?catalogue=certificates">Browse certificates</a> <a class="btn btn-secondary" href="/portal.html?tab=enquiries">Ask admissions</a></div>');};
  renderPayment=renderApply;renderWelcome=portal;
  enrolmentAction=c=>enrolled(c)?`<button class="btn btn-primary" onclick="openLearningPath('${c.slug}')">Continue learning →</button>`:`<a class="btn btn-primary" href="${journey.enrolmentUrl(c.slug)}">Enrol now →</a>`;
  const originalPage=page;
@@ -38,9 +38,10 @@
  const originalRender=render;
  render=function(){
   const params=new URLSearchParams(location.search),c=currentCourse().certificate;
-  params.delete('learn');params.delete('programme');params.delete('catalogue');
+  params.delete('learn');params.delete('programme');params.delete('catalogue');params.delete('page');
   if(journey.isLearningRoute(state.route)&&c)params.set('learn',c.slug);
   else if(state.route==='programme'&&c)params.set('programme',c.slug);
+  else if(['research','about'].includes(state.route))params.set('page',state.route);
   const query=params.toString();history.replaceState(null,'',location.pathname+(query?'?'+query:'')+location.hash);
   const signIn=document.querySelector('.account-sign-in');if(signIn)signIn.href=c&&['programme','certificate-lesson'].includes(state.route)?journey.enrolmentUrl(c.slug)+'&tab=login':'/portal.html?tab=login';
   originalRender();
@@ -55,20 +56,33 @@
  renderEnrolledLesson=function(){originalLesson();const note=document.getElementById('ml-save');if(note&&note.textContent.includes('browser'))note.textContent='Your answer is saved to your account.';};
  const originalChoose=enrolledChoose;enrolledChoose=function(answer){originalChoose(answer);const note=document.getElementById('ml-save');if(note)note.textContent='Saving your answer to your account…';};
  addEventListener('beforeunload',e=>{if(pending||blocked){e.preventDefault();e.returnValue='';}});
+ let accountRoutesOpen=true;
  try{
-  const me=await request('/me');user=me.user;
-  const records=await Promise.all(me.enrolments.filter(e=>e.status==='active').map(async e=>[e,await request('/learning/'+e.course)]));
+  const response=await fetch('/api/me');
+  if(response.status===404){
+   accountRoutesOpen=false;
+   // The public catalogue can run with account routes closed at IIS.
+   document.querySelectorAll('.header-actions a[href^="/portal.html"],.mobile-contact,[data-route="dashboard"],[data-account-link]').forEach(link=>link.remove());
+   enrolmentAction=()=>'<p>Online enrolment is currently unavailable.</p>';
+   renderApply=()=>go('courses');
+  }else{
+  if(!response.ok&&response.status!==401)throw Error('Unable to load your account.');
+  const me=response.status===401?{user:null,enrolments:[]}:await response.json();user=me.user;
+  const records=await Promise.all(me.enrolments.filter(e=>e.status==='active'&&e.available_lessons>0).map(async e=>[e,await request('/learning/'+e.course)]));
   for(const [e,data]of records){revision[e.course]=data.revision;learningStore.enrolments[e.course]={status:'demo-enrolled',enrolledAt:e.created_at,updatedAt:e.updated_at,activeLesson:data.activeLesson||availableLessons(certificateProgrammes.find(c=>c.slug===e.course))[0].id,lessons:data.lessons||{}};if(e.course==='social-media')hydrateSocial(data.social);}
- }catch(err){if(!err.message.includes('sign in'))status(err.message,true);}
+  }
+  if(response.status!==404){
  CampusAccount.mount(document.querySelector('.header-actions'),user,{prepend:true,beforeSignOut:async()=>{
   while(pending)await chain;if(blocked)throw Error('Saving is paused. Copy any unsaved work before reloading or signing out.');
  }});
  if(user?.role==='staff')document.querySelectorAll('[data-route="dashboard"]').forEach(el=>el.textContent='Staff dashboard');
- const footer=document.createElement('a');footer.href='/portal.html?tab=enquiries';footer.textContent='Contact / enquiries';document.querySelector('.footer-links').appendChild(footer);
+  }
+ }catch(err){if(!err.message.includes('sign in'))status(err.message,true);}
  document.documentElement.classList.remove('account-loading');
  const params=new URLSearchParams(location.search),slug=params.get('learn'),programme=params.get('programme');
- if(slug){if(!user||!learningStore.enrolments[slug])return enrolDemo(slug);openLearningPath(slug);}
- else if(programme&&certificateProgrammes.some(c=>c.slug===programme))go('programme',{course:'cert-'+programme});
+ if(slug&&accountRoutesOpen){if(!certificateProgrammes.some(c=>c.slug===slug)){location.replace('/portal.html?course='+encodeURIComponent(slug));return;}if(!user||!learningStore.enrolments[slug])return enrolDemo(slug);openLearningPath(slug);}
+ else if(programme&&globalThis.professionalCertificates.some(c=>c.slug===programme))go('programme',{course:'cert-'+programme});
  else if(params.get('catalogue')==='certificates')openCertificateCatalogue();
+ else if(['research','about'].includes(params.get('page')))go(params.get('page'));
  else render();
 })();

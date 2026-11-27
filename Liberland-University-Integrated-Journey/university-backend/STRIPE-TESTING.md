@@ -1,6 +1,6 @@
 # Stripe sandbox integration
 
-This release adds Stripe Embedded Checkout to the Node.js student backend. All courses use a **fictitious £10 GBP test price** controlled on the server. Live API keys and live webhook events are rejected. PayPal is not enabled; checkout is restricted to eligible card payment methods.
+This release adds Stripe Embedded Checkout to the Node.js student backend. Checkout uses the approved GBP tuition for the selected certificate. The server reads the amount from the shared catalogue. Live API keys and live webhook events are rejected. PayPal is not enabled; checkout is restricted to eligible card payment methods.
 
 ## Start on another computer
 

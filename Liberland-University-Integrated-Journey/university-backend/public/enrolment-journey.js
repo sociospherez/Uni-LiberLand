@@ -8,6 +8,7 @@ export function courseDestination({course, user, enrolments = [], payments = [],
   if (!user) return {state: 'account', href: enrolmentUrl(course.slug)};
   if (user.role !== 'student') return {state: 'staff', href: null};
   const enrolment = enrolments.find(e => e.course === course.slug);
+  if (enrolment?.status === 'active' && course.available_lessons === 0) return {state: 'enrolled', href: null};
   if (enrolment?.status === 'active') return {state: 'learning', href: '/index.html?learn=' + encodeURIComponent(course.slug)};
   if (enrolment?.status === 'paused') return {state: 'paused', href: null};
   if (payments.some(p => p.course === course.slug && ['paid', 'pending'].includes(p.status))) return {state: 'review', href: null};
@@ -17,7 +18,7 @@ export function courseDestination({course, user, enrolments = [], payments = [],
 }
 
 export function paymentReturnUrl(session) {
-  return /^cs_test_[A-Za-z0-9]+$/.test(session || '')
+  return /^cs_(?:test|live)_[A-Za-z0-9]+$/.test(session || '')
     ? '/payment-return.html?session_id=' + encodeURIComponent(session)
     : null;
 }

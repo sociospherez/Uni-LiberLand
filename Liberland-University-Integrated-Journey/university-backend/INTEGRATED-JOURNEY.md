@@ -5,7 +5,7 @@ Choose a certificate prospectus and select Enrol on this course. Your course fol
 
 Start with Social Media Analytics: 12 lessons, activities, self-reviewed project, quiz and sample certificate. The other courses retain their existing sample content; this update does not turn those samples into complete courses. All certificate documents remain samples, not valid qualifications.
 
-Pricing remains fictitious GBP 10. Stripe is test-only. Start the Stripe listener and backend following STRIPE-TESTING.md. If checkout is unavailable, the selected-course page offers a staff approval request.
+The 29 approved professional certificate tuition fees are defined in public/professional-certificates.js and used by both the catalogue and the server. Stripe is test-only. Start the Stripe listener and backend following STRIPE-TESTING.md. If checkout is unavailable, the selected-course page offers a staff approval request.
 
 ## Validation
 API and payment safeguard tests passed. Browser walkthrough passed all 12 Social Media lessons, assessment, sample award, separate-browser persistence, staff controls and mobile layout. Integrated checkout browser test passed guest redirect, retained selection, unpaid access denial, verified fulfilment, duplicate-purchase prevention and invalid-course handling. Stripe responses were simulated for this update; the earlier real sandbox payment was not repeated.
